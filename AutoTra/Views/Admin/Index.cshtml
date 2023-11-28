@@ -1,0 +1,210 @@
+﻿@model List<AutoTra.Models.AdminModel>
+@{
+    ViewData["Title"] = "Data Admin";
+    int no = 1;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <br />
+
+        <div class="card-body">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="row">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
+                        <strong>Sukses!</strong> @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <a asp-controller="Admin" class="btn btn-primary" asp-action="Create">+ Tambah Admin</a>
+            <br />
+            <br />
+            <div class="card">
+
+                <!-- Table with stripped rows -->
+                <table class="table datable">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">NPK</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Password</th>
+                            <th scope="col">Peran</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var adm in Model)
+                        {
+                            <tr>
+                                <td>@(no++)</td>
+                                <td>@adm.npk</td>
+                                <td>@adm.nama</td>
+                                <td>@adm.username</td>
+                                <td>@adm.password</td>
+                                <td>@adm.peran</td>
+                                <td>
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-npk="@adm.npk">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+                                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@adm.npk" class="btn btn-sm btn-primary edit-button" data-npk="@adm.npk">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-info btn-info-modal" data-toggle="modal" data-target="#infoModal_@adm.npk">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+
+                                    <div class="modal fade" id="infoModal_@adm.npk" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Informasi Buku</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <strong>NPK:</strong>@adm.npk<br />
+                                                    <strong>Nama:</strong>@adm.nama<br />
+                                                    <strong>Username:</strong>@adm.username<br />
+                                                    <strong>Password</strong>@adm.password<br />
+                                                    <strong>Peran</strong>@adm.peran<br />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="editModal_@adm.npk" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Admin</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form asp-controller="Admin" asp-action="Edit" method="post">
+                                                        <input type="hidden" name="npk" value="@adm.npk" />
+
+                                                        <div class="mb-3">
+                                                            <label for="editNama" class="form-label">Nama</label>
+                                                            <input type="text" class="form-control" id="editNama" name="nama" value="@adm.nama">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="editUsername" class="form-label">Username</label>
+                                                            <input type="text" class="form-control" id="editUsername" name="username" value="@adm.username">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="editPassword" class="form-label">Password</label>
+                                                            <input type="password" class="form-control" id="editPassword" name="password" value="@adm.password">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="editPeran" class="form-label">Peran</label>
+                                                            <input type="text" class="form-control" id="editPeran" name="peran" value="@adm.peran">
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".delete-button").click(function () {
+            var npk = $(this).data("npk");
+            handleAction("Hapus admin?", "Apakah Anda yakin ingin menghapus Admin ini?", "/Admin/Delete/" + npk, "Admin deleted successfully", "Terjadi kesalahan saat menghapus Admin.");
+        });
+
+        $(".edit-button").click(function () {
+            var npk = $(this).data("npk");
+            handleEditAction(npk);
+        });
+
+        function handleAction(title, text, url, successMessage, errorMessage) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        success: function (data) {
+                            if (data.success) {
+                                console.log(successMessage);
+                                Swal.fire("Sukses!", data.message, "success");
+                                location.reload();
+                            } else {
+                                console.log("Failed to perform action");
+                                Swal.fire("Gagal!", data.message, "error");
+                            }
+                        },
+                        error: function () {
+                            console.log("Error during AJAX request");
+                            Swal.fire("Error!", errorMessage, "error");
+                        }
+                    });
+                } else {
+                    console.log("Canceled action");
+                }
+            });
+        }
+
+        function handleEditAction(npk) {
+            $.ajax({
+                url: "/Admin/Edit/" + npk,
+                type: "GET",
+                success: function (data) {
+                    $("#editModal_" + npk + " .modal-body").html(data);
+                    $("#editModal_" + npk).modal("show");
+                },
+                error: function () {
+                    console.log("Error during AJAX request for edit modal content");
+                    Swal.fire("Error!", "Terjadi kesalahan saat memuat data Admin untuk diedit.", "error");
+                }
+            });
+        }
+    });
+</script>

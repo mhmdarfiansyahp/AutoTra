@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AutoTra.Models.PICModel
+@{
+    ViewData["Title"] = "Tambah Data PIC";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    <form method="post" asp-controller="PIC" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label for="nim" class="control-label">NIM</label>
+                            <input asp-for="nim" class="form-control" id="nim" oninput="validateNumberInput(this)" />
+                            <span asp-validation-for="nim" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nama" class="control-label">Nama PIC</label>
+                            <input asp-for="nama" class="form-control" id="nama" />
+                            <span asp-validation-for="nama" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="control-label">Username</label>
+                            <input asp-for="username" class="form-control" id="username">
+                            <span asp-validation-for="username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="control-label">Password</label>
+                            <input asp-for="password" class="form-control" id="password">
+                            <span asp-validation-for="password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label for="peran" class="control-label">Peran</label>
+                            <input asp-for="peran" class="form-control" id="peran" value="PIC" />
+                            <span asp-validation-for="peran" class="text-danger"></span>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateNumberInput(input) {
+        // Hapus karakter selain angka
+        input.value = input.value.replace(/\D/g, '');
+
+        // Pastikan panjang tidak melebihi 15 karakter
+        if (input.value.length > 15) {
+            input.value = input.value.slice(0, 15);
+        }
+    }
+</script>
