@@ -15,11 +15,14 @@
                     <form method="post" asp-controller="Mobil" asp-action="Edit">
                         <input type="hidden" asp-for="id_mobil" />
                         <div class="form-group">
-                            <label for="jenis_mobil" class="control-label">Vechile Type</label>
-                            <input asp-for="jenis_mobil" class="form-control" id="jenis_mobil">
+                            <label asp-for="jenis_mobil" class="control-label">Vechile Type</label>
+                            <select asp-for="jenis_mobil" class="form-control">
+                                <option disabled selected>-- Select Vechile Type --</option>
+                                <option value="Non Asset">Non Asset</option>
+                                <option value="Asset">Asset</option>
+                            </select>
                             <span asp-validation-for="jenis_mobil" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label for="nama" class="control-label">Vechile Model</label>
                             <input asp-for="nama" class="form-control" id="nama">
@@ -50,12 +53,15 @@
                             <input asp-for="bahan_bakar" class="form-control" id="bahan_bakar">
                             <span asp-validation-for="bahan_bakar" class="text-danger"></span>
                         </div>
-                        <div class="form-group" style="display: none;">
-                            <label for="status" class="control-label">Status</label>
-                            <input asp-for="status" class="form-control" id="status" value="Dosen">
-                            <span asp-validation-for="status" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="status" class="control-label">Status</label>
+                            <select asp-for="status" class="form-control">
+                                <option disabled selected>-- Select Vechile Status --</option>
+                                <option value="0">Non Active</option>
+                                <option value="1">Active</option>
+                            </select>
+                            <span asp-validation-for="jenis_mobil" class="text-danger"></span>
                         </div>
-
                         <br />
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Simpan</button>

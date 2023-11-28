@@ -27,6 +27,7 @@ namespace AutoTra.Models
                 {
                     MobilModel mbl = new MobilModel
                     {
+                        id_mobil = reader["id_mobil"].ToString(),
                         jenis_mobil = reader["jenis_kendaraan"].ToString(),
                         nama = reader["nama"].ToString(),
                         vin = reader["vin"].ToString(),
@@ -64,7 +65,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@vin", mobilModel.vin);
                 command.Parameters.AddWithValue("@no_engine", mobilModel.no_engine);
                 command.Parameters.AddWithValue("@warna", mobilModel.warna);
-                command.Parameters.AddWithValue("@status", mobilModel.kilometer);
+                command.Parameters.AddWithValue("@kilometer", mobilModel.kilometer);
                 command.Parameters.AddWithValue("@fuel", mobilModel.bahan_bakar);
                 command.Parameters.AddWithValue("@status", mobilModel.status);
 
@@ -96,7 +97,7 @@ namespace AutoTra.Models
                 mblmodel.warna = reader["warna"].ToString();
                 mblmodel.kilometer = reader["kilometer"].ToString();
                 mblmodel.bahan_bakar = reader["fuel"].ToString();
-                mblmodel.status = Convert.ToInt32(reader["fuel"].ToString());
+                mblmodel.status = Convert.ToInt32(reader["status"].ToString());
                 reader.Close();
                 _connection.Close();
             }
@@ -120,7 +121,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@vin", mobilModel.vin);
                 command.Parameters.AddWithValue("@no_engine", mobilModel.no_engine);
                 command.Parameters.AddWithValue("@warna", mobilModel.warna);
-                command.Parameters.AddWithValue("@status", mobilModel.kilometer);
+                command.Parameters.AddWithValue("@kilometer", mobilModel.kilometer);
                 command.Parameters.AddWithValue("@fuel", mobilModel.bahan_bakar);
                 command.Parameters.AddWithValue("@status", mobilModel.status);
 
@@ -136,17 +137,22 @@ namespace AutoTra.Models
 
         public void deletedata(string id_mobil)
         {
+            Console.WriteLine("ppp "+id_mobil);
             try
             {
-                using SqlCommand command = new SqlCommand("sp_DeleteMobil", _connection);
+                Console.WriteLine("try deletedata");
+                Console.WriteLine(id_mobil);
+                string storedProcedureName = "[dbo].[sp_DeleteMobil]";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id_mobil", id_mobil);
+
+                command.Parameters.AddWithValue("@id_mobil", Convert.ToInt32(id_mobil));
                 _connection.Open();
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting data: {ex.Message}");
+                Console.WriteLine($"Error deleting data Mobillll: {ex.Message}");
                 throw;
             }
             finally

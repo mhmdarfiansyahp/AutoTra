@@ -41,6 +41,7 @@
                     <thead>
                         <tr>
                             <th scope="col">No</th>
+                            <th scope="col">ID Vechile</th>
                             <th scope="col">Vechile Type</th>
                             <th scope="col">Vechile Model</th>
                             <th scope="col">VIN</th>
@@ -56,6 +57,7 @@
                         {
                             <tr>
                                 <td>@(no++)</td>
+                                <td>@mbl.id_mobil</td>
                                 <td>@mbl.jenis_mobil</td>
                                 <td>@mbl.nama</td>
                                 <td>@mbl.vin</td>
@@ -84,6 +86,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <strong>Vechile Type:</strong>@mbl.id_mobil<br />
                                                     <strong>Vechile Type:</strong>@mbl.jenis_mobil<br />
                                                     <strong>Vechile Model:</strong>@mbl.nama<br />
                                                     <strong>VIN:</strong>@mbl.vin<br />
@@ -91,6 +94,7 @@
                                                     <strong>Vechile Color</strong>@mbl.warna<br />
                                                     <strong>Kilometer</strong>@mbl.kilometer<br />
                                                     <strong>Fuel</strong>@mbl.bahan_bakar<br />
+                                                    <strong>Status</strong>@mbl.status<br />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -129,15 +133,16 @@
             }).then((willDelete) => {
                 if (willDelete.isConfirmed) {
                     $.ajax({
-                        url: "/Mobil/Delete/" + npk,
+                        url: "/Mobil/Delete?id_mobil=" + id_mobil,
+
                         type: "POST",
                         success: function (data) {
                             if (data.success) {
-                                console.log("Vechile deleted successfully");
+                                console.log("Vechile deleted successfully" + id_mobil);
                                 Swal.fire("Sukses!", data.message, "success");
                                 location.reload();
                             } else {
-                                console.log("Failed to delete vechile");
+                                console.log("Failed to delete vechile" +id_mobil);
                                 Swal.fire("Gagal!", data.message, "error");
                             }
                         },

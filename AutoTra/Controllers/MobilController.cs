@@ -86,22 +86,28 @@ namespace AutoTra.Controllers
         public IActionResult Delete(string id_mobil)
         {
             var response = new { success = false, message = "Gagal menghapus mobil." };
+            Console.WriteLine("id "+id_mobil);
+            Console.WriteLine("try");
 
             try
             {
-                if (!string.IsNullOrEmpty(id_mobil))
+                if (id_mobil != "")
                 {
+                    Console.WriteLine("if");
+                    Console.WriteLine("if" + id_mobil);
                     mobilrepositori.deletedata(id_mobil);
                     response = new { success = true, message = "Mobil berhasil dihapus." };
                 }
                 else
                 {
                     response = new { success = false, message = "Mobil tidak ditemukan." };
+                    Console.WriteLine("else");
                 }
             }
             catch (Exception ex)
             {
                 response = new { success = false, message = ex.Message };
+                Console.WriteLine("catch");
             }
             return Json(response);
         }
