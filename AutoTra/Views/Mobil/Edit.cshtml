@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AutoTra.Models.MobilModel
+@{
+    ViewData["Title"] = "Update Data Dosen";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    <form method="post" asp-controller="Mobil" asp-action="Edit">
+                        <input type="hidden" asp-for="id_mobil" />
+                        <div class="form-group">
+                            <label for="jenis_mobil" class="control-label">Vechile Type</label>
+                            <input asp-for="jenis_mobil" class="form-control" id="jenis_mobil">
+                            <span asp-validation-for="jenis_mobil" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nama" class="control-label">Vechile Model</label>
+                            <input asp-for="nama" class="form-control" id="nama">
+                            <span asp-validation-for="nama" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="vin" class="control-label">VIN</label>
+                            <input asp-for="vin" class="form-control" id="vin">
+                            <span asp-validation-for="vin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="no_engine" class="control-label">Engine Number</label>
+                            <input asp-for="no_engine" class="form-control" id="no_engine">
+                            <span asp-validation-for="no_engine" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="warna" class="control-label">Vechile Color</label>
+                            <input asp-for="warna" class="form-control" id="warna">
+                            <span asp-validation-for="warna" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="kilometer" class="control-label">Kilometer</label>
+                            <input asp-for="kilometer" class="form-control" id="kilometer">
+                            <span asp-validation-for="kilometer" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="bahan_bakar" class="control-label">Fuel</label>
+                            <input asp-for="bahan_bakar" class="form-control" id="bahan_bakar">
+                            <span asp-validation-for="bahan_bakar" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label for="status" class="control-label">Status</label>
+                            <input asp-for="status" class="form-control" id="status" value="Dosen">
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

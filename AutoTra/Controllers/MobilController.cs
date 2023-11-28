@@ -1,0 +1,109 @@
+﻿using AutoTra.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AutoTra.Controllers
+{
+
+    public class MobilController : Controller
+    {
+        private readonly Mobil mobilrepositori;
+        public MobilController(IConfiguration configuration)
+        {
+            mobilrepositori = new Mobil(configuration);
+        }
+        public IActionResult Index()
+        {
+            return View(mobilrepositori.getAllData());
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(MobilModel mbl)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    mobilrepositori.insertdata(mbl);
+                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return View(mbl);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id_mobil)
+        {
+            MobilModel mblmodel = mobilrepositori.getdata(id_mobil);
+            if (mblmodel == null)
+            {
+                return NotFound();
+            }
+
+            return View(mblmodel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MobilModel mblmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (int.TryParse(mblmodel.id_mobil, out int id_mobil))
+                {
+                    MobilModel newmbl = mobilrepositori.getdata(id_mobil);
+                    if (newmbl == null)
+                    {
+                        return NotFound();
+                    }
+
+                    newmbl.jenis_mobil = mblmodel.jenis_mobil;
+                    newmbl.nama = mblmodel.nama;
+                    newmbl.vin = mblmodel.vin;
+                    newmbl.no_engine = mblmodel.no_engine;
+                    newmbl.warna = mblmodel.warna;
+                    newmbl.kilometer = mblmodel.kilometer;
+                    newmbl.bahan_bakar = mblmodel.bahan_bakar;
+                    newmbl.status = mblmodel.status;
+                    mobilrepositori.updatedata(newmbl);
+                    TempData["SuccessMessage"] = "Mobil berhasil diupdate.";
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(mblmodel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string id_mobil)
+        {
+            var response = new { success = false, message = "Gagal menghapus mobil." };
+
+            try
+            {
+                if (!string.IsNullOrEmpty(id_mobil))
+                {
+                    mobilrepositori.deletedata(id_mobil);
+                    response = new { success = true, message = "Mobil berhasil dihapus." };
+                }
+                else
+                {
+                    response = new { success = false, message = "Mobil tidak ditemukan." };
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new { success = false, message = ex.Message };
+            }
+            return Json(response);
+        }
+    }
+}
