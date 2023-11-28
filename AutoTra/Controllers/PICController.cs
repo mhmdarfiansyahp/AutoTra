@@ -41,7 +41,7 @@ namespace AutoTra.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
             PICModel filmmodel = picrepositori.getData(id);
             if (filmmodel == null)
@@ -57,9 +57,7 @@ namespace AutoTra.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (int.TryParse(picmodel.nim, out int Nim))
-                {
-                    PICModel newadm = picrepositori.getData(Nim);
+                    PICModel newadm = picrepositori.getData(picmodel.nim);
                     if (newadm == null)
                     {
                         return NotFound();
@@ -73,7 +71,6 @@ namespace AutoTra.Controllers
                     TempData["SuccessMessage"] = "PIC berhasil diupdate.";
                     return RedirectToAction("Index");
                 }
-            }
             return View(picmodel);
         }
 

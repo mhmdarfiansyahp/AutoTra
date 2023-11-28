@@ -70,7 +70,7 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
-        public PICModel getData(int nim)
+        public PICModel getData(string nim)
         {
             PICModel picModel = new PICModel();
             try
