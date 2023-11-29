@@ -19,7 +19,7 @@ namespace AutoTra.Models
             List<MobilModel> mbllist = new List<MobilModel>();
             try
             {
-                string query = "SELECT * FROM Data_Mobil";
+                string query = "SELECT * FROM Data_Mobil Where Status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -87,10 +87,12 @@ namespace AutoTra.Models
                 string query = "select * from dbo.Data_Mobil where id_mobil = @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", id_mobil);
+                Console.WriteLine(id_mobil);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 reader.Read();
-                mblmodel.jenis_mobil = reader["jenis_mobil"].ToString();
+                mblmodel.id_mobil = reader["id_mobil"].ToString();
+                mblmodel.jenis_mobil = reader["jenis_kendaraan"].ToString();
                 mblmodel.nama = reader["nama"].ToString();
                 mblmodel.vin = reader["vin"].ToString();
                 mblmodel.no_engine = reader["no_engine"].ToString();
@@ -116,14 +118,23 @@ namespace AutoTra.Models
                 using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
 
+                command.Parameters.AddWithValue("@id_mobil", mobilModel.id_mobil);
                 command.Parameters.AddWithValue("@jenis_kendaraan", mobilModel.jenis_mobil);
+                Console.WriteLine(mobilModel.jenis_mobil);
                 command.Parameters.AddWithValue("@nama", mobilModel.nama);
+                Console.WriteLine(mobilModel.nama);
                 command.Parameters.AddWithValue("@vin", mobilModel.vin);
+                Console.WriteLine(mobilModel.vin);
                 command.Parameters.AddWithValue("@no_engine", mobilModel.no_engine);
+                Console.WriteLine(mobilModel.no_engine);
                 command.Parameters.AddWithValue("@warna", mobilModel.warna);
+                Console.WriteLine(mobilModel.warna);
                 command.Parameters.AddWithValue("@kilometer", mobilModel.kilometer);
+                Console.WriteLine(mobilModel.kilometer);
                 command.Parameters.AddWithValue("@fuel", mobilModel.bahan_bakar);
+                Console.WriteLine(mobilModel.bahan_bakar);
                 command.Parameters.AddWithValue("@status", mobilModel.status);
+                Console.WriteLine(mobilModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -137,10 +148,8 @@ namespace AutoTra.Models
 
         public void deletedata(string id_mobil)
         {
-            Console.WriteLine("ppp "+id_mobil);
             try
             {
-                Console.WriteLine("try deletedata");
                 Console.WriteLine(id_mobil);
                 string storedProcedureName = "[dbo].[sp_DeleteMobil]";
                 using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
@@ -152,7 +161,7 @@ namespace AutoTra.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting data Mobillll: {ex.Message}");
+                Console.WriteLine($"Error deleting data Mobil: {ex.Message}");
                 throw;
             }
             finally

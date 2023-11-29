@@ -42,13 +42,14 @@ namespace AutoTra.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id_mobil)
+        public IActionResult Edit(int id)
         {
-            MobilModel mblmodel = mobilrepositori.getdata(id_mobil);
+            MobilModel mblmodel = mobilrepositori.getdata(id);
             if (mblmodel == null)
             {
                 return NotFound();
             }
+            Console.WriteLine(mblmodel.id_mobil);
 
             return View(mblmodel);
         }
@@ -56,8 +57,9 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(MobilModel mblmodel)
         {
-            if (ModelState.IsValid)
+            if (true)
             {
+                Console.WriteLine(mblmodel.jenis_mobil);
                 if (int.TryParse(mblmodel.id_mobil, out int id_mobil))
                 {
                     MobilModel newmbl = mobilrepositori.getdata(id_mobil);
