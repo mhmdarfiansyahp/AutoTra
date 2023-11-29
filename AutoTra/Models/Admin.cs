@@ -14,6 +14,23 @@ namespace AutoTra.Models
             _connection = new SqlConnection(_connectionString);
         }
 
+        public bool IsUsernameExists(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM Admin WHERE username = @username", connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    int count = (int)command.ExecuteScalar();
+
+                    return count > 0;
+                }
+            }
+        }
+
         public List<AdminModel> getAllData()
         {
             List<AdminModel> filmList = new List<AdminModel>();
@@ -32,6 +49,7 @@ namespace AutoTra.Models
                         username = reader["username"].ToString(),
                         password = reader["password"].ToString(),
                         peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
                     };
                     filmList.Add(adm);
                 }
@@ -52,7 +70,7 @@ namespace AutoTra.Models
         {
             try
             {
-                string storedProcedureName = "sp_InsertAdmin";
+                string storedProcedureName = "[sp_InsertAdmin]";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
 
@@ -61,6 +79,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", adminModel.username);
                 command.Parameters.AddWithValue("@password", adminModel.password);
                 command.Parameters.AddWithValue("@peran", adminModel.peran);
+                command.Parameters.AddWithValue("@status", adminModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -76,7 +95,7 @@ namespace AutoTra.Models
             AdminModel admModel = new AdminModel();
             try
             {
-                string query = "select * from dbo.Admin where npk = @p1";
+                string query = "select * from Admin where npk = @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", npk);
                 _connection.Open();
@@ -87,6 +106,7 @@ namespace AutoTra.Models
                 admModel.username = reader["username"].ToString();
                 admModel.password = reader["password"].ToString();
                 admModel.peran = reader["peran"].ToString();
+                admModel.status = Convert.ToInt32(reader["status"].ToString());
                 reader.Close();
                 _connection.Close();
             }
@@ -110,6 +130,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", admModel.username);
                 command.Parameters.AddWithValue("@password", admModel.password);
                 command.Parameters.AddWithValue("@peran", admModel.peran);
+                command.Parameters.AddWithValue("@status", admModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -124,7 +145,8 @@ namespace AutoTra.Models
         {
             try
             {
-                using SqlCommand command = new SqlCommand("sp_DeleteAdmin", _connection);
+                string storedProcedureName = "[dbo].[sp_DeleteAdmin]";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@npk", npk);
                 _connection.Open();

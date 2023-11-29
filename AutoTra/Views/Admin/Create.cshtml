@@ -3,7 +3,7 @@
 *@
 @model AutoTra.Models.AdminModel
 @{
-    ViewData["Title"] = "Tambah Data Admin politeknik Astra";
+    ViewData["Title"] = "Add Admin Data";
 }
 
 <div class="content">
@@ -20,10 +20,8 @@
                             <span asp-validation-for="npk" class="text-danger"></span>
                         </div>
 
-
-
                         <div class="form-group">
-                            <label for="nama" class="control-label">Nama Admin</label>
+                            <label for="nama" class="control-label">Name Admin</label>
                             <input asp-for="nama" class="form-control" id="nama" />
                             <span asp-validation-for="nama" class="text-danger"></span>
                         </div>
@@ -42,7 +40,11 @@
                             <input asp-for="peran" class="form-control" id="peran" value="Admin" />
                             <span asp-validation-for="peran" class="text-danger"></span>
                         </div>
-
+                        <div class="form-group" style="display: none;">
+                            <label for="status" class="control-label">status</label>
+                            <input asp-for="status" class="form-control" id="status" value="1" />
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
 
                         <br />
                         <div class="form-group">

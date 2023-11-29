@@ -13,6 +13,23 @@ namespace AutoTra.Models
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
         }
+        public bool IsUsernameExists(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM PIC WHERE username = @username", connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    int count = (int)command.ExecuteScalar();
+
+                    return count > 0;
+                }
+            }
+        }
+
         public List<PICModel> getAllData()
         {
             List<PICModel> filmList = new List<PICModel>();
@@ -31,6 +48,7 @@ namespace AutoTra.Models
                         username = reader["username"].ToString(),
                         password = reader["password"].ToString(),
                         peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
                     };
                     filmList.Add(adm);
                 }
@@ -60,6 +78,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", picModel.username);
                 command.Parameters.AddWithValue("@password", picModel.password);
                 command.Parameters.AddWithValue("@peran", picModel.peran);
+                command.Parameters.AddWithValue("@status", picModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -86,6 +105,7 @@ namespace AutoTra.Models
                 picModel.username = reader["username"].ToString();
                 picModel.password = reader["password"].ToString();
                 picModel.peran = reader["peran"].ToString();
+                picModel.status = Convert.ToInt32(reader["status"].ToString());
                 reader.Close();
                 _connection.Close();
             }
@@ -109,6 +129,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", picModel.username);
                 command.Parameters.AddWithValue("@password", picModel.password);
                 command.Parameters.AddWithValue("@peran", picModel.peran);
+                command.Parameters.AddWithValue("@status", picModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -124,7 +145,8 @@ namespace AutoTra.Models
         {
             try
             {
-                using SqlCommand command = new SqlCommand("sp_DeletePIC", _connection);
+                string storedProcedureName = "[dbo].[sp_DeletePIC]";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@nim", nim);
                 _connection.Open();

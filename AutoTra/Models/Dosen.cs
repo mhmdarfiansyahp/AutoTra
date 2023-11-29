@@ -13,6 +13,22 @@ namespace AutoTra.Models
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
         }
+        public bool IsUsernameExists(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM Dosen WHERE username = @username", connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    int count = (int)command.ExecuteScalar();
+
+                    return count > 0;
+                }
+            }
+        }
 
         public List<DosenModel> getAllData()
         {
@@ -32,6 +48,7 @@ namespace AutoTra.Models
                         username = reader["username"].ToString(),
                         password = reader["password"].ToString(),
                         peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
                     };
                     dsnlist.Add(adm);
                 }
@@ -61,6 +78,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", dosenModel.username);
                 command.Parameters.AddWithValue("@password", dosenModel.password);
                 command.Parameters.AddWithValue("@peran", dosenModel.peran);
+                command.Parameters.AddWithValue("@status", dosenModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -77,7 +95,7 @@ namespace AutoTra.Models
             DosenModel dsnmodel = new DosenModel();
             try
             {
-                string query = "select * from dbo.Dosen where npk = @p1";
+                string query = "select * from Dosen where npk = @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", npk);
                 _connection.Open();
@@ -88,6 +106,7 @@ namespace AutoTra.Models
                 dsnmodel.username = reader["username"].ToString();
                 dsnmodel.password = reader["password"].ToString();
                 dsnmodel.peran = reader["peran"].ToString();
+                dsnmodel.status = Convert.ToInt32(reader["status"].ToString());
                 reader.Close();
                 _connection.Close();
             }
@@ -111,6 +130,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@username", dsnModel.username);
                 command.Parameters.AddWithValue("@password", dsnModel.password);
                 command.Parameters.AddWithValue("@peran", dsnModel.peran);
+                command.Parameters.AddWithValue("@status", dsnModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
@@ -126,7 +146,8 @@ namespace AutoTra.Models
         {
             try
             {
-                using SqlCommand command = new SqlCommand("sp_DeleteDosen", _connection);
+                string storedProcedureName = "[dbo].[sp_DeleteDosen]";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@npk", npk);
                 _connection.Open();

@@ -27,12 +27,20 @@ namespace AutoTra.Controllers
         {
             try
             {
-            if(ModelState.IsValid)
-            {
-                adminrepositori.insertData(adm);
-                TempData["SuccessMessage"] = "Data berhasil ditambahkan";
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    // Check if the username already exists
+                    if (adminrepositori.IsUsernameExists(adm.username))
+                    {
+                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        return View(adm);
+                    }
+
+                    // If the username is unique, insert data
+                    adminrepositori.insertData(adm);
+                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    return RedirectToAction("Index");
+                }
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
@@ -70,6 +78,7 @@ namespace AutoTra.Controllers
                     newadm.username = admmodel.username;
                     newadm.password = admmodel.password;
                     newadm.peran = admmodel.peran;
+                    newadm.status = admmodel.status;
                     adminrepositori.updateData(newadm);
                     TempData["SuccessMessage"] = "Admin berhasil diupdate.";
                     return RedirectToAction("Index");

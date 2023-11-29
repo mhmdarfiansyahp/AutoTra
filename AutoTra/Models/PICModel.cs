@@ -5,7 +5,8 @@ namespace AutoTra.Models
     public class PICModel
     {
         [Required(ErrorMessage = "NIM wajib diisi.")]
-        [MaxLength(15, ErrorMessage = "NIM maksimal 15 karakter.")]
+        [StringLength(15, MinimumLength = 5, ErrorMessage = "NIM harus memiliki panjang antara 5 dan 15 karakter.")]
+        [RegularExpression("^[0-9]{5,15}$", ErrorMessage = "NIM hanya boleh berisi angka dan harus 5 hingga 15 angka.")]
         public string? nim { get; set; }
 
         [Required(ErrorMessage = "Nama wajib diisi.")]
@@ -22,5 +23,7 @@ namespace AutoTra.Models
 
         [Required(ErrorMessage = "Peran Wajib diisi")]
         public string? peran { get; set; }
+        public int? status { get; set; }
+
     }
 }

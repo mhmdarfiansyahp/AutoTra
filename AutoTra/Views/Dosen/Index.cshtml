@@ -31,7 +31,7 @@
                 </div>
             }
 
-            <a asp-controller="Dosen" class="btn btn-primary" asp-action="Create">+ Tambah Dosen</a>
+            <a asp-controller="Dosen" class="btn btn-primary" asp-action="Create">+ Create Dosen</a>
             <br />
             <br />
             <div class="card">
@@ -45,7 +45,8 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
-                            <th scope="col">Peran</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -59,6 +60,7 @@
                                 <td>@dsn.username</td>
                                 <td>@dsn.password</td>
                                 <td>@dsn.peran</td>
+                                <td>@(dsn.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
                                     <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-npk="@dsn.npk">
                                         <i class="fas fa-trash"></i>
@@ -80,11 +82,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <strong>NPK:</strong>@dsn.npk<br />
-                                                    <strong>Nama:</strong>@dsn.nama<br />
-                                                    <strong>Username:</strong>@dsn.username<br />
-                                                    <strong>Password</strong>@dsn.password<br />
-                                                    <strong>Peran</strong>@dsn.peran<br />
+                                                    <strong>NPK :</strong>@dsn.npk<br />
+                                                    <strong>Name :</strong>@dsn.nama<br />
+                                                    <strong>Username :</strong>@dsn.username<br />
+                                                    <strong>Password :</strong>@dsn.password<br />
+                                                    <strong>Role :</strong>@dsn.peran<br />
+                                                    <strong>Status :</strong>@dsn.status<br />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

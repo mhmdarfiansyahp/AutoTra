@@ -3,7 +3,7 @@
 *@
 @model AutoTra.Models.PICModel
 @{
-    ViewData["Title"] = "Tambah Data PIC";
+    ViewData["Title"] = "Add PIC Data";
 }
 
 <div class="content">
@@ -36,9 +36,14 @@
                             <span asp-validation-for="password" class="text-danger"></span>
                         </div>
                         <div class="form-group" style="display: none;">
-                            <label for="peran" class="control-label">Peran</label>
+                            <label for="peran" class="control-label">Role</label>
                             <input asp-for="peran" class="form-control" id="peran" value="PIC" />
                             <span asp-validation-for="peran" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label for="status" class="control-label">status</label>
+                            <input asp-for="status" class="form-control" id="status" value="1" />
+                            <span asp-validation-for="status" class="text-danger"></span>
                         </div>
 
                         <br />

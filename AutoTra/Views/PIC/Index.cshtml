@@ -45,8 +45,9 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
-                            <th scope="col">Peran</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,8 +60,9 @@
                                 <td>@adm.username</td>
                                 <td>@adm.password</td>
                                 <td>@adm.peran</td>
+                                <td>@(adm.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
-                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-npk="@adm.nim">
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-nim="@adm.nim">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
@@ -80,11 +82,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <strong>NIM:</strong>@adm.nim<br />
-                                                    <strong>Nama:</strong>@adm.nama<br />
-                                                    <strong>Username:</strong>@adm.username<br />
-                                                    <strong>Password:</strong>@adm.password<br />
-                                                    <strong>Peran:</strong>@adm.peran<br />
+                                                    <strong>NIM :</strong>@adm.nim<br />
+                                                    <strong>Name :</strong>@adm.nama<br />
+                                                    <strong>Username :</strong>@adm.username<br />
+                                                    <strong>Password :</strong>@adm.password<br />
+                                                    <strong>Role :</strong>@adm.peran<br />
+                                                    <strong>Status :</strong>@adm.status<br />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -104,3 +107,46 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".delete-button").click(function () {
+            var nim = $(this).data("nim");
+            console.log("Deleting Dosen with nim:", nim);
+
+            Swal.fire({
+                title: "Delete PIC?",
+                text: "Apakah Anda yakin ingin menghapus PIC ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    $.ajax({
+                        url: "/PIC/Delete/nim?" + nim,
+                        type: "POST",
+                        success: function (data) {
+                            if (data.success) {
+                                console.log("Dosen deleted successfully");
+                                Swal.fire("Sukses!", data.message, "success");
+                                location.reload();
+                            } else {
+                                console.log("Failed to delete dosen");
+                                Swal.fire("Gagal!", data.message, "error");
+                            }
+                        },
+                        error: function () {
+                            console.log("Error during AJAX request");
+                            Swal.fire("Error!", "Terjadi kesalahan saat menghapus Dosen.", "error");
+                        }
+                    });
+                } else {
+                    console.log("Canceled deletion");
+                }
+            });
+        });
+    });
+</script>

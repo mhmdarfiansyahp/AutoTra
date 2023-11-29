@@ -1,5 +1,6 @@
 ﻿using AutoTra.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.Intrinsics.Arm;
 
 namespace AutoTra.Controllers
 {
@@ -28,6 +29,12 @@ namespace AutoTra.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Check if the username already exists
+                    if (picrepositori.IsUsernameExists(pic.username))
+                    {
+                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        return View(pic);
+                    }
                     picrepositori.insertData(pic);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");

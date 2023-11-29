@@ -29,6 +29,12 @@ namespace AutoTra.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Check if the username already exists
+                    if (dosenrepositori.IsUsernameExists(adm.username))
+                    {
+                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        return View(adm);
+                    }
                     dosenrepositori.insertdata(adm);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");
@@ -70,6 +76,7 @@ namespace AutoTra.Controllers
                     newadm.username = dsnmodel.username;
                     newadm.password = dsnmodel.password;
                     newadm.peran = dsnmodel.peran;
+                    newadm.status = dsnmodel.status;
                     dosenrepositori.updatedata(newadm);
                     TempData["SuccessMessage"] = "Dosen berhasil diupdate.";
                     return RedirectToAction("Index");

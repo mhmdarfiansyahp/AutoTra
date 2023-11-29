@@ -28,7 +28,7 @@
                 </div>
             }
 
-            <a asp-controller="Admin" class="btn btn-primary" asp-action="Create">+ Tambah Admin</a>
+            <a asp-controller="Admin" class="btn btn-primary" asp-action="Create">+ Create Admin</a>
             <br />
             <br />
             <div class="card">
@@ -39,11 +39,12 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">NPK</th>
-                            <th scope="col">Nama</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
-                            <th scope="col">Peran</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,12 +57,13 @@
                                 <td>@adm.username</td>
                                 <td>@adm.password</td>
                                 <td>@adm.peran</td>
+                                <td>@(adm.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
                                     <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-npk="@adm.npk">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@adm.npk" class="btn btn-sm btn-primary edit-button" data-npk="@adm.npk">
+                                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@adm.npk" class="btn btn-sm btn-primary">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button class="btn btn-sm btn-info btn-info-modal" data-toggle="modal" data-target="#infoModal_@adm.npk">
@@ -77,11 +79,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <strong>NPK:</strong>@adm.npk<br />
-                                                    <strong>Nama:</strong>@adm.nama<br />
-                                                    <strong>Username:</strong>@adm.username<br />
-                                                    <strong>Password</strong>@adm.password<br />
-                                                    <strong>Peran</strong>@adm.peran<br />
+                                                    <strong>NPK :</strong>@adm.npk<br />
+                                                    <strong>Name :</strong>@adm.nama<br />
+                                                    <strong>Username :</strong>@adm.username<br />
+                                                    <strong>Password :</strong>@adm.password<br />
+                                                    <strong>Role :</strong>@adm.peran<br />
+                                                    <strong>Status :</strong>@adm.status<br />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
