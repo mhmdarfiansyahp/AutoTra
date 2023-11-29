@@ -65,6 +65,73 @@ namespace AutoTra.Models
             return dsnlist;
         }
 
+        public List<DosenModel> getSearch(string cari)
+        {
+            int check = 0;
+            List<DosenModel> dsnlist = new List<DosenModel>();
+            try
+            {
+                string query = "SELECT * FROM Dosen where nama = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", cari);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DosenModel adm = new DosenModel
+                    {
+                        npk = reader["npk"].ToString(),
+                        nama = reader["nama"].ToString(),
+                        username = reader["username"].ToString(),
+                        password = reader["password"].ToString(),
+                        peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    check = 1;
+                    dsnlist.Add(adm);
+                }
+                reader.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                check = 0;
+            }
+            if (check == 0)
+            {
+                try
+                {
+                    string query = "SELECT * FROM Dosen where npk = @p1";
+                    SqlCommand command = new SqlCommand(query, _connection);
+                    command.Parameters.AddWithValue("@p1", cari);
+                    _connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        DosenModel adm = new DosenModel
+                        {
+                            npk = reader["npk"].ToString(),
+                            nama = reader["nama"].ToString(),
+                            username = reader["username"].ToString(),
+                            password = reader["password"].ToString(),
+                            peran = reader["peran"].ToString(),
+                            status = Convert.ToInt32(reader["status"].ToString()),
+                        };
+                        check = 1;
+                        dsnlist.Add(adm);
+                    }
+                    reader.Close();
+                    _connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return dsnlist;
+        }
+
+
         public void insertdata(DosenModel dosenModel)
         {
             try

@@ -11,9 +11,22 @@ namespace AutoTra.Controllers
         {
             dosenrepositori = new Dosen(configuration);
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View(dosenrepositori.getAllData());
+        }
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            if (search != null)
+            {
+                return View(dosenrepositori.getSearch(search));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]

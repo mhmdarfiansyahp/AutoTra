@@ -34,6 +34,13 @@
             <a asp-controller="Dosen" class="btn btn-primary" asp-action="Create">+ Create Dosen</a>
             <br />
             <br />
+            <form method="post">
+                <div class="input-group mb-12">
+                    <input class="form-control" type="text" placeholder="Cari data Dosen berdasarkan nama.." aria-describedby="button-addon2" name="search">
+                    <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+                </div>
+            </form>
+            <br />
             <div class="card">
 
                 <!-- Table with stripped rows -->
