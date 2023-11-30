@@ -65,6 +65,68 @@ namespace AutoTra.Models
             return filmList;
         }
 
+        public List<PICModel> getSearch(string search)
+        {
+            int check = 0;
+            List<PICModel> filmList = new List<PICModel>();
+            try
+            {
+                string query = "SELECT * FROM PIC where nim = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", search);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    PICModel adm = new PICModel
+                    {
+                        nim = reader["nim"].ToString(),
+                        nama = reader["nama"].ToString(),
+                        username = reader["username"].ToString(),
+                        password = reader["password"].ToString(),
+                        peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    filmList.Add(adm);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                check = 0;
+            }
+            if (check == 1)
+            {
+                try
+                {
+                    string query = "SELECT * FROM PIC where nama = @p1";
+                    SqlCommand command = new SqlCommand(query, _connection);
+                    command.Parameters.AddWithValue("@p1", search);
+                    _connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        PICModel adm = new PICModel
+                        {
+                            nim = reader["nim"].ToString(),
+                            nama = reader["nama"].ToString(),
+                            username = reader["username"].ToString(),
+                            password = reader["password"].ToString(),
+                            peran = reader["peran"].ToString(),
+                            status = Convert.ToInt32(reader["status"].ToString()),
+                        };
+                        filmList.Add(adm);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return filmList;
+        }
+
         public void insertData(PICModel picModel)
         {
             try

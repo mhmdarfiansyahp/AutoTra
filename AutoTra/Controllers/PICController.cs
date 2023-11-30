@@ -11,9 +11,22 @@ namespace AutoTra.Controllers
         {
             picrepositori = new PIC(configuration);
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View(picrepositori.getAllData());
+        }
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            if (search != null)
+            {
+                return View(picrepositori.getSearch(search));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]
