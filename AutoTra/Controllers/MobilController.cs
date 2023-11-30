@@ -11,9 +11,22 @@ namespace AutoTra.Controllers
         {
             mobilrepositori = new Mobil(configuration);
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View(mobilrepositori.getAllData());
+        }
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            if (search != null)
+            {
+                return View(mobilrepositori.getSearch(search));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]

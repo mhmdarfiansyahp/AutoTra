@@ -19,7 +19,7 @@ namespace AutoTra.Models
             List<MobilModel> mbllist = new List<MobilModel>();
             try
             {
-                string query = "SELECT * FROM Data_Mobil Where Status != 0";
+                string query = "SELECT * FROM Data_Mobil where status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -48,6 +48,41 @@ namespace AutoTra.Models
             finally
             {
                 _connection.Close();
+            }
+            return mbllist;
+        }
+
+        public List<MobilModel> getSearch(string search)
+        {
+            List<MobilModel> mbllist = new List<MobilModel>();
+            try
+            {
+                string query = "SELECT * FROM Data_Mobil where nama = @p1 AND status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", search);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    MobilModel mbl = new MobilModel
+                    {
+                        id_mobil = reader["id_mobil"].ToString(),
+                        jenis_mobil = reader["jenis_kendaraan"].ToString(),
+                        nama = reader["nama"].ToString(),
+                        vin = reader["vin"].ToString(),
+                        no_engine = reader["no_engine"].ToString(),
+                        warna = reader["warna"].ToString(),
+                        kilometer = reader["kilometer"].ToString(),
+                        bahan_bakar = reader["fuel"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    mbllist.Add(mbl);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             return mbllist;
         }
