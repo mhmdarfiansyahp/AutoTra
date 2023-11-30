@@ -1,8 +1,67 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/Layoutlogin.cshtml";
+
+    // Static Superadmin credentials
+    string staticSuperadminUsername = "superadmin";
+    string staticSuperadminPassword = "123";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="polman-form-login">
+    <h4>Login</h4>
+    <hr />
+
+    <div class="form-group">
+        <label for="txtUsername">
+            Nomor Induk Mahasiswa (NIM)
+            <span style="color: red;">*</span>
+        </label>
+        <input type="text" id="txtUsername" name="txtUsername" maxlength="10" class="form-control" required=""
+               oninvalid="this.setCustomValidity('Nomor Induk Mahasiswa (NIM) Wajib Diisi')"
+               oninput="this.setCustomValidity('')">
+    </div>
+
+    <div class="form-group">
+        <label for="txtPassword">
+            Password
+            <span style="color: red;">*</span>
+        </label>
+        <input id="txtPassword" type="password" name="txtPassword" class="form-control" required
+               oninvalid="this.setCustomValidity('Kata Sandi Wajib Diisi')"
+               oninput="this.setCustomValidity('')">
+    </div>
+
+    <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;" onclick="login()">Login</button>
+
+    <script>
+        function login() {
+            var enteredUsername = document.getElementById("txtUsername").value;
+            var enteredPassword = document.getElementById("txtPassword").value;
+
+            // Check if entered credentials match the static Superadmin credentials
+            if (enteredUsername === "@staticSuperadminUsername" && enteredPassword === "@staticSuperadminPassword") {
+                // Store the username in localStorage
+                localStorage.setItem("loggedInUsername", enteredUsername);
+
+                // Redirect to the Superadmin Dashboard or perform any other actions
+                window.location.href = "/Dashboard/Index";
+            } else {
+                // Display an error message or handle the invalid login
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+    </script>
+
+
+    <style>
+        .polman-form-login {
+            font-family: 'NAMA_FONT', Verdana;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        h4, label, input, button, span {
+            font-family: 'NAMA_FONT', Verdana;
+        }
+    </style>
 </div>

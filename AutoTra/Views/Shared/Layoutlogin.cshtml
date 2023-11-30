@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoTra</title>
+    <link href="~/Content/Images/Logo_ASTRAtech.png" rel="icon">
+    <link href="~/Content/Plugins/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/Style.css" rel="stylesheet" />
+    <script src="~/Content/Scripts/tether/tether.min.js"></script>
+    <script src="~/Content/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap-4.0.0-alpha.6-dist/js/bootstrap.min.js"></script>
+    <script src="~/Content/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Content/Scripts/jquery.fancybox.pack.js"></script>
+    <script src="~/Content/Scripts/bootstrap-select.min.js"></script>
+</head>
+<body style="background-image:url('/Content/Images/IMG_Background.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <div class="polman-nav-static-top" style="opacity: 0.9;">
+        <div class="float-left">
+            <a href="/">
+                <img src="~/Content/Images/IMG_1687.png" style="height: 50px;" />
+            </a>
+        </div>
+    </div>
+    @RenderBody()
+    <div class="mb-5"></div>
+
+    <div class="mt-5" style="background-color: white; width: 100%; position: fixed; left: 0; bottom: 0;">
+        <div class="container-fluid">
+            <footer class="d-flex flex-wrap pt-3 pb-3 border-top">
+                Copyright &copy; <?php echo date('Y'); ?> - MIS Politeknik Astra
+            </footer>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
