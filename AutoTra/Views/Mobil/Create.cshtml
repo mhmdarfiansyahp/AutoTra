@@ -50,7 +50,12 @@
                         </div>
                         <div class="form-group">
                             <label for="bahan_bakar" class="control-label">Fuel</label>
-                            <input asp-for="bahan_bakar" class="form-control" id="bahan_bakar">
+                            <select asp-for="bahan_bakar" class="form-control" id="bahan_bakar">
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Electric">Electric</option>
+                            </select>
                             <span asp-validation-for="bahan_bakar" class="text-danger"></span>
                         </div>
                         <div class="form-group" style="display: none;">
