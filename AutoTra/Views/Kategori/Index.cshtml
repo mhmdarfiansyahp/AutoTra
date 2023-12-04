@@ -89,10 +89,10 @@
     $(document).ready(function () {
         $(".delete-button").click(function () {
             var id = $(this).data("id");
-            console.log("Deleting Standar with id:", id);
+            console.log("Deleting Category with id:", id);
 
             Swal.fire({
-                title: "Delete Inspection Standart?",
+                title: "Delete this Category Inspection?",
                 text: "Are you sure to delete this data?",
                 icon: "warning",
                 showCancelButton: true,
@@ -103,22 +103,22 @@
             }).then((willDelete) => {
                 if (willDelete.isConfirmed) {
                     $.ajax({
-                        url: "/Standar/Delete?id=" + id,
+                        url: "/Kategori/Delete?id=" + id,
 
                         type: "POST",
                         success: function (data) {
                             if (data.success) {
-                                console.log("Inspection Standart deleted successfully" + id);
+                                console.log("Category Inspection deleted successfully" + id);
                                 Swal.fire("Sukses!", data.message, "success");
                                 location.reload();
                             } else {
-                                console.log("Failed to delete Inspection Standart" + id);
+                                console.log("Failed to delete Category Inspection" + id);
                                 Swal.fire("Gagal!", data.message, "error");
                             }
                         },
                         error: function () {
                             console.log("Error during AJAX request");
-                            Swal.fire("Error!", "Terjadi kesalahan saat menghapus Inspection Standart.", "error");
+                            Swal.fire("Error!", "Terjadi kesalahan saat menghapus Category Inspection.", "error");
                         }
                     });
                 } else {
