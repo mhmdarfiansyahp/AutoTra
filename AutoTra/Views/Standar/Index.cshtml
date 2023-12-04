@@ -1,5 +1,130 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<AutoTra.Models.StandarModel>
 @{
+    ViewData["Title"] = "Inspection Standart Data";
+    int no = 1;
 }
+
+<div class="row">
+    <div class="col-lg-12">
+        <br />
+
+        <div class="card-body">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="row">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
+                        <strong>Sukses!</strong> @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <a asp-controller="Standar" class="btn btn-primary" asp-action="Create">+ Add Inspection Standart</a>
+            <br />
+            <br />
+            <form method="post">
+                <div style="padding-left: 1080px;">
+                    <div class="col-lg-12">
+                        <div class="input-group mb-12">
+                            <input class="form-control" type="text" placeholder="Cari data Standar Inspeksi berdasarkan nama.." aria-describedby="button-addon2" name="search">
+                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="card">
+
+                <!-- Table with stripped rows -->
+                <table class="table datable">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Inspection Standart</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var std in Model)
+                        {
+                            <tr>
+                                <td>@(no++)</td>
+                                <td>@std.nama</td>
+                                <td>@(std.status == 1 ? "Active" : "Non Active")</td>
+                                <td>
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@std.id">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+                                    <a asp-controller="Standar" asp-action="Edit" asp-route-id="@std.id" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".delete-button").click(function () {
+            var id = $(this).data("id");
+            console.log("Deleting Standar with id:", id);
+
+            Swal.fire({
+                title: "Delete Inspection Standart?",
+                text: "Are you sure to delete this data?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    $.ajax({
+                        url: "/Standar/Delete?id=" + id,
+
+                        type: "POST",
+                        success: function (data) {
+                            if (data.success) {
+                                console.log("Inspection Standart deleted successfully" + id);
+                                Swal.fire("Sukses!", data.message, "success");
+                                location.reload();
+                            } else {
+                                console.log("Failed to delete Inspection Standart" + id);
+                                Swal.fire("Gagal!", data.message, "error");
+                            }
+                        },
+                        error: function () {
+                            console.log("Error during AJAX request");
+                            Swal.fire("Error!", "Terjadi kesalahan saat menghapus Inspection Standart.", "error");
+                        }
+                    });
+                } else {
+                    console.log("Canceled deletion");
+                }
+            });
+        });
+    });
+</script>

@@ -15,22 +15,22 @@ namespace AutoTra.Models
         }
         public List<StandarModel> getAllData()
         {
-            List<StandarModel> mbllist = new List<StandarModel>();
+            List<StandarModel> stdlist = new List<StandarModel>();
             try
             {
-                string query = "SELECT * FROM Std_Pemeriksaan where status != 0";
+                string query = "SELECT * FROM dbo.Std_Pemeriksaan where status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    StandarModel mbl = new StandarModel
+                    StandarModel std = new StandarModel
                     {
-                        id = Convert.ToInt32(reader["id"].ToString()),
+                        id = Convert.ToInt32(reader["id_standart"].ToString()),
                         nama = reader["nama"].ToString(),
                         status = Convert.ToInt32(reader["status"].ToString()),
                     };
-                    mbllist.Add(mbl);
+                    stdlist.Add(std);
                 }
                 reader.Close();
             }
@@ -42,7 +42,7 @@ namespace AutoTra.Models
             {
                 _connection.Close();
             }
-            return mbllist;
+            return stdlist;
         }
         public void insertdata(StandarModel stdModel)
         {
@@ -52,7 +52,6 @@ namespace AutoTra.Models
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@id", stdModel.id);
                 command.Parameters.AddWithValue("@nama", stdModel.nama);
                 command.Parameters.AddWithValue("@status", stdModel.status);
 
@@ -65,7 +64,7 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
-        public StandarModel getdata(int id_std)
+        public StandarModel getdata(int? id_std)
         {
             StandarModel stdModel = new StandarModel();
             try
@@ -77,7 +76,7 @@ namespace AutoTra.Models
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 reader.Read();
-                stdModel.id = Convert.ToInt32(reader["id"].ToString());
+                stdModel.id = Convert.ToInt32(reader["id_standart"].ToString());
                 stdModel.nama = reader["nama"].ToString();
                 stdModel.status = Convert.ToInt32(reader["status"].ToString());
                 reader.Close();
@@ -89,5 +88,50 @@ namespace AutoTra.Models
             }
             return stdModel;
         }
+        public void updatedata(StandarModel stdModel)
+        {
+            try
+            {
+                string storedProcedureName = "sp_UpdateStandart";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@id_standart", stdModel.id);
+                command.Parameters.AddWithValue("@nama", stdModel.nama);
+                command.Parameters.AddWithValue("@status", stdModel.status);
+
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void deletedata(int id)
+        {
+            try
+            {
+                string storedProcedureName = "[dbo].[sp_DeleteStandart]";
+                using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@id_standart", id);
+                _connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting data Standar Pemeriksaan: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
     }
 }

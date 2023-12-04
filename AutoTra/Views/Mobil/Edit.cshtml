@@ -13,7 +13,7 @@
 
                 <div class="card-body">
                     <form method="post" asp-controller="Mobil" asp-action="Edit">
-                        <input type="text" asp-for="id_mobil" />
+                        <input type="hidden" asp-for="id_mobil" />
                         <div class="form-group">
                             <label asp-for="jenis_mobil" class="control-label">Vechile Type</label>
                             <select asp-for="jenis_mobil" class="form-control">
