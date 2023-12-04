@@ -3,31 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoTra.Controllers
 {
-    public class StandarController : Controller
+    public class KategoriController : Controller
     {
-        private readonly Standar stdrepositori;
-        public StandarController(IConfiguration configuration)
+        private readonly Kategori ktgrepositori;
+        public KategoriController(IConfiguration configuration)
         {
-            stdrepositori = new Standar(configuration);
+            ktgrepositori = new Kategori(configuration);
         }
         public IActionResult Index()
         {
-            return View(stdrepositori.getAllData());
+            return View(ktgrepositori.getAllData());
         }
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(StandarModel std)
+        public IActionResult Create(KategoriModel ktg)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    stdrepositori.insertdata(std);
+                    ktgrepositori.insertdata(ktg);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");
                 }
@@ -36,49 +35,48 @@ namespace AutoTra.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
-            return View(std);
+            return View(ktg);
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            StandarModel stdmodel = stdrepositori.getdata(id);
-            if (stdmodel == null)
+            KategoriModel ktgmodel = ktgrepositori.getdata(id);
+            if (ktgmodel == null)
             {
                 return NotFound();
             }
 
-            return View(stdmodel);
+            return View(ktgmodel);
         }
 
         [HttpPost]
-        public IActionResult Edit(StandarModel stdmodel)
+        public IActionResult Edit(KategoriModel ktgmodel)
         {
             if (ModelState.IsValid)
             {
-                StandarModel newstd = stdrepositori.getdata(stdmodel.id);
-                if (newstd == null)
+                KategoriModel newktg = ktgrepositori.getdata(ktgmodel.id);
+                if (newktg == null)
                 {
                     return NotFound();
                 }
-                newstd.id = stdmodel.id;
-                newstd.nama = stdmodel.nama;
-                stdrepositori.updatedata(newstd);
-                TempData["SuccessMessage"] = "Data Standar Inspeksi berhasil diupdate.";
+                newktg.nama = ktgmodel.nama;
+                ktgrepositori.updatedata(newktg);
+                TempData["SuccessMessage"] = "Category Inspection updated successfully.";
                 return RedirectToAction("Index");
             }
-            return View(stdmodel);
+            return View(ktgmodel);
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var response = new { success = false, message = "Gagal menghapus standar inspeksi." };
+            var response = new { success = false, message = "Gagal menghapus kategori inspeksi." };
 
             try
             {
                 if (id != null)
                 {
-                    stdrepositori.deletedata(id);
+                    ktgrepositori.deletedata(id);
                     response = new { success = true, message = "Inspection Standart berhasil dihapus." };
                 }
                 else
@@ -93,5 +91,6 @@ namespace AutoTra.Controllers
             }
             return Json(response);
         }
+
     }
 }

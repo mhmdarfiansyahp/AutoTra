@@ -1,9 +1,9 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model AutoTra.Models.StandarModel
+@model AutoTra.Models.KategoriModel
 @{
-    ViewData["Title"] = "Edit Inspection Standart Data";
+    ViewData["Title"] = "Add Inspection Category Data";
 }
 
 <div class="content">
@@ -12,11 +12,10 @@
             <div class="col-md-12">
 
                 <div class="card-body">
-                    <form method="post" asp-controller="Standar" asp-action="Edit">
-                        <input type="hidden" asp-for="id" />
-                        <div type="text" class="text-danger"></div>
+                    <form method="post" asp-controller="Kategori" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <label for="nama" class="control-label">Inspection Standart</label>
+                            <label for="nama" class="control-label">Inspection Category</label>
                             <input asp-for="nama" class="form-control" id="nama">
                             <span asp-validation-for="nama" class="text-danger"></span>
                         </div>
