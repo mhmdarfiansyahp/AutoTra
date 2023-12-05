@@ -64,6 +64,11 @@ namespace AutoTra.Controllers
             }
             Console.WriteLine(mblmodel.id_mobil);
 
+            if (!string.IsNullOrEmpty(mblmodel.vin) && mblmodel.vin.Length == 17)
+            {
+                ViewData["VinCharacters"] = mblmodel.vin.ToCharArray();
+            }
+
             return View(mblmodel);
         }
 

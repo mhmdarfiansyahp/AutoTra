@@ -28,11 +28,18 @@
                             <input asp-for="nama" class="form-control" id="nama">
                             <span asp-validation-for="nama" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label for="vin" class="control-label">VIN</label>
-                            <input asp-for="vin" class="form-control" id="vin">
+                        <div class="vin-input">
+                            <label for="vin" class="control-label">VIN (Vehicle Identification Number)</label>
+                            <div class="vin-boxes">
+                                <input asp-for="vin" type="hidden" />
+                                @for (var i = 0; i < 17; i++)
+                                {
+                                    <input class="vin-box" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
+                                }
+                            </div>
                             <span asp-validation-for="vin" class="text-danger"></span>
                         </div>
+                        <br />
                         <div class="form-group">
                             <label for="no_engine" class="control-label">Engine Number</label>
                             <input asp-for="no_engine" class="form-control" id="no_engine">
@@ -75,14 +82,63 @@
     </div>
 </div>
 
-<script>
-    function validateNumberInput(input) {
-        // Hapus karakter selain angka
-        input.value = input.value.replace(/\D/g, '');
-
-        // Pastikan panjang tidak melebihi 15 karakter
-        if (input.value.length > 15) {
-            input.value = input.value.slice(0, 15);
+    <style>
+        .vin-input {
+            width: fit-content;
         }
-    }
-</script>
+
+        .vin-boxes {
+            display: flex;
+            gap: 9px;
+        }
+
+        .vin-box {
+            width: 30px;
+            height: 30px;
+            text-transform: uppercase;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+    </style>
+
+    <script>
+        function validateNumberInput(input) {
+            // Hapus karakter selain angka
+            input.value = input.value.replace(/\D/g, '');
+
+            // Pastikan panjang tidak melebihi 15 karakter
+            if (input.value.length > 15) {
+                input.value = input.value.slice(0, 15);
+            }
+        }
+        function moveToNextInput(input, event) {
+            var keyCode = event.keyCode || event.which;
+            if (keyCode === 8 || keyCode === 46) {
+                return;
+            }
+
+            var inputs = document.querySelectorAll('.vin-box');
+            var currentInput = input;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentInput) {
+                    if (i < inputs.length - 1 && currentInput.value !== "") {
+                        inputs[i + 1].focus();
+                    }
+                    break;
+                }
+            }
+
+            var vinValue = "";
+            inputs.forEach(function (inp) {
+                vinValue += inp.value;
+            });
+
+            document.getElementById('vin').value = vinValue;
+        }
+        function autoCapsLock(input) {
+            input.value = input.value.toUpperCase();
+            moveToNextInput(input);
+        }
+
+    </script>
