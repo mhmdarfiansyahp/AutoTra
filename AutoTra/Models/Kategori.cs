@@ -98,7 +98,6 @@ namespace AutoTra.Models
 
                 command.Parameters.AddWithValue("@id_kategori", stdModel.id);
                 command.Parameters.AddWithValue("@nama", stdModel.nama);
-                command.Parameters.AddWithValue("@status", stdModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();
