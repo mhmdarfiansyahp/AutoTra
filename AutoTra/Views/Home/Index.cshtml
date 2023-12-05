@@ -3,20 +3,38 @@
     Layout = "~/Views/Shared/Layoutlogin.cshtml";
 
     // Static Superadmin credentials
-    string staticSuperadminUsername = "superadmin";
-    string staticSuperadminPassword = "123";
+
 }
 
-<div class="polman-form-login">
+<form method="post" asp-action="Login" asp-controller="Home" class="polman-form-login">
     <h4>Login</h4>
     <hr />
+    @if (TempData["Notification"] != null)
+    {
+        <div class="alert alert-warning">
+            @TempData["Notification"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
 
     <div class="form-group">
         <label for="txtUsername">
             Nomor Induk Mahasiswa (NIM)
             <span style="color: red;">*</span>
         </label>
-        <input type="text" id="txtUsername" name="txtUsername" maxlength="10" class="form-control" required=""
+        <input type="text" id="username" name="username" maxlength="10" class="form-control" required=""
                oninvalid="this.setCustomValidity('Nomor Induk Mahasiswa (NIM) Wajib Diisi')"
                oninput="this.setCustomValidity('')">
     </div>
@@ -26,20 +44,20 @@
             Password
             <span style="color: red;">*</span>
         </label>
-        <input id="txtPassword" type="password" name="txtPassword" class="form-control" required
+        <input id="password" type="password" name="password" class="form-control" required
                oninvalid="this.setCustomValidity('Kata Sandi Wajib Diisi')"
                oninput="this.setCustomValidity('')">
     </div>
 
-    <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;" onclick="login()">Login</button>
+    <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">Login</button>
 
     <script>
         function login() {
-            var enteredUsername = document.getElementById("txtUsername").value;
-            var enteredPassword = document.getElementById("txtPassword").value;
+            var enteredUsername = document.getElementById("username").value;
+            var enteredPassword = document.getElementById("password").value;
 
             // Check if entered credentials match the static Superadmin credentials
-            if (enteredUsername === "@staticSuperadminUsername" && enteredPassword === "@staticSuperadminPassword") {
+            if (string.Equals(enteredUsername, "superadmin", StringComparison.OrdinalIgnoreCase) && string.Equals(enteredPassword, "123")) {
                 // Store the username in localStorage
                 localStorage.setItem("loggedInUsername", enteredUsername);
 
@@ -52,7 +70,6 @@
         }
     </script>
 
-
     <style>
         .polman-form-login {
             font-family: 'NAMA_FONT', Verdana;
@@ -64,4 +81,4 @@
             font-family: 'NAMA_FONT', Verdana;
         }
     </style>
-</div>
+</form>

@@ -31,6 +31,42 @@ namespace AutoTra.Models
             }
         }
 
+        public AdminModel getDataByUsername_Password(string username, string password)
+        {
+            AdminModel admModel = new AdminModel();
+            try
+            {
+                string query = "SELECT * FROM Admin WHERE username = @username AND password = @password";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    // User found
+                    admModel.npk = reader["npk"].ToString();
+                    admModel.nama = reader["nama"].ToString();
+                    admModel.username = reader["username"].ToString();
+                    admModel.password = reader["password"].ToString();
+                    admModel.peran = reader["peran"].ToString();
+                    admModel.status = Convert.ToInt32(reader["status"].ToString());
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return admModel.status != 0 ? admModel : null;
+        }
+
         public List<AdminModel> getAllData()
         {
             List<AdminModel> filmList = new List<AdminModel>();

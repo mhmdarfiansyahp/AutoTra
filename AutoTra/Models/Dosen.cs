@@ -30,6 +30,45 @@ namespace AutoTra.Models
             }
         }
 
+        public DosenModel getDataByUsername_Password(string username, string password)
+        {
+            DosenModel dsnModel = new DosenModel();
+            try
+            {
+                string query = "SELECT * FROM Dosen WHERE username = @username AND password = @password";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    // User found
+                    dsnModel.npk = reader["npk"].ToString();
+                    dsnModel.nama = reader["nama"].ToString();
+                    dsnModel.username = reader["username"].ToString();
+                    dsnModel.password = reader["password"].ToString();
+                    dsnModel.peran = reader["peran"].ToString();
+                    dsnModel.status = Convert.ToInt32(reader["status"].ToString());
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            // Check if the status is not 0 for Dosen
+            return dsnModel.status != 0 ? dsnModel : null;
+        }
+
+
         public List<DosenModel> getAllData()
         {
             List<DosenModel> dsnlist = new List<DosenModel>();
