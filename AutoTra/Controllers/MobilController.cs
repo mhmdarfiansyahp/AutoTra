@@ -111,6 +111,7 @@ namespace AutoTra.Controllers
                     Console.WriteLine("if");
                     Console.WriteLine("if" + id_mobil);
                     mobilrepositori.deletedata(id_mobil);
+                    TempData["SuccessMessage"] = "Mobil berhasil dihapus!.";
                     response = new { success = true, message = "Mobil berhasil dihapus." };
                 }
                 else

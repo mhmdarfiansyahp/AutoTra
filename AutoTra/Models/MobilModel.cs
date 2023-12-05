@@ -14,7 +14,7 @@ namespace AutoTra.Models
         public string? nama { get; set; }
 
         [Required(ErrorMessage = "Nomor VIN wajib diisi.")]
-        [MaxLength(17, ErrorMessage = "nomor VIN maksimal 17 karakter.")]
+        [RegularExpression(@"^\w{17}$", ErrorMessage = "Nomor VIN harus terdiri dari 17 karakter alfanumerik.")]
         public string? vin { get; set; }
 
         [Required(ErrorMessage = "Nomor Engine wajib diisi")]

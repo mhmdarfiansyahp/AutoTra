@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AutoTra.Models.StandarModel
+@{
+    ViewData["Title"] = "Edit Inspection Standart Data";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    <form method="post" asp-controller="Standar" asp-action="Edit">
+                        <input type="hidden" asp-for="id" />
+                        <div type="text" class="text-danger"></div>
+                        <div class="form-group">
+                            <label for="nama" class="control-label">Inspection Standart</label>
+                            <input asp-for="nama" class="form-control" id="nama">
+                            <span asp-validation-for="nama" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="status" class="form-control" id="status" value="1">
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateNumberInput(input) {
+        // Hapus karakter selain angka
+        input.value = input.value.replace(/\D/g, '');
+
+        // Pastikan panjang tidak melebihi 15 karakter
+        if (input.value.length > 15) {
+            input.value = input.value.slice(0, 15);
+        }
+    }
+</script>
