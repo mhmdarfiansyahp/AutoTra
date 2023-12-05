@@ -99,6 +99,10 @@
             text-align: center;
             border: 1px solid #ccc;
         }
+
+    .vin-box::placeholder {
+        opacity: 20px;
+    }
     </style>
 
     <script>
@@ -111,12 +115,21 @@
                 input.value = input.value.slice(0, 15);
             }
         }
-        function moveToNextInput(input, event) {
-            var keyCode = event.keyCode || event.which;
-            if (keyCode === 8 || keyCode === 46) {
-                return;
-            }
+    function moveToNextInput(input, event) {
+        var keyCode = event.keyCode || event.which;
+        if (keyCode === 8 || keyCode === 46) {
+            var inputs = document.querySelectorAll('.vin-box');
+            var currentInput = input;
 
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentInput) {
+                    if (i > 0 && currentInput.value === "") {
+                        inputs[i - 1].focus();
+                    }
+                    break;
+                }
+            }
+        } else {
             var inputs = document.querySelectorAll('.vin-box');
             var currentInput = input;
 
@@ -128,14 +141,15 @@
                     break;
                 }
             }
-
-            var vinValue = "";
-            inputs.forEach(function (inp) {
-                vinValue += inp.value;
-            });
-
-            document.getElementById('vin').value = vinValue;
         }
+
+        var vinValue = "";
+        inputs.forEach(function (inp) {
+            vinValue += inp.value;
+        });
+
+        document.getElementById('vin').value = vinValue;
+    }
         function autoCapsLock(input) {
             input.value = input.value.toUpperCase();
             moveToNextInput(input);

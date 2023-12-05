@@ -12,6 +12,13 @@
             <div class="col-md-12">
 
                 <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <span><strong>Failed!</strong></span>@TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <br />
                     <form method="post" asp-controller="Standar" asp-action="Edit">
                         <input type="hidden" asp-for="id" />
                         <div type="text" class="text-danger"></div>

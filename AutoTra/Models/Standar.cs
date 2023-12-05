@@ -64,6 +64,29 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
+        public StandarModel getname(string? nama)
+        {
+            StandarModel stdModel = new StandarModel();
+            try
+            {
+                string query = "select * from dbo.Std_Pemeriksaan where nama = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", nama);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                stdModel.id = Convert.ToInt32(reader["id_standart"].ToString());
+                stdModel.nama = reader["nama"].ToString();
+                stdModel.status = Convert.ToInt32(reader["status"].ToString());
+                reader.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return stdModel;
+        }
         public StandarModel getdata(int? id_std)
         {
             StandarModel stdModel = new StandarModel();

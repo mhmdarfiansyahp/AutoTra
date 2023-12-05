@@ -1,5 +1,86 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model AutoTra.Models.ItemModel
 @{
+    ViewData["Title"] = "Add Inspection Item Data";
 }
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <span><strong>Failed!</strong></span>@TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <br />
+                    <form method="post" asp-controller="Item" asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="id_item" type="hidden" class="form-control" id="nama">
+                        <div class="form-group">
+                            <label for="nama" class="control-label">Inspection Category</label>
+                            <input asp-for="nama" class="form-control" id="nama">
+                            <span asp-validation-for="nama" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_standart" class="control-label">Inspection Standart</label>
+                            <select asp-for="id_standart" class="form-control" id="id_standart">
+                                <option>--- Choose Inspection Standart ---</option>
+                                @foreach (var std in (IEnumerable<StandarModel>)ViewData["StdList"])
+                                {
+                                    <option value="@std.id">@std.nama</option>
+                                }
+                            </select>
+                            <span asp-validation-for="id_standart" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_kategori" class="control-label">Inspection Category</label>
+                            <select asp-for="id_kategori" class="form-control" id="id_kategori">
+                                <option>--- Choose Inspection Category ---</option>
+                                @foreach (var ktg in (IEnumerable<KategoriModel>)ViewData["KtgList"])
+                                {
+                                    <option value="@ktg.id">@ktg.nama</option>
+                                }
+                            </select>
+                            <span asp-validation-for="id_kategori" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <br />
+                            <label for="metode_inspeksi" class="control-label">Inspection Method :</label><br />
+                            <input type="radio" value="Appearance" asp-for="metode_inspeksi" id="inspAppearance" />
+                            <label for="inspAppearance">Appearance</label><br />
+                            <input type="radio" value="Function" asp-for="metode_inspeksi" id="inspFunction" />
+                            <label for="inspFunction">Function</label><br />
+                            <span asp-validation-for="metode_inspeksi" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="status" class="form-control" id="status" value="1">
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateNumberInput(input) {
+        // Hapus karakter selain angka
+        input.value = input.value.replace(/\D/g, '');
+
+        // Pastikan panjang tidak melebihi 15 karakter
+        if (input.value.length > 15) {
+            input.value = input.value.slice(0, 15);
+        }
+    }
+</script>

@@ -124,18 +124,28 @@
     function moveToNextInput(input, event) {
         var keyCode = event.keyCode || event.which;
         if (keyCode === 8 || keyCode === 46) {
-            return;
-        }
+            var inputs = document.querySelectorAll('.vin-box');
+            var currentInput = input;
 
-        var inputs = document.querySelectorAll('.vin-box');
-        var currentInput = input;
-
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i] === currentInput) {
-                if (i < inputs.length - 1 && currentInput.value !== "") {
-                    inputs[i + 1].focus();
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentInput) {
+                    if (i > 0 && currentInput.value === "") {
+                        inputs[i - 1].focus();
+                    }
+                    break;
                 }
-                break;
+            }
+        } else {
+            var inputs = document.querySelectorAll('.vin-box');
+            var currentInput = input;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentInput) {
+                    if (i < inputs.length - 1 && currentInput.value !== "") {
+                        inputs[i + 1].focus();
+                    }
+                    break;
+                }
             }
         }
 

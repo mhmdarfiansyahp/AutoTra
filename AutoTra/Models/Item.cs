@@ -109,6 +109,32 @@ namespace AutoTra.Models
             }
             return ktglist;
         }
+        public ItemModel getname(string? nama)
+        {
+            ItemModel itmModel = new ItemModel();
+            try
+            {
+                string query = "select * from dbo.Itm_Pemeriksaan where nama = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", nama);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                itmModel.id_item = Convert.ToInt32(reader["id_item"].ToString());
+                itmModel.nama = reader["nama"].ToString();
+                itmModel.id_standart = Convert.ToInt32(reader["id_standart"].ToString());
+                itmModel.id_kategori = Convert.ToInt32(reader["id_kategori"].ToString());
+                itmModel.metode_inspeksi = reader["metode_inspeksi"].ToString();
+                itmModel.status = Convert.ToInt32(reader["status"].ToString());
+                reader.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return itmModel;
+        }
         public void insertdata(ItemModel itmModel)
         {
             try
@@ -172,7 +198,6 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@id_standart", itmModel.id_standart);
                 command.Parameters.AddWithValue("@id_kategori", itmModel.id_kategori);
                 command.Parameters.AddWithValue("@metode_inspeksi", itmModel.metode_inspeksi);
-                command.Parameters.AddWithValue("@status", itmModel.status);
 
                 _connection.Open();
                 command.ExecuteNonQuery();

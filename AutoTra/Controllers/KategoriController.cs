@@ -22,7 +22,8 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Create(KategoriModel ktg)
         {
-            try
+            KategoriModel newktg = ktgrepositori.getname(ktg.nama);
+            if (newktg == null)
             {
                 if (ModelState.IsValid)
                 {
@@ -31,10 +32,7 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            TempData["ErrorMessage"] = " Description of Category Inspection was added.";
             return View(ktg);
         }
         [HttpGet]
@@ -52,18 +50,23 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(KategoriModel ktgmodel)
         {
-            if (ModelState.IsValid)
+            KategoriModel newktg1 = ktgrepositori.getname(ktgmodel.nama);
+            if (newktg1 == null)
             {
-                KategoriModel newktg = ktgrepositori.getdata(ktgmodel.id);
-                if (newktg == null)
+                if (ModelState.IsValid)
                 {
-                    return NotFound();
+                    KategoriModel newktg = ktgrepositori.getdata(ktgmodel.id);
+                    if (newktg == null)
+                    {
+                        return NotFound();
+                    }
+                    newktg.nama = ktgmodel.nama;
+                    ktgrepositori.updatedata(newktg);
+                    TempData["SuccessMessage"] = "Category Inspection updated successfully.";
+                    return RedirectToAction("Index");
                 }
-                newktg.nama = ktgmodel.nama;
-                ktgrepositori.updatedata(newktg);
-                TempData["SuccessMessage"] = "Category Inspection updated successfully.";
-                return RedirectToAction("Index");
             }
+            TempData["ErrorMessage"] = " Description of Category Inspection was added.";
             return View(ktgmodel);
         }
 

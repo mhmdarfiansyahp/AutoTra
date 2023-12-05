@@ -18,13 +18,16 @@ namespace AutoTra.Controllers
         }
         public IActionResult Create()
         {
+            ViewData["StdList"] = itmrepositori.getAllStd();
+            ViewData["KtgList"] = itmrepositori.getAllKtg();
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(ItemModel itm)
         {
-            try
+            ItemModel newitm = itmrepositori.getname(itm.nama);
+            if (newitm == null)
             {
                 if (ModelState.IsValid)
                 {
@@ -33,15 +36,16 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            ViewData["StdList"] = itmrepositori.getAllStd();
+            ViewData["KtgList"] = itmrepositori.getAllKtg();
+            TempData["ErrorMessage"] = " Description of Item Inspection was added.";
             return View(itm);
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            ViewData["StdList"] = itmrepositori.getAllStd();
+            ViewData["KtgList"] = itmrepositori.getAllKtg();
             ItemModel itmmodel = itmrepositori.getdata(id);
             if (itmmodel == null)
             {
@@ -54,22 +58,25 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(ItemModel itmmodel)
         {
-            if (ModelState.IsValid)
-            {
-                ItemModel newitm = itmrepositori.getdata(itmmodel.id_item);
-                if (newitm == null)
+
+                if (ModelState.IsValid)
                 {
-                    return NotFound();
+                    ItemModel newitm = itmrepositori.getdata(itmmodel.id_item);
+                    if (newitm == null)
+                    {
+                        return NotFound();
+                    }
+                    newitm.nama = itmmodel.nama;
+                    newitm.id_standart = itmmodel.id_standart;
+                    newitm.id_kategori = itmmodel.id_kategori;
+                    newitm.metode_inspeksi = itmmodel.metode_inspeksi;
+                    newitm.status = itmmodel.status;
+                    itmrepositori.updatedata(newitm);
+                    TempData["SuccessMessage"] = "Item Inspection data updated successfully.";
+                    return RedirectToAction("Index");
                 }
-                newitm.nama = itmmodel.nama;
-                newitm.id_standart = itmmodel.id_standart;
-                newitm.id_kategori = itmmodel.id_kategori;
-                newitm.metode_inspeksi = itmmodel.metode_inspeksi;
-                newitm.status = itmmodel.status;
-                itmrepositori.updatedata(newitm);
-                TempData["SuccessMessage"] = "Item Inspection data updated successfully.";
-                return RedirectToAction("Index");
-            }
+            ViewData["StdList"] = itmrepositori.getAllStd();
+            ViewData["KtgList"] = itmrepositori.getAllKtg();
             return View(itmmodel);
         }
 

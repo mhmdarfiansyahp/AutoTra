@@ -23,7 +23,8 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Create(StandarModel std)
         {
-            try
+            StandarModel newstd = stdrepositori.getname(std.nama);
+            if (newstd == null)
             {
                 if (ModelState.IsValid)
                 {
@@ -32,10 +33,7 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
             return View(std);
         }
         [HttpGet]
@@ -53,19 +51,24 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(StandarModel stdmodel)
         {
-            if (ModelState.IsValid)
+            StandarModel newstd2 = stdrepositori.getname(stdmodel.nama);
+            if (newstd2 == null)
             {
-                StandarModel newstd = stdrepositori.getdata(stdmodel.id);
-                if (newstd == null)
+                if (ModelState.IsValid)
                 {
-                    return NotFound();
+                    StandarModel newstd = stdrepositori.getdata(stdmodel.id);
+                    if (newstd == null)
+                    {
+                        return NotFound();
+                    }
+                    newstd.id = stdmodel.id;
+                    newstd.nama = stdmodel.nama;
+                    stdrepositori.updatedata(newstd);
+                    TempData["SuccessMessage"] = "Data Standar Inspeksi berhasil diupdate.";
+                    return RedirectToAction("Index");
                 }
-                newstd.id = stdmodel.id;
-                newstd.nama = stdmodel.nama;
-                stdrepositori.updatedata(newstd);
-                TempData["SuccessMessage"] = "Data Standar Inspeksi berhasil diupdate.";
-                return RedirectToAction("Index");
             }
+            TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
             return View(stdmodel);
         }
 

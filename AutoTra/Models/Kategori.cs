@@ -64,6 +64,29 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
+        public KategoriModel getname(string? nama)
+        {
+            KategoriModel ktgModel = new KategoriModel();
+            try
+            {
+                string query = "select * from dbo.Kt_Pemeriksaan where nama = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", nama);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                ktgModel.id = Convert.ToInt32(reader["id_kategori"].ToString());
+                ktgModel.nama = reader["nama"].ToString();
+                ktgModel.status = Convert.ToInt32(reader["status"].ToString());
+                reader.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return ktgModel;
+        }
         public KategoriModel getdata(int? id_std)
         {
             KategoriModel ktgModel = new KategoriModel();
