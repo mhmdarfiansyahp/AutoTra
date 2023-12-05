@@ -47,6 +47,15 @@
         <input id="password" type="password" name="password" class="form-control" required
                oninvalid="this.setCustomValidity('Password Required')"
                oninput="this.setCustomValidity('')">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <br />
+                <div style="padding-left: 175px;">
+                <input type="checkbox" id="showPasswordCheckbox" onchange="togglePasswordVisibility()">
+                <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">Login</button>
@@ -66,6 +75,17 @@
             } else {
                 // Display an error message or handle the invalid login
                 alert("Invalid credentials. Please try again.");
+            }
+        }
+
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("password");
+            var checkbox = document.getElementById("showPasswordCheckbox");
+
+            if (checkbox.checked) {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
             }
         }
     </script>
