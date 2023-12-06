@@ -52,7 +52,7 @@ namespace AutoTra.Models
             List<StandarModel> stdlist = new List<StandarModel>();
             try
             {
-                string query = "SELECT * FROM dbo.Std_Pemeriksaan where status != 0";
+                string query = "SELECT * FROM dbo.Std_Pemeriksaan";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -83,7 +83,7 @@ namespace AutoTra.Models
             List<KategoriModel> ktglist = new List<KategoriModel>();
             try
             {
-                string query = "SELECT * FROM dbo.Kt_Pemeriksaan where status != 0";
+                string query = "SELECT * FROM dbo.Kt_Pemeriksaan";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();

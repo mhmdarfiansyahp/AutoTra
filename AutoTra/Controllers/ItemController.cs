@@ -36,9 +36,13 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
-            TempData["ErrorMessage"] = " Description of Item Inspection was added.";
+            else
+            {
+                ViewData["StdList"] = itmrepositori.getAllStd();
+                ViewData["KtgList"] = itmrepositori.getAllKtg();
+                TempData["ErrorMessage"] = " Description of Item Inspection was added.";
+                return View(itm);
+            }
             return View(itm);
         }
         [HttpGet]

@@ -69,7 +69,7 @@ namespace AutoTra.Models
             StandarModel stdModel = new StandarModel();
             try
             {
-                string query = "select * from dbo.Std_Pemeriksaan where nama = @p1";
+                string query = "select * from dbo.Std_Pemeriksaan where nama = @p1 AND status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", nama);
                 _connection.Open();
