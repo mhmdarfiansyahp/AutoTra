@@ -65,7 +65,7 @@ namespace AutoTra.Models
             }
         }
         public StandarModel getname(string? nama)
-        {
+        {   
             StandarModel stdModel = new StandarModel();
             try
             {
@@ -84,6 +84,10 @@ namespace AutoTra.Models
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            if(stdModel.id == null)
+            {
+                return null;
             }
             return stdModel;
         }

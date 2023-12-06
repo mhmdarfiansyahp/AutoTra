@@ -133,6 +133,10 @@ namespace AutoTra.Models
             {
                 Console.WriteLine(ex.Message);
             }
+            if(itmModel.id_item == null)
+            {
+                return null;
+            }
             return itmModel;
         }
         public void insertdata(ItemModel itmModel)

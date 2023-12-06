@@ -68,11 +68,7 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            else
-            {
-                TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
-                return View(stdmodel);
-            }
+            TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
             return View(stdmodel);
         }
 
