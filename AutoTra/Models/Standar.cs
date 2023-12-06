@@ -85,10 +85,6 @@ namespace AutoTra.Models
             {
                 Console.WriteLine(ex.Message);
             }
-            if(stdModel.id == null)
-            {
-                return null;
-            }
             return stdModel;
         }
         public StandarModel getdata(int? id_std)

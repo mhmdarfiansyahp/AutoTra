@@ -41,14 +41,29 @@
     </div>
 </div>
 
-<script>
-    function validateNumberInput(input) {
-        // Hapus karakter selain angka
-        input.value = input.value.replace(/\D/g, '');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        // Pastikan panjang tidak melebihi 15 karakter
-        if (input.value.length > 15) {
-            input.value = input.value.slice(0, 15);
-        }
-    }
+
+<script>
+    $(document).ready(function () {
+        $('#nama').on('blur', function () {
+            var inputVal = $(this).val();
+            if (inputVal !== '') {
+                $.ajax({
+                    url: '/Standar/CheckNamaExist',
+                    type: 'GET',
+                    data: { nama: inputVal },
+                    success: function (result) {
+                        if (result.exists) {
+                            alert('Description Inspection Standart was added');
+                            $('#nama').val('');
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    });
 </script>

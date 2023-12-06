@@ -26,16 +26,14 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Create(ItemModel itm)
         {
-            ItemModel newitm = itmrepositori.getname(itm.nama);
-            if (newitm == null)
-            {
+
                 if (ModelState.IsValid)
                 {
                     itmrepositori.insertdata(itm);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");
                 }
-            }
+            
             ViewData["StdList"] = itmrepositori.getAllStd();
             ViewData["KtgList"] = itmrepositori.getAllKtg();
             TempData["ErrorMessage"] = " Description of Item Inspection was added.";

@@ -1,14 +1,50 @@
 ﻿using AutoTra.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace AutoTra.Controllers
 {
     public class KategoriController : Controller
     {
+        private readonly string _connectionString;
+        private readonly SqlConnection _connection;
         private readonly Kategori ktgrepositori;
         public KategoriController(IConfiguration configuration)
         {
             ktgrepositori = new Kategori(configuration);
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connection = new SqlConnection(_connectionString);
+        }
+        private string GetConnectionString()
+        {
+            // Fungsi ini mengembalikan string koneksi ke database SQL Server
+            return _connectionString; // Ganti dengan string koneksi Anda
+        }
+        [HttpGet]
+        public IActionResult CheckNamaExist(string nama)
+        {
+            bool exists = IsNamaExistsInDatabase(nama);
+            return Json(new { exists = exists });
+        }
+
+        private bool IsNamaExistsInDatabase(string nama)
+        {
+            bool exists = false;
+            string _connection = GetConnectionString();
+
+            using (SqlConnection connection = new SqlConnection(_connection))
+            {
+                string query = "SELECT COUNT(*) FROM dbo.Kt_Pemeriksaan WHERE nama = @Nama AND status != 0";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Nama", nama);
+
+                connection.Open();
+                int count = (int)command.ExecuteScalar();
+                exists = count > 0;
+            }
+
+            return exists;
         }
         public IActionResult Index()
         {
@@ -22,16 +58,14 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Create(KategoriModel ktg)
         {
-            KategoriModel newktg = ktgrepositori.getname(ktg.nama);
-            if (newktg == null)
-            {
+
                 if (ModelState.IsValid)
                 {
                     ktgrepositori.insertdata(ktg);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");
                 }
-            }
+            
             TempData["ErrorMessage"] = " Description of Category Inspection was added.";
             return View(ktg);
         }
@@ -50,9 +84,7 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(KategoriModel ktgmodel)
         {
-            KategoriModel newktg1 = ktgrepositori.getname(ktgmodel.nama);
-            if (newktg1 == null)
-            {
+
                 if (ModelState.IsValid)
                 {
                     KategoriModel newktg = ktgrepositori.getdata(ktgmodel.id);
@@ -65,7 +97,7 @@ namespace AutoTra.Controllers
                     TempData["SuccessMessage"] = "Category Inspection updated successfully.";
                     return RedirectToAction("Index");
                 }
-            }
+            
             TempData["ErrorMessage"] = " Description of Category Inspection was added.";
             return View(ktgmodel);
         }

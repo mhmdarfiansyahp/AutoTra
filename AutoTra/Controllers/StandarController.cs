@@ -1,14 +1,50 @@
 ﻿using AutoTra.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace AutoTra.Controllers
 {
     public class StandarController : Controller
     {
         private readonly Standar stdrepositori;
+        private readonly string _connectionString;
+        private readonly SqlConnection _connection;
         public StandarController(IConfiguration configuration)
         {
             stdrepositori = new Standar(configuration);
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connection = new SqlConnection(_connectionString);
+        }
+        private string GetConnectionString()
+        {
+            // Fungsi ini mengembalikan string koneksi ke database SQL Server
+            return _connectionString; // Ganti dengan string koneksi Anda
+        }
+        [HttpGet]
+        public IActionResult CheckNamaExist(string nama)
+        {
+            bool exists = IsNamaExistsInDatabase(nama);
+            return Json(new { exists = exists });
+        }
+
+        private bool IsNamaExistsInDatabase(string nama)
+        {
+            bool exists = false;
+            string _connection = GetConnectionString();
+
+            using (SqlConnection connection = new SqlConnection(_connection))
+            {
+                string query = "SELECT COUNT(*) FROM dbo.Std_Pemeriksaan WHERE nama = @Nama";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Nama", nama);
+
+                connection.Open();
+                int count = (int)command.ExecuteScalar();
+                exists = count > 0;
+            }
+
+            return exists;
         }
         public IActionResult Index()
         {
@@ -23,16 +59,13 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Create(StandarModel std)
         {
-            StandarModel newstd = stdrepositori.getname(std.nama);
-            if (newstd == null)
-            {
                 if (ModelState.IsValid)
                 {
                     stdrepositori.insertdata(std);
                     TempData["SuccessMessage"] = "Data berhasil ditambahkan";
                     return RedirectToAction("Index");
                 }
-            }
+
             TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
             return View(std);
         }
@@ -51,9 +84,7 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(StandarModel stdmodel)
         {
-            StandarModel newstd2 = stdrepositori.getname(stdmodel.nama);
-            if (newstd2 == null)
-            {
+
                 if (ModelState.IsValid)
                 {
                     StandarModel newstd = stdrepositori.getdata(stdmodel.id);
@@ -67,7 +98,7 @@ namespace AutoTra.Controllers
                     TempData["SuccessMessage"] = "Data Standar Inspeksi berhasil diupdate.";
                     return RedirectToAction("Index");
                 }
-            }
+            
             TempData["ErrorMessage"] = " Description of Standart Inspection was added.";
             return View(stdmodel);
         }

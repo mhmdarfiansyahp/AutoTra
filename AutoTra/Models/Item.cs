@@ -114,7 +114,7 @@ namespace AutoTra.Models
             ItemModel itmModel = new ItemModel();
             try
             {
-                string query = "select * from dbo.Itm_Pemeriksaan where nama = @p1";
+                string query = "select count(*) from dbo.Itm_Pemeriksaan where nama = @p1 AND status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", nama);
                 _connection.Open();
@@ -132,10 +132,6 @@ namespace AutoTra.Models
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-            if(itmModel.id_item == null)
-            {
-                return null;
             }
             return itmModel;
         }
