@@ -3,8 +3,19 @@
 *@
 @model List<AutoTra.Models.DosenModel>
 @{
-    ViewData["Title"] = "Data Dosen";
+    ViewData["Title"] = "Lecturer Data";
     int no = 1;
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    Console.WriteLine("Role: " + role);
+    if (role == "admin")
+    {
+        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <div class="row">

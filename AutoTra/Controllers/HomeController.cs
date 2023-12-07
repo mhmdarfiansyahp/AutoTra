@@ -1,4 +1,5 @@
 ﻿using AutoTra.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -19,6 +20,7 @@ namespace AutoTra.Controllers
             picrepositori = new PIC(configuration);
         }
 
+
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
@@ -32,7 +34,7 @@ namespace AutoTra.Controllers
             AdminModel adminModel = adminrepositori.getDataByUsername_Password(username, password);
             DosenModel dosenModel = dsnrepositori.getDataByUsername_Password(username, password);
             PICModel picmodel = picrepositori.getDataByUsername_Password(username, password);
-            Console.WriteLine(dosenModel.npk);
+
             if (adminModel != null && adminModel.npk != null)
             {
                 i = 1;
@@ -46,17 +48,19 @@ namespace AutoTra.Controllers
             
             if (i==1)
             {
-                Console.WriteLine(adminModel.ToString());
+                Console.WriteLine("adm");
 
                 // Admin login logic
                 if (adminModel.status == 0)
                 {
-                    TempData["Notification"] = "Akun tidak aktif. Harap hubungi administrator.";
+                    TempData["Notification"] = "Username atau Password tidak Valid.";
                     return RedirectToAction("Index", "Home");
                 } 
 
                 string serializedModelFromDb = JsonConvert.SerializeObject(adminModel);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
+                HttpContext.Session.SetString("Role", "admin");
+                HttpContext.Session.SetString("nama", adminModel.nama);
 
                 return RedirectToAction("Index", "Dashboard");
 
@@ -64,18 +68,24 @@ namespace AutoTra.Controllers
             else if (i==2)
             {
                 // Dosen login logic
-                Console.WriteLine(adminModel.ToString());
          
                 string serializedModelFromDb = JsonConvert.SerializeObject(dosenModel);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
+                HttpContext.Session.SetString("Identity", serializedModelFromDb);
+                HttpContext.Session.SetString("Role", "Dosen");
+                HttpContext.Session.SetString("nama", dosenModel.nama);
 
-                return RedirectToAction("Index", "DashboardDosen", new { area = "" }); // Ensure the correct area is set
+
+                return RedirectToAction("Index", "DashboardDosen"); // Ensure the correct area is set
 
             }
             else if(i==3)
             {
                 string serializedModelFromDb = JsonConvert.SerializeObject(picmodel);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
+                HttpContext.Session.SetString("Identity", serializedModelFromDb);
+                HttpContext.Session.SetString("Role", "PIC");
+                HttpContext.Session.SetString("nama", picmodel.nama);
 
                 return RedirectToAction("Index", "DashboardPIC");
             }
@@ -102,7 +112,6 @@ namespace AutoTra.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
 
         public IActionResult Index()
         {

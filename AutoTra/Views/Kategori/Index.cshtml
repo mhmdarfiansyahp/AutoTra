@@ -5,6 +5,25 @@
 @{
     ViewData["Title"] = "Inspection Standart Data";
     int no = 1;
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    Console.WriteLine("Role: " + role);
+    if (role == "admin")
+    {
+        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+    }
+    else if (role == "Dosen")
+    {
+        Layout = "~/Views/Shared/LayoutDosen.cshtml";
+    }
+    else if (role == "PIC")
+    {
+        Layout = "~/Views/Shared/LayoutPIC.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <div class="row">

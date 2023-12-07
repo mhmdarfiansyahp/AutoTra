@@ -15,6 +15,7 @@ namespace AutoTra.Controllers
         public IActionResult Index()
         {
             return View(dosenrepositori.getAllData());
+            
         }
         [HttpPost]
         public IActionResult Index(string search)

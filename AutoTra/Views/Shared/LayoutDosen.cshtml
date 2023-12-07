@@ -83,7 +83,7 @@
             </div>
             <div class="polman-menu">
                 <div style="padding-top: 15px; margin-right: -30px;">
-                    Hai,
+                    Hai, <span style="font-size: 20px; font-weight: bold;"> @Context.Session.GetString("nama")</span>
                 </div>
             </div>
 
@@ -102,9 +102,7 @@
         <div id="accordions" role="tablist" aria-multiselectable="true">
             <div class="list-group">
                 <a class="list-group-item list-group-item-action polman-username" style="border-radius: 0px; border: none; background-color: #EEE;">Hai,&nbsp;</a>
-                @*                    <a href="/Logout.aspx" class="list-group-item list-group-item-action" style="border-radius: 0px; border: none; padding-left: 23px;"><i class="fa fa-sign-out fa-lg fa-pull-left"></i>Logout</a>
-                *@@*                    <%--<asp:Literal runat="server" ID="literalMenu"></asp:Literal>--%>
-                *@                    <a href='/Pages/Admin/Dashboard.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Dashboard Admin" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                    <a href='/Pages/Admin/Dashboard.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Dashboard Admin" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-home fa-lg fa-pull-left'></i>Dashboard
                 </a>
 
@@ -112,13 +110,6 @@
                     <i class='fa fa-chevron-down fa-lg fa-pull-left'></i>User Data
                 </a>
                 <div id='menu1' class='collapse' role='tabpanel'>
-
-                    @*                    <a asp-controller="Admin" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 47px; display: flex; align-items: center;'>
-                    <i class='fa fa-user fa-lg fa-pull-left' style="margin-top: 2px;"></i>Admin Data
-                    </a>*@
-@*                    <a asp-controller="Dosen" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 47px; display: flex; align-items: center;'>
-                        <i class='fa fa-user fa-lg fa-pull-left' style="margin-top: 2px;"></i>Lecturer Data
-                    </a>*@
                     <a asp-controller="PIC" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 47px; display: flex; align-items: center;'>
                         <i class='fa fa-user fa-lg fa-pull-left' style="margin-top: 2px;"></i>PIC Data
 
