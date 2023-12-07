@@ -35,7 +35,7 @@ namespace AutoTra.Controllers
 
             using (SqlConnection connection = new SqlConnection(_connection))
             {
-                string query = "SELECT COUNT(*) FROM dbo.Std_Pemeriksaan WHERE nama = @Nama";
+                string query = "SELECT COUNT(*) FROM dbo.Std_Pemeriksaan WHERE nama = @Nama AND status != 0";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nama", nama);
 

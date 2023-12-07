@@ -12,8 +12,8 @@ namespace AutoTra.Controllers
         }
         public IActionResult Index()
         {
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
+            ViewData["StdListIndex"] = itmrepositori.getAllStdIndex();
+            ViewData["KtgListIndex"] = itmrepositori.getAllKtgIndex();
             return View(itmrepositori.getAllData());
         }
         public IActionResult Create()

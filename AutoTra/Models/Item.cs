@@ -52,6 +52,37 @@ namespace AutoTra.Models
             List<StandarModel> stdlist = new List<StandarModel>();
             try
             {
+                string query = "SELECT * FROM dbo.Std_Pemeriksaan where status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    StandarModel std = new StandarModel
+                    {
+                        id = Convert.ToInt32(reader["id_standart"].ToString()),
+                        nama = reader["nama"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    stdlist.Add(std);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return stdlist;
+        }
+        public List<StandarModel> getAllStdIndex()
+        {
+            List<StandarModel> stdlist = new List<StandarModel>();
+            try
+            {
                 string query = "SELECT * FROM dbo.Std_Pemeriksaan";
                 SqlCommand command = new SqlCommand(query, _connection);
                 _connection.Open();
@@ -79,6 +110,37 @@ namespace AutoTra.Models
             return stdlist;
         }
         public List<KategoriModel> getAllKtg()
+        {
+            List<KategoriModel> ktglist = new List<KategoriModel>();
+            try
+            {
+                string query = "SELECT * FROM dbo.Kt_Pemeriksaan where status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    KategoriModel ktg = new KategoriModel
+                    {
+                        id = Convert.ToInt32(reader["id_kategori"].ToString()),
+                        nama = reader["nama"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    ktglist.Add(ktg);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return ktglist;
+        }
+        public List<KategoriModel> getAllKtgIndex()
         {
             List<KategoriModel> ktglist = new List<KategoriModel>();
             try

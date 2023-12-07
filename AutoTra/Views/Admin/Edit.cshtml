@@ -3,7 +3,7 @@
 *@
 @model AutoTra.Models.AdminModel
 @{
-    ViewData["Title"] = "Update Data Admin";
+    ViewData["Title"] = "Edit Admin Data";
 }
 
 
@@ -16,7 +16,7 @@
                         <form method="post" asp-controller="Admin" asp-action="Edit">
                             <input type="hidden" asp-for="npk" />
                             <div class="form-group">
-                                <label asp-for="nama" class="control-label">Nama Admin</label>
+                                <label asp-for="nama" class="control-label">Name</label>
                             <input asp-for="nama" class="form-control" id="nama">
                             <span asp-validation-for="nama" class="text-danger"></span>
                             </div>
@@ -31,7 +31,7 @@
                             <span asp-validation-for="password" class="text-danger"></span>
                         </div>
                         <div class="form-group" style="display: none;">
-                            <label for="peran" class="control-label">Peran</label>
+                            <label for="peran" class="control-label">Role</label>
                             <input asp-for="peran" class="form-control" id="peran" value="Admin" />
                             <span asp-validation-for="peran" class="text-danger"></span>
                         </div>
@@ -47,7 +47,7 @@
 
                             <br />
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>

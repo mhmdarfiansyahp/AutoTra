@@ -86,7 +86,7 @@
                                 <td>@(no++)</td>
                                 <td>@itm.nama</td>
                                 <td>
-                                    @foreach (var std in (IEnumerable<StandarModel>)ViewData["StdList"])
+                                    @foreach (var std in (IEnumerable<StandarModel>)ViewData["StdListIndex"])
                                     {
                                         @if (std.id == itm.id_standart)
                                         {
@@ -95,7 +95,7 @@
                                     }
                                 </td>
                                 <td>
-                                    @foreach (var ktg in (IEnumerable<KategoriModel>)ViewData["KtgList"])
+                                    @foreach (var ktg in (IEnumerable<KategoriModel>)ViewData["KtgListIndex"])
                                     {
                                         @if (ktg.id == itm.id_kategori)
                                         {
