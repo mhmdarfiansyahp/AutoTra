@@ -12,14 +12,10 @@ namespace AutoTra.Controllers
         }
         public IActionResult Index()
         {
-            ViewData["StdListIndex"] = itmrepositori.getAllStdIndex();
-            ViewData["KtgListIndex"] = itmrepositori.getAllKtgIndex();
             return View(itmrepositori.getAllData());
         }
         public IActionResult Create()
         {
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
             return View();
         }
 
@@ -34,16 +30,12 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
             TempData["ErrorMessage"] = " Description of Item Inspection was added.";
             return View(itm);
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
             ItemModel itmmodel = itmrepositori.getdata(id);
             if (itmmodel == null)
             {
@@ -64,17 +56,15 @@ namespace AutoTra.Controllers
                     {
                         return NotFound();
                     }
-                    newitm.nama = itmmodel.nama;
-                    newitm.id_standart = itmmodel.id_standart;
-                    newitm.id_kategori = itmmodel.id_kategori;
-                    newitm.metode_inspeksi = itmmodel.metode_inspeksi;
+                    newitm.item_pemeriksaan = itmmodel.item_pemeriksaan;
+                    newitm.kategori_pemeriksaan = itmmodel.kategori_pemeriksaan;
+                    newitm.standart_pemeriksaan = itmmodel.standart_pemeriksaan;
+                    newitm.metode_pemeriksaan = itmmodel.metode_pemeriksaan;
                     newitm.status = itmmodel.status;
                     itmrepositori.updatedata(newitm);
                     TempData["SuccessMessage"] = "Item Inspection data updated successfully.";
                     return RedirectToAction("Index");
                 }
-            ViewData["StdList"] = itmrepositori.getAllStd();
-            ViewData["KtgList"] = itmrepositori.getAllKtg();
             return View(itmmodel);
         }
 

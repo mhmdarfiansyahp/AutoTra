@@ -22,42 +22,32 @@
                     <form method="post" asp-controller="Item" asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <label for="nama" class="control-label">Inspection Category</label>
-                            <input asp-for="nama" class="form-control" id="nama">
-                            <span asp-validation-for="nama" class="text-danger"></span>
+                            <label for="item_pemeriksaan" class="control-label">Inspection Item</label>
+                            <input asp-for="item_pemeriksaan" class="form-control" id="item_pemeriksaan">
+                            <span asp-validation-for="item_pemeriksaan" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="id_standart" class="control-label">Inspection Standart</label>
-                            <select asp-for="id_standart" class="form-control" id="id_standart">
-                                <option>--- Choose Inspection Standart ---</option>
-                                @foreach (var std in (IEnumerable<StandarModel>) ViewData["StdList"])
-                                {
-                                    <option value="@std.id">@std.nama</option>
-                                }
-                            </select>
-                            <span asp-validation-for="id_standart" class="text-danger"></span>
+                            <label for="kategori_pemeriksaan" class="control-label">Inspection Category</label>
+                            <input asp-for="kategori_pemeriksaan" class="form-control" id="kategori_pemeriksaan">
+                            <span asp-validation-for="kategori_pemeriksaan" class="text-danger"></span>
                         </div>
+
                         <div class="form-group">
-                            <label for="id_kategori" class="control-label">Inspection Category</label>
-                            <select asp-for="id_kategori" class="form-control" id="id_kategori">
-                                <option>--- Choose Inspection Category ---</option>
-                                @foreach (var ktg in (IEnumerable<KategoriModel>) ViewData["KtgList"])
-                                {
-                                    <option value="@ktg.id">@ktg.nama</option>
-                                }
-                            </select>
-                            <span asp-validation-for="id_kategori" class="text-danger"></span>
+                            <label for="standart_pemeriksaan" class="control-label">Inspection Standart</label>
+                            <input asp-for="standart_pemeriksaan" class="form-control" id="standart_pemeriksaan">
+                            <span asp-validation-for="standart_pemeriksaan" class="text-danger"></span>
+
                         </div>
                         <div class="form-group">
                             <br />
                             <label for="metode_inspeksi" class="control-label">Inspection Method :</label><br />
-                            <input type="radio" value="Appearance" asp-for="metode_inspeksi" id="inspAppearance" />
+                            <input type="radio" value="Appearance" asp-for="metode_pemeriksaan" id="inspAppearance" />
                             <label for="inspAppearance">Appearance</label><br />
-                            <input type="radio" value="Function" asp-for="metode_inspeksi" id="inspFunction" />
+                            <input type="radio" value="Function" asp-for="metode_pemeriksaan" id="inspFunction" />
                             <label for="inspFunction">Function</label><br />
-                            <input type="radio" value="Appearance and Function" asp-for="metode_inspeksi" id="inspBoth" />
+                            <input type="radio" value="Appearance and Function" asp-for="metode_pemeriksaan" id="inspBoth" />
                             <label for="inspBoth">Appearance and Function</label><br />
-                            <span asp-validation-for="metode_inspeksi" class="text-danger"></span>
+                            <span asp-validation-for="metode_pemeriksaan" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <input type="hidden" asp-for="status" class="form-control" id="status" value="1">

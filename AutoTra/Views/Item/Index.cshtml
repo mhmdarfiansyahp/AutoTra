@@ -84,26 +84,10 @@
                         {
                             <tr>
                                 <td>@(no++)</td>
-                                <td>@itm.nama</td>
-                                <td>
-                                    @foreach (var std in (IEnumerable<StandarModel>)ViewData["StdListIndex"])
-                                    {
-                                        @if (std.id == itm.id_standart)
-                                        {
-                                            <span>@std.nama</span>
-                                        }
-                                    }
-                                </td>
-                                <td>
-                                    @foreach (var ktg in (IEnumerable<KategoriModel>)ViewData["KtgListIndex"])
-                                    {
-                                        @if (ktg.id == itm.id_kategori)
-                                        {
-                                            <span>@ktg.nama</span> 
-                                        }
-                                    }
-                                </td>
-                                <td>@itm.metode_inspeksi</td>
+                                <td>@itm.item_pemeriksaan</td>
+                                <td>@itm.standart_pemeriksaan</td>
+                                <td>@itm.kategori_pemeriksaan</td>
+                                <td>@itm.metode_pemeriksaan</td>
                                 <td>@(itm.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
                                     <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@itm.id_item">
