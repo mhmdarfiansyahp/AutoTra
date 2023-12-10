@@ -78,9 +78,8 @@ namespace AutoTra.Controllers
             if (true)
             {
                 Console.WriteLine(mblmodel.jenis_mobil);
-                if (int.TryParse(mblmodel.id_mobil, out int id_mobil))
-                {
-                    MobilModel newmbl = mobilrepositori.getdata(id_mobil);
+
+                    MobilModel newmbl = mobilrepositori.getdata(mblmodel.id_mobil);
                     if (newmbl == null)
                     {
                         return NotFound();
@@ -97,7 +96,7 @@ namespace AutoTra.Controllers
                     mobilrepositori.updatedata(newmbl);
                     TempData["SuccessMessage"] = "Mobil berhasil diupdate.";
                     return RedirectToAction("Index");
-                }
+                
             }
             return View(mblmodel);
         }

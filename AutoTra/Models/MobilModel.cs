@@ -4,7 +4,7 @@ namespace AutoTra.Models
 {
     public class MobilModel
     {
-        public string? id_mobil { get; set; }
+        public int? id_mobil { get; set; }
 
         [Required(ErrorMessage = "Jenis mobil wajib diisi.")]
         public string? jenis_mobil { get; set; }

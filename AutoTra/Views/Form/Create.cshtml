@@ -1,0 +1,91 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AutoTra.Models.FormModel
+@{
+    ViewData["Title"] = "Add Inspection Form Data";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <span><strong>Failed!</strong></span>@TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <br />
+                    <form method="post" asp-controller="Form" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label for="id_mobil" class="control-label">Vehicle Model</label>
+                            <select asp-for="id_mobil" class="form-control" id="id_mobil">
+                                <option>--- Choose Vehicle Model ---</option>
+                                @foreach (var car in (IEnumerable<MobilModel>) ViewData["CarList"])
+                                {
+                                    <option value="@car.id_mobil">@car.nama</option>
+                                }
+                            </select>
+                            <span asp-validation-for="id_mobil" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="skala" class="control-label">Scope</label>
+                            <select asp-for="skala" class="form-control" id="skala">
+                                <option>--- Choose Time Scope ---</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                            </select>
+                            <span asp-validation-for="skala" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis_form" class="control-label">Form Type</label>
+                            <select asp-for="jenis_form" class="form-control" id="jenis_form">
+                                <option>--- Choose Form Type ---</option>
+                                <option value="First Check">First Check</option>
+                                <option value="Final Check">Final Check</option>
+                            </select>
+                            <span asp-validation-for="jenis_form" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="status" class="form-control" id="status" value="1">
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#nama').on('blur', function () {
+            var inputVal = $(this).val();
+            if (inputVal !== '') {
+                $.ajax({
+                    url: '/Kategori/CheckNamaExist',
+                    type: 'GET',
+                    data: { nama: inputVal },
+                    success: function (result) {
+                        if (result.exists) {
+                            alert('Description Inspection Category was added');
+                            $('#nama').val('');
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    });
+</script>

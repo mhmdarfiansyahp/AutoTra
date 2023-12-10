@@ -14,7 +14,7 @@ namespace AutoTra.Models
         public string? standart_pemeriksaan { get; set; }
         [Required(ErrorMessage = "Inspection Method must be filled.")]
         public string? metode_pemeriksaan { get; set; }
-        public int? status { get; set; }
+        public int? status { get; set; }    
 
     }
 }
