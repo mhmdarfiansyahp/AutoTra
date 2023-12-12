@@ -4,6 +4,17 @@
 @model AutoTra.Models.PICModel
 @{
     ViewData["Title"] = "Add PIC Data";
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    Console.WriteLine("Role: " + role);
+    if (role == "admin")
+    {
+        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <div class="content">
