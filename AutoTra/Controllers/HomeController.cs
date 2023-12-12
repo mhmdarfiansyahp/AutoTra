@@ -85,6 +85,7 @@ namespace AutoTra.Controllers
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
                 HttpContext.Session.SetString("Role", "PIC");
+                HttpContext.Session.SetString("nim", picmodel.nim); // Set the "nim" value in the session
                 HttpContext.Session.SetString("nama", picmodel.nama);
 
                 return RedirectToAction("Index", "DashboardPIC");

@@ -1,0 +1,98 @@
+﻿@model AutoTra.Models.PengajuanKendaraanModel
+@{
+    ViewData["Title"] = "Submission of Vehicle for practice";
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    Console.WriteLine("Role: " + role);
+    if (role == "PIC")
+    {
+        Layout = "~/Views/Shared/LayoutPIC.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+@using System.Globalization
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <span><strong>Failed!</strong></span>@TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <br />
+                    <form method="post" asp-controller="PengajuanKendaraan" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@*                        <div class="form-group">
+                            <label asp-for="id_pengajuan" class="control-label">Submission ID</label>
+                            <input asp-for="id_pengajuan" class="form-control" id="id_pengajuan" readonly="readonly"/>
+                            <span asp-validation-for="id_pengajuan" class="text-danger"></span>
+                        </div>*@
+                        <div class="form-group">
+                            <label asp-for="tanggl_pengajuan" class="control-label">Date of filing</label>
+                            <div>
+                                <input asp-for="tanggl_pengajuan" class="form-control" type="date" readonly />
+                            </div>
+                            <span asp-validation-for="tanggl_pengajuan" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="nim" class="control-label">NIM</label>
+                            <div>
+                                <input asp-for="nim" class="form-control" value="@ViewBag.Nim" readonly="readonly" />
+                            </div>
+                            <span asp-validation-for="nim" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="nama" class="control-label">Nama</label>
+                            <div>
+                                <input asp-for="nama" class="form-control" value="@ViewBag.Nama" readonly="readonly" />
+                            </div>
+                            <span asp-validation-for="nama" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="npk" class="control-label">Lecturer Name</label>
+                            <select asp-for="npk" asp-items="ViewBag.dosen" class="form-control">
+                                <option value="">-- Select Lecturer --</option>
+                            </select>
+                            <span asp-validation-for="npk" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="id_mobil" class="control-label">Vehicle Name</label>
+                            <select asp-for="id_mobil" asp-items="ViewBag.mobil" class="form-control">
+                                <option value="">-- Select Car --</option>
+                            </select>
+                            <span asp-validation-for="id_mobil" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="deskripsi" class="control-label">Description</label>
+                            <input asp-for="deskripsi" class="form-control" id="deskripsi" />
+                            <span asp-validation-for="deskripsi" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="status" class="form-control" id="status" value="0">
+                            <span asp-validation-for="status" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
