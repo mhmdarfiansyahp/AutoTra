@@ -4,6 +4,28 @@
 @model AutoTra.Models.ItemModel
 @{
     ViewData["Title"] = "Add Inspection Item Data";
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    if (string.IsNullOrEmpty(role))
+    {
+        // Session is expired or role is not set, redirect to login layout
+        Layout = "~/Views/Shared/Layoutlogin.cshtml";
+
+        <script>
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+
+        return;
+    }
+    Console.WriteLine("Role: " + role);
+    if (role == "admin")
+    {
+        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <div class="content">
