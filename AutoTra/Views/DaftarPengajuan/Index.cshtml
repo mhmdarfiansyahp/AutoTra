@@ -1,0 +1,113 @@
+﻿@model List<AutoTra.Models.DaftarPengajuanModel>
+@{
+    ViewData["Title"] = "List of Vehicle Usage Submissions";
+    int no = 1;
+    var httpcontext = ViewContext.HttpContext;
+    string role = httpcontext.Session.GetString("Role");
+    if (string.IsNullOrEmpty(role))
+    {
+        // Session is expired or role is not set, redirect to login layout
+        Layout = "~/Views/Shared/Layoutlogin.cshtml";
+
+        <script>
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+
+        return;
+    }
+    Console.WriteLine("Role: " + role);
+    if (role == "Dosen")
+    {
+        Layout = "~/Views/Shared/LayoutDosen.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <br />
+
+        <div class="card-body">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="row">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
+                        <strong>Sukses!</strong> @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            @*<a asp-controller="PengajuanKendaraan" class="btn btn-primary" asp-action="Create">+ Add Submission</a>
+            <br />
+            <br />
+                        <form method="post">
+            <div style="padding-left: 1080px;">
+            <div class="col-lg-12">
+            <div class="input-group mb-12">
+            <input class="form-control" type="text" placeholder="Search Category Inspection data by name.." aria-describedby="button-addon2" name="search">
+            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+            </div>
+            </div>
+            </div>
+            </form>
+            <br />*@
+            <div class="card">
+
+                <!-- Table with stripped rows -->
+                <table class="table datable">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Date of filing</th>
+                            <th scope="col">NIM</th>
+                            <th scope="col">Vehicle Name</th>
+                            <th scope="col">Job description</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pengajuan in Model)
+                        {
+                            <tr>
+                                <td>@(no++)</td>
+                                <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
+                                <td>@pengajuan.nim</td>
+                                <td>
+                                    @if (ViewBag.Mobildictinary != null && ViewBag.Mobildictinary.ContainsKey(pengajuan.id_mobil))
+                                    {
+                                        @ViewBag.Mobildictinary[pengajuan.id_mobil]
+                                    }
+                                </td>
+                                <td>@pengajuan.deskripsi</td>
+                                <td>@(pengajuan.status == 0 ? "Diajukan" : "Menunggu Konfirmasi")</td>
+                                <td>
+
+                                    <button id="detail-button" class="btn btn-sm btn-primary detail-button">
+                                        <i class="fa-solid fa-bars"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
