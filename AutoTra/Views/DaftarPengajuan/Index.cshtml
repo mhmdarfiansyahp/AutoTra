@@ -71,9 +71,9 @@
                     <thead>
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Date of filing</th>
-                            <th scope="col">NIM</th>
+                            <th scope="col">PIC Name</th>
                             <th scope="col">Vehicle Name</th>
+                            <th scope="col">Date of filing</th>
                             <th scope="col">Job description</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -85,7 +85,7 @@
                             <tr>
                                 <td>@(no++)</td>
                                 <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
-                                <td>@pengajuan.nim</td>
+                                <td>@ViewBag.picdictinary[pengajuan.nim]</td>
                                 <td>
                                     @if (ViewBag.Mobildictinary != null && ViewBag.Mobildictinary.ContainsKey(pengajuan.id_mobil))
                                     {
