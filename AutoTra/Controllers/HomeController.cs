@@ -74,6 +74,7 @@ namespace AutoTra.Controllers
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
                 HttpContext.Session.SetString("Role", "Dosen");
                 HttpContext.Session.SetString("nama", dosenModel.nama);
+                HttpContext.Session.SetString("npk", dosenModel.npk);
 
 
                 return RedirectToAction("Index", "DashboardDosen"); // Ensure the correct area is set

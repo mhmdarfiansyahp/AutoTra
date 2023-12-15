@@ -7,6 +7,17 @@
     int no = 1;
     var httpcontext = ViewContext.HttpContext;
     string role = httpcontext.Session.GetString("Role");
+    if (string.IsNullOrEmpty(role))
+    {
+        // Session is expired or role is not set, redirect to login layout
+        Layout = "~/Views/Shared/Layoutlogin.cshtml";
+
+        <script>
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+
+        return;
+    }
     Console.WriteLine("Role: " + role);
     if (role == "admin")
     {
