@@ -31,6 +31,7 @@ namespace AutoTra.Controllers
                 TempData["SuccessMessage"] = "Data added succesfully";
                 return RedirectToAction("Index");
             }
+            ViewData["CarList"] = formrepositori.getAllCar();
             return View(form);
         }
         [HttpPost]

@@ -15,7 +15,7 @@
                     <form method="post" asp-controller="Mobil" asp-action="Edit">
                         <input type="hidden" asp-for="id_mobil" />
                         <div class="form-group">
-                            <label asp-for="jenis_mobil" class="control-label">Vechile Type</label>
+                            <label asp-for="jenis_mobil" class="control-label">Vehicle Type</label>
                             <select asp-for="jenis_mobil" class="form-control">
                                 <option disabled selected>-- Select Vechile Type --</option>
                                 <option value="Non Asset">Non Asset</option>
@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <label for="bahan_bakar" class="control-label">Fuel</label>
                             <select asp-for="bahan_bakar" class="form-control" id="bahan_bakar">
-                                <option >=== Choose Type of Fuel ===</option>
+                                <option value="0">=== Choose Type of Fuel ===</option>
                                 <option value="Gasoline">Gasoline</option>
                                 <option value="Diesel">Diesel</option>
                                 <option value="Hybrid">Hybrid</option>
