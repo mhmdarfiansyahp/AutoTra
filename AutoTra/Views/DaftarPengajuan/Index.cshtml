@@ -84,7 +84,6 @@
                         {
                             <tr>
                                 <td>@(no++)</td>
-                                <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
                                 <td>@ViewBag.picdictinary[pengajuan.nim]</td>
                                 <td>
                                     @if (ViewBag.Mobildictinary != null && ViewBag.Mobildictinary.ContainsKey(pengajuan.id_mobil))
@@ -92,6 +91,7 @@
                                         @ViewBag.Mobildictinary[pengajuan.id_mobil]
                                     }
                                 </td>
+                                <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
                                 <td>@pengajuan.deskripsi</td>
                                 <td>@(pengajuan.status == 0 ? "Diajukan" : "Menunggu Konfirmasi")</td>
                                 <td>
