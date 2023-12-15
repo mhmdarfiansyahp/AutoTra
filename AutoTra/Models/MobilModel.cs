@@ -27,7 +27,7 @@ namespace AutoTra.Models
         [Required(ErrorMessage = "Kilometer mobil Wajib diisi")]
         public string? kilometer { get; set; }
 
-        [Required(ErrorMessage = "Bahan bakar mobil Wajib diisi")]
+        [RegularExpression("^(?!0+$)\\S", ErrorMessage = "Fuel must be chosen!")]
         public string? bahan_bakar { get; set; }
         public int? status { get; set; }
     }

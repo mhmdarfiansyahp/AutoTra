@@ -45,8 +45,8 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label for="id_mobil" class="control-label">Vehicle Model</label>
-                            <select asp-for="id_mobil" class="form-control" id="id_mobil">
-                                <option>--- Choose Vehicle Model ---</option>
+                            <select asp-for="id_mobil" class="form-control" id="id_mobil" required>
+                                <option value=0>--- Choose Vehicle Model ---</option>
                                 @foreach (var car in (IEnumerable<MobilModel>) ViewData["CarList"])
                                 {
                                     <option value="@car.id_mobil">@car.nama</option>
@@ -56,8 +56,8 @@
                         </div>
                         <div class="form-group">
                             <label for="skala" class="control-label">Scope</label>
-                            <select asp-for="skala" class="form-control" id="skala">
-                                <option>--- Choose Time Scope ---</option>
+                            <select asp-for="skala" class="form-control" id="skala" >
+                                <option value="0">--- Choose Time Scope ---</option>
                                 <option value="Daily">Daily</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="Monthly">Monthly</option>
@@ -66,8 +66,8 @@
                         </div>
                         <div class="form-group">
                             <label for="jenis_form" class="control-label">Form Type</label>
-                            <select asp-for="jenis_form" class="form-control" id="jenis_form">
-                                <option>--- Choose Form Type ---</option>
+                            <select asp-for="jenis_form" class="form-control" id="jenis_form" >
+                                <option value="0">--- Choose Form Type ---</option>
                                 <option value="First Check">First Check</option>
                                 <option value="Final Check">Final Check</option>
                             </select>

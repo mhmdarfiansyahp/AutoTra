@@ -30,7 +30,6 @@ namespace AutoTra.Controllers
                     return RedirectToAction("Index");
                 }
             
-            TempData["ErrorMessage"] = " Description of Item Inspection was added.";
             return View(itm);
         }
         [HttpGet]
