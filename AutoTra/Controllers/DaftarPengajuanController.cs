@@ -17,6 +17,7 @@ namespace AutoTra.Controllers
             dsnrepository = new Dosen(configuration);
             picrepository = new PIC(configuration);
         }
+        [HttpGet]
         public IActionResult Index()
         {
             // Get the current logged-in username from session
@@ -41,8 +42,25 @@ namespace AutoTra.Controllers
             ViewBag.dsndictinary = dsndictinory;
             ViewBag.Mobildictinary = mobildictionary;
             ViewBag.picdictinary = Picdictionary;
-
             return View(pengajuan);
+        }
+        [HttpPost]
+        public IActionResult Approve(DaftarPengajuanModel dpengajuan)
+        {
+            TempData["SuccessMessage"] = "Data added succesfully";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Approval1(int id)
+        {
+            DaftarPengajuanModel dpengajuan = Dpengajuanrepositori.getdetailacc1(id);
+            if (dpengajuan == null)
+            {
+                return NotFound();
+            }
+
+            return Json(dpengajuan);
         }
 
     }

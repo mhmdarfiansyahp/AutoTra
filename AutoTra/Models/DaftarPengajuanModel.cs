@@ -18,5 +18,19 @@ namespace AutoTra.Models
         public string? deskripsi { get; set; }
         
         public int? status { get; set; }
+
+        public string? jenis_mobil { get; set; }
+
+        public string? nama_mobil { get; set; }
+
+        public string? vin { get; set; }
+
+        public string? no_engine { get; set; }
+
+        public string? warna { get; set; }
+
+        public string? kilometer { get; set; }
+
+        public string? bahan_bakar { get; set; }
     }
 }

@@ -98,12 +98,15 @@
                                 <td>@pengajuan.deskripsi</td>
                                 <td>@(pengajuan.status == 0 ? "Diajukan" : "Menunggu Konfirmasi")</td>
                                 <td>
-                                    if (pengajuan.status == 0)
+                                    @if (pengajuan.status == 0)
                                     {
                                         <button id="detail-button" class="btn btn-sm btn-primary detail-button">
                                             <i class="fa-solid fa-bars"></i>
                                         </button>
-                                    }else if (pengajuan.status == 1){
+                                        <button id="detail-button" class="btn btn-sm btn-danger detail-button">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    }@if (pengajuan.status == 1){
                                     <button id="detail-button" class="btn btn-sm btn-primary detail-button">
                                         <i class="fa-solid fa-bars"></i>
                                     </button>

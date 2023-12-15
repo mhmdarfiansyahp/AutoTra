@@ -24,21 +24,22 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+
 }
+
 
 <div class="row">
     <div class="col-lg-12">
         <br />
 
         <div class="card-body">
-
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="row">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="bi bi-check-circle me-1"></i>
                         <strong>Sukses!</strong> @TempData["SuccessMessage"]
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
             }
@@ -50,23 +51,7 @@
                 </div>
             }
 
-            @*<a asp-controller="PengajuanKendaraan" class="btn btn-primary" asp-action="Create">+ Add Submission</a>
-            <br />
-            <br />
-                        <form method="post">
-            <div style="padding-left: 1080px;">
-            <div class="col-lg-12">
-            <div class="input-group mb-12">
-            <input class="form-control" type="text" placeholder="Search Category Inspection data by name.." aria-describedby="button-addon2" name="search">
-            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
-            </div>
-            </div>
-            </div>
-            </form>
-            <br />*@
             <div class="card">
-
-                <!-- Table with stripped rows -->
                 <table class="table datable">
                     <thead>
                         <tr>
@@ -93,21 +78,114 @@
                                 </td>
                                 <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
                                 <td>@pengajuan.deskripsi</td>
-                                <td>@(pengajuan.status == 0 ? "Diajukan" : "Menunggu Konfirmasi")</td>
                                 <td>
-
-                                    <button id="detail-button" class="btn btn-sm btn-primary detail-button">
+                                    @{
+                                        string statusText = "";
+                                        switch (pengajuan.status)
+                                        {
+                                            case 0:
+                                                statusText = "Diajukan";
+                                                break;
+                                            case 1:
+                                                statusText = "Menunggu Konfirmasi";
+                                                break;
+                                            case 2:
+                                                statusText = "Tidak Disetujui";
+                                                break;
+                                            default:
+                                                statusText = "Status Tidak Dikenali";
+                                                break;
+                                        }
+                                    }
+                                    @statusText
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary acc1-button" data-toggle="modal" data-target="#acc1Modal_@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
                                         <i class="fa-solid fa-bars"></i>
                                     </button>
+
+                                    <div class="modal fade" id="acc1Modal_@pengajuan.id_pengajuan" tabindex="-1" role="dialog" aria-labelledby="acc1ModelLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title" style="font-size:28px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Submission Approval Menu</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label class="control-label">NIM</label>
+                                                            <input class="form-control" id="NIM" readonly>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label class="control-label">Name</label>
+                                                            <input class="form-control" id="NamaMhs" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                            <label class="control-label">Vehicle Model</label>
+                                                            <input class="form-control" id="CarModel" readonly>
+                                                        </div>
+                                                                <div class="mb-3">
+                                                            <label class="control-label">Fuel</label>
+                                                            <input class="form-control" id="Fuel" readonly>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="control-label">Job Description</label>
+                                                            <input class="form-control" id="Job" readonly>
+                                                        </div>
+                                                    </form>
+                                                    <hr />
+                                                    <form method="post" asp-action="Index" asp-controller="DaftarPengajuan">
+                                                        <div class="mb-3">
+                                                            <input type="radio" value=1 name="status" id="inspSetuju" />
+                                                            <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
+                                                            <input type="radio" value=2 name="status" id="inspTidakSetuju" />
+                                                            <label for="inspTidakSetuju" style="font-size:18px;font-family:'Segoe UI'">Reject</label><br />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                <!-- End Table with stripped rows -->
-
             </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+    $(".acc1-button").click(function () {
+        var id_pengajuan = $(this).data("id_pengajuan");
+        Approval1Action(id_pengajuan);
+    });
+
+    function Approval1Action(id_pengajuan) {
+        $.ajax({
+            url: "/DaftarPengajuan/Approval1/" + id_pengajuan,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                    $("#CarModel").val(data.nama_mobil);
+                    $("#Fuel").val(data.bahan_bakar);
+                    $("#NamaMhs").val(data.nama);
+                    $("#NIM").val(data.nim);
+                    $("#Job").val(data.deskripsi);
+                $("#acc1Modal_" + id_pengajuan).modal("show");
+
+            },
+            error: function () {
+                console.log("Error during AJAX request for edit modal content");
+                Swal.fire("Error!", "Terjadi kesalahan saat memuat data Admin untuk diedit.", "error");
+            }
+        });
+    }
+    });
+</script>
