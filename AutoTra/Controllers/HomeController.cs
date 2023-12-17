@@ -59,10 +59,10 @@ namespace AutoTra.Controllers
 
                 string serializedModelFromDb = JsonConvert.SerializeObject(adminModel);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
-                HttpContext.Session.SetString("Role", "admin");
+                HttpContext.Session.SetString("Role", adminModel.peran);
                 HttpContext.Session.SetString("nama", adminModel.nama);
 
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "DashboardAdmin");
 
             }
             else if (i==2)
@@ -90,23 +90,6 @@ namespace AutoTra.Controllers
                 HttpContext.Session.SetString("nama", picmodel.nama);
 
                 return RedirectToAction("Index", "DashboardPIC");
-            }
-            else if (string.Equals(username, "superadmin", StringComparison.OrdinalIgnoreCase) && string.Equals(password, "123"))
-            {
-                // Static credentials matched
-                string serializedModel = JsonConvert.SerializeObject(new AdminModel
-                {
-                    npk = "superadmin",
-                    nama = "Super Admin",
-                    username = "superadmin",
-                    password = "123",
-                    peran = "Superadmin",
-                    status = 1
-                });
-                HttpContext.Session.SetString("Identity", serializedModel);
-
-                // Redirect to the DashboardAdmin/Index action
-                return RedirectToAction("Index", "DashboardAdmin");
             }
             else
             {

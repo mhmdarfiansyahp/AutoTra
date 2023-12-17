@@ -58,37 +58,7 @@
         </div>
     </div>
 
-    <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">Login</button>
-
-    <script>
-        function login() {
-            var enteredUsername = document.getElementById("username").value;
-            var enteredPassword = document.getElementById("password").value;
-
-            // Check if entered credentials match the static Superadmin credentials
-            if (string.Equals(enteredUsername, "superadmin", StringComparison.OrdinalIgnoreCase) && string.Equals(enteredPassword, "123")) {
-                // Store the username in localStorage
-                localStorage.setItem("loggedInUsername", enteredUsername);
-
-                // Redirect to the Superadmin Dashboard or perform any other actions
-                window.location.href = "/Dashboard/Index";
-            } else {
-                // Display an error message or handle the invalid login
-                alert("Invalid credentials. Please try again.");
-            }
-        }
-
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            var checkbox = document.getElementById("showPasswordCheckbox");
-
-            if (checkbox.checked) {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
-        }
-    </script>
+    <button id="btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;" title="Login">Login</button>
 
     <style>
         .polman-form-login {
@@ -100,5 +70,6 @@
         h4, label, input, button, span {
             font-family: 'NAMA_FONT', Verdana;
         }
+
     </style>
 </form>
