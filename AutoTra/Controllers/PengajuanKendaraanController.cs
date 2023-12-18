@@ -90,5 +90,13 @@ namespace AutoTra.Controllers
             }
             return View(mbl);
         }
+
+        [HttpGet]   
+        public IActionResult FirstCheck(int id) 
+        {
+            ViewData["DataForm"] = pengajuanrepositori.getForm(id);
+            ViewData["DataItem"] = pengajuanrepositori.getDataItem();
+            return View();
+        }
     }
 }

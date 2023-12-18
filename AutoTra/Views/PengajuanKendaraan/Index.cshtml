@@ -76,6 +76,7 @@
                             <th scope="col">NIM</th>
                             <th scope="col">Lecturer Name</th>
                             <th scope="col">Vehicle Name</th>
+                            <th scope="col">Scope</th>
                             <th scope="col">Job description</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -95,6 +96,7 @@
                                         @ViewBag.Mobildictinary[pengajuan.id_mobil]
                                     }
                                 </td>
+                                <td>@pengajuan.skala</td>
                                 <td>@pengajuan.deskripsi</td>
                                 <td>@(pengajuan.status == 0 ? "Diajukan" : "Menunggu Konfirmasi")</td>
                                 <td>
@@ -110,6 +112,11 @@
                                     <button id="detail-button" class="btn btn-sm btn-primary detail-button">
                                         <i class="fa-solid fa-bars"></i>
                                     </button>
+                                    }@if (@pengajuan.status == 2)
+                                    {
+                                        <a asp-controller="PengajuanKendaraan" asp-action="FirstCheck" asp-route-id="@pengajuan.id_pengajuan" class="btn btn-sm btn-success">
+                                            <i class="fa-regular fa-file"></i>
+                                        </a>
                                     }
                                 </td>
                             </tr>

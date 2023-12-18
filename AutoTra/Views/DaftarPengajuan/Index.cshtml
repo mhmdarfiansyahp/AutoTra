@@ -87,10 +87,13 @@
                                                 statusText = "Diajukan";
                                                 break;
                                             case 1:
-                                                statusText = "Menunggu Konfirmasi";
+                                                statusText = "Tidak Disetujui";
                                                 break;
                                             case 2:
-                                                statusText = "Tidak Disetujui";
+                                                statusText = "Disetujui";
+                                                break;
+                                            case 3:
+                                                statusText = "Diselesaikan";
                                                 break;
                                             default:
                                                 statusText = "Status Tidak Dikenali";
@@ -100,9 +103,18 @@
                                     @statusText
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary acc1-button" data-toggle="modal" data-target="#acc1Modal_@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
-                                        <i class="fa-solid fa-bars"></i>
-                                    </button>
+                                    @if (@pengajuan.status == 0)
+                                    {
+                                        <button class="btn btn-sm btn-primary acc1-button" data-toggle="modal" data-target="@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
+                                            <i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    }
+                                    @if (@pengajuan.status == 2)
+                                    {
+                                        <button class="btn btn-sm btn-success acc1-button" data-toggle="modal" data-target="@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
+                                            <i class="fa-regular fa-file"></i>
+                                        </button>
+                                    }
 
                                     <div class="modal fade" id="acc1Modal_@pengajuan.id_pengajuan" tabindex="-1" role="dialog" aria-labelledby="acc1ModelLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -112,38 +124,45 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form>
+                                                        <input class="form-control" type="hidden" name="id_pengajuan">
+                                                        <input class="form-control" type="hidden" name="id_mobil">
                                                         <div class="mb-3">
                                                             <label class="control-label">NIM</label>
-                                                            <input class="form-control" id="NIM" readonly>
+                                                            <input class="form-control" readonly name="NIM">
                                                         </div>
 
                                                         <div class="mb-3">
                                                             <label class="control-label">Name</label>
-                                                            <input class="form-control" id="NamaMhs" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
+                                                            <input class="form-control" readonly name="NamaMhs">
+                                                        </div>
+
+                                                        <div class="mb-3">
                                                             <label class="control-label">Vehicle Model</label>
-                                                            <input class="form-control" id="CarModel" readonly>
+                                                            <input class="form-control" readonly name="CarModel">
                                                         </div>
-                                                                <div class="mb-3">
+
+                                                        <div class="mb-3">
                                                             <label class="control-label">Fuel</label>
-                                                            <input class="form-control" id="Fuel" readonly>
+                                                            <input class="form-control" readonly name="Fuel">
                                                         </div>
+
                                                         <div class="mb-3">
                                                             <label class="control-label">Job Description</label>
-                                                            <input class="form-control" id="Job" readonly>
+                                                            <input class="form-control" readonly name="Job">
                                                         </div>
                                                     </form>
                                                     <hr />
-                                                    <form method="post" asp-action="Index" asp-controller="DaftarPengajuan">
+                                                    <form class="approvalcar1" method="post">
+                                                        <input class="form-control" type="hidden" name="id_pengajuan">
+                                                        <input class="form-control" type="hidden" name="id_mobil">
                                                         <div class="mb-3">
-                                                            <input type="radio" value=1 name="status" id="inspSetuju" />
+                                                            <input type="radio" value=2 name="approvalStatus" id="inspSetuju" />
                                                             <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
-                                                            <input type="radio" value=2 name="status" id="inspTidakSetuju" />
+                                                            <input type="radio" value=1 name="approvalStatus" id="inspTidakSetuju" />
                                                             <label for="inspTidakSetuju" style="font-size:18px;font-family:'Segoe UI'">Reject</label><br />
                                                         </div>
                                                         <div class="form-group">
-                                                            <button type="submit" class="btn btn-success">Submit</button>
+                                                            <button type="button" class="btn btn-success submitApproval">Submit</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -162,30 +181,50 @@
 
 <script>
     $(document).ready(function () {
-    $(".acc1-button").click(function () {
-        var id_pengajuan = $(this).data("id_pengajuan");
-        Approval1Action(id_pengajuan);
-    });
-
-    function Approval1Action(id_pengajuan) {
-        $.ajax({
-            url: "/DaftarPengajuan/Approval1/" + id_pengajuan,
-            type: "GET",
-            success: function (data) {
-                console.log(data);
-                    $("#CarModel").val(data.nama_mobil);
-                    $("#Fuel").val(data.bahan_bakar);
-                    $("#NamaMhs").val(data.nama);
-                    $("#NIM").val(data.nim);
-                    $("#Job").val(data.deskripsi);
-                $("#acc1Modal_" + id_pengajuan).modal("show");
-
-            },
-            error: function () {
-                console.log("Error during AJAX request for edit modal content");
-                Swal.fire("Error!", "Terjadi kesalahan saat memuat data Admin untuk diedit.", "error");
-            }
+        $(".acc1-button").click(function () {
+            var id_pengajuan = $(this).data("id_pengajuan");
+            Approval1Action(id_pengajuan);
         });
-    }
+
+        function Approval1Action(id_pengajuan) {
+            $.ajax({
+                url: "/DaftarPengajuan/Approval1/" + id_pengajuan,
+                type: "GET",
+                success: function (data) {
+                    console.log(data);
+                    $("input[name='id_pengajuan']").val(data.id_pengajuan);
+                    $("input[name='id_mobil']").val(data.id_mobil);
+                    $("input[name='CarModel']").val(data.nama_mobil);
+                    $("input[name='Fuel']").val(data.bahan_bakar);
+                    $("input[name='NamaMhs']").val(data.nama);
+                    $("input[name='NIM']").val(data.nim);
+                    $("input[name='Job']").val(data.deskripsi);
+                    $("#acc1Modal_" + id_pengajuan).modal("show");
+                },
+                error: function () {
+                    console.log("Error during AJAX request for edit modal content");
+                    Swal.fire("Error!", "Terjadi kesalahan saat memuat data Admin untuk diedit.", "error");
+                }
+            });
+        }
+
+        $(".submitApproval").click(function () {
+            var approvalData = $(".approvalcar1").serialize(); // Mengambil data dari formulir
+
+            $.ajax({
+                type: "POST",
+                url: "/DaftarPengajuan/Approve1",
+                data: approvalData,
+                success: function () {
+                    console.log(approvalData);
+                    location.reload(); // Memuat ulang halaman setelah berhasil
+                },
+                error: function () {
+                    console.log("Error during AJAX request for approval");
+                    Swal.fire("Error!", "Terjadi kesalahan saat menyetujui atau menolak.", "error");
+                }
+            });
+        });
     });
+
 </script>

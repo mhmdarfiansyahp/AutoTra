@@ -45,10 +45,38 @@ namespace AutoTra.Controllers
             return View(pengajuan);
         }
         [HttpPost]
-        public IActionResult Approve(DaftarPengajuanModel dpengajuan)
+        public IActionResult Approve1(int approvalStatus, int id_pengajuan, int id_mobil)
         {
-            TempData["SuccessMessage"] = "Data added succesfully";
-            return RedirectToAction("Index");
+            try
+            {
+                // Lakukan validasi jika diperlukan
+                if (approvalStatus != 0) 
+                {
+                    // Lakukan sesuatu dengan data yang diterima dari formulir
+                    if (approvalStatus == 2 || approvalStatus == 1) // Mengubah dua blok if menjadi satu dengan || (atau)
+                    {
+                        Dpengajuanrepositori.approval1(approvalStatus, id_pengajuan, id_mobil);
+                    }
+                    else
+                    {
+                        // Jika approvalStatus bukan 1 atau 2
+                        return Json(new { success = false, message = "Nilai approvalStatus tidak valid." });
+                    }
+
+                    TempData["SuccessMessage"] = "Status of Submissions was changed!";
+                    return Json(new { success = true, message = "Data berhasil diproses." });
+                }
+                else
+                {
+                    // Jika data tidak valid atau kosong
+                    return Json(new { success = false, message = "Data tidak valid." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Tangani pengecualian jika terjadi kesalahan
+                return Json(new { success = false, message = "Terjadi kesalahan: " + ex.Message });
+            }
         }
 
         [HttpGet]

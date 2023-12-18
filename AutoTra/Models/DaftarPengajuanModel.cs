@@ -32,5 +32,7 @@ namespace AutoTra.Models
         public string? kilometer { get; set; }
 
         public string? bahan_bakar { get; set; }
+
+        public string? skala { get; set; }
     }
 }

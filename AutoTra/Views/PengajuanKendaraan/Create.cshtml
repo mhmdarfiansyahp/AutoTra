@@ -89,6 +89,16 @@
                             <span asp-validation-for="id_mobil" class="text-danger"></span>
                         </div>
                         <div class="form-group">
+                            <label asp-for="skala" class="control-label">Scope</label>
+                            <select asp-for="skala" class="form-control" id="skala">
+                                <option value="null">--- Choose Time Scope ---</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                            </select>
+                            <span asp-validation-for="skala" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
                             <label asp-for="deskripsi" class="control-label">Description</label>
                             <input asp-for="deskripsi" class="form-control" id="deskripsi" />
                             <span asp-validation-for="deskripsi" class="text-danger"></span>

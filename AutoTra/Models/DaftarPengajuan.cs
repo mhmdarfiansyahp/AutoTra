@@ -38,6 +38,7 @@ namespace AutoTra.Models
                                 nim = reader["nim"].ToString(),
                                 npk = reader["npk"].ToString(),
                                 id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
+                                skala = reader["skala"].ToString(),
                                 deskripsi = reader["deskripsi"].ToString(),
                                 status = Convert.ToInt32(reader["status"].ToString()),
                             };
@@ -105,6 +106,27 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
             return dtlacc1;
+        }
+        public void approval1(int approvalStatus, int id_pengajuan, int id_mobil)
+        {
+            try
+            {
+                string storedProcedureName = "sp_ApprovalPengajuan1";
+                SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
+                command.Parameters.AddWithValue("@id_mobil", id_mobil);
+                command.Parameters.AddWithValue("@status", approvalStatus);
+
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
     }
