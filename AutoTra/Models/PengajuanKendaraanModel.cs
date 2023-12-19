@@ -12,7 +12,10 @@ namespace AutoTra.Models
 
         public string? nim {get; set; }
         public string? nama { get; set; }
+        [RegularExpression(@"^(?!null$).*", ErrorMessage = "Lecturer name must be chosen!")]
         public string? npk { get; set; }
+        [RegularExpression(@"^(?!null$).*", ErrorMessage = "Cars must be chosen!")]
+
         public int? id_mobil { get; set; }
 
         public string? deskripsi { get; set; }

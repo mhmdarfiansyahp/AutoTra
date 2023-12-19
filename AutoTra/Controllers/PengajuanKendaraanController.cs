@@ -80,7 +80,7 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     pengajuanrepositori.insertdata(mbl);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             }
@@ -106,7 +106,7 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     pengajuanrepositori.insertdetailpemeriksaan(pengajuan);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             return View(pengajuan);

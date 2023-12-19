@@ -6,7 +6,7 @@ namespace AutoTra.Models
     {
         public int? id_item { get; set; }
         [Required(ErrorMessage = "Description Inspection Item must be filled.")]
-        [MaxLength(300, ErrorMessage = "Input Name Max 300 character.")]
+        [MaxLength(225, ErrorMessage = "Input Name Max 225 character.")]
         public string? item_pemeriksaan { get; set; }
         [Required(ErrorMessage = "Inspection Standart must be filled.")]
         public string? kategori_pemeriksaan { get; set; }
