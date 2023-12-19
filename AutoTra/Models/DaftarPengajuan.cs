@@ -73,6 +73,7 @@ namespace AutoTra.Models
                 dtlacc1.id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString());
                 dtlacc1.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
                 dtlacc1.nim = reader["nim"].ToString();
+                dtlacc1.skala = reader["skala"].ToString();
                 dtlacc1.deskripsi = reader["deskripsi"].ToString();
                 reader.Close();
 
@@ -107,10 +108,22 @@ namespace AutoTra.Models
             }
             return dtlacc1;
         }
-        public void approval1(int approvalStatus, int id_pengajuan, int id_mobil)
+        public void approval1(int approvalStatus, int id_pengajuan, int id_mobil, DateTime tanggal_pemeriksaan, string Skala, string NIM, int status_pemeriksaan)
         {
+            DaftarPengajuanModel dtlacc = new DaftarPengajuanModel();
             try
             {
+                string query1 = "select * from dbo.CRUD_Frm_Pemeriksaan where skala = @p1 AND id_mobil = @p2";
+                SqlCommand command1 = new SqlCommand(query1, _connection);
+                command1.Parameters.AddWithValue("@p1", Skala);
+                command1.Parameters.AddWithValue("@p2", id_mobil);
+                _connection.Open();
+                SqlDataReader reader = command1.ExecuteReader();
+                reader.Read();
+                dtlacc.id_form = Convert.ToInt32(reader["id_form"].ToString());
+                reader.Close();
+                _connection.Close();
+
                 string storedProcedureName = "sp_ApprovalPengajuan1";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -118,6 +131,10 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
                 command.Parameters.AddWithValue("@id_mobil", id_mobil);
                 command.Parameters.AddWithValue("@status", approvalStatus);
+                command.Parameters.AddWithValue("@tanggal_pemeriksaan", tanggal_pemeriksaan);
+                command.Parameters.AddWithValue("@id_form", dtlacc.id_form);
+                command.Parameters.AddWithValue("@nim", NIM);
+                command.Parameters.AddWithValue("@status_pemeriksaan", status_pemeriksaan);
 
                 _connection.Open();
                 command.ExecuteNonQuery();

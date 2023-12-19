@@ -92,11 +92,24 @@ namespace AutoTra.Controllers
         }
 
         [HttpGet]   
-        public IActionResult FirstCheck(int id) 
+        public IActionResult FirstCheck(int? id) 
         {
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
+            PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan(id);
+            ViewBag.id_pemeriksaan = pengajuan.id_pemeriksaan;
             return View();
+        }
+        [HttpPost]
+        public IActionResult FirstCheck(PengajuanKendaraanModel pengajuan)
+        {
+                if (ModelState.IsValid)
+                {
+                    pengajuanrepositori.insertdetailpemeriksaan(pengajuan);
+                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    return RedirectToAction("Index");
+                }
+            return View(pengajuan);
         }
     }
 }

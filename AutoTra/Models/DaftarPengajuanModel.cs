@@ -34,5 +34,7 @@ namespace AutoTra.Models
         public string? bahan_bakar { get; set; }
 
         public string? skala { get; set; }
+
+        public int? id_form { get; set; }
     }
 }

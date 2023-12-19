@@ -59,6 +59,7 @@
                             <th scope="col">PIC Name</th>
                             <th scope="col">Vehicle Name</th>
                             <th scope="col">Date of filing</th>
+                            <th scope="col">Scope</th>
                             <th scope="col">Job description</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -77,6 +78,7 @@
                                     }
                                 </td>
                                 <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
+                                <td>@pengajuan.skala</td>
                                 <td>@pengajuan.deskripsi</td>
                                 <td>
                                     @{
@@ -147,14 +149,22 @@
                                                         </div>
 
                                                         <div class="mb-3">
+                                                            <label class="control-label">Scope</label>
+                                                            <input class="form-control" readonly name="Skala">
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label class="control-label">Job Description</label>
                                                             <input class="form-control" readonly name="Job">
                                                         </div>
                                                     </form>
                                                     <hr />
                                                     <form class="approvalcar1" method="post">
-                                                        <input class="form-control" type="hidden" name="id_pengajuan">
-                                                        <input class="form-control" type="hidden" name="id_mobil">
+                                                        <input class="form-control" type="hidden" name="id_pengajuan" />
+                                                        <input class="form-control" type="hidden" name="id_mobil" />
+                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" id="tanggalPemeriksaan" hidden/>
+                                                        <input class="form-control" name="Skala" hidden />
+                                                        <input class="form-control" name="NIM" hidden />
+                                                        <input class="form-control" name="status_pemeriksaan" value="0" hidden />
                                                         <div class="mb-3">
                                                             <input type="radio" value=2 name="approvalStatus" id="inspSetuju" />
                                                             <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
@@ -196,6 +206,7 @@
                     $("input[name='id_mobil']").val(data.id_mobil);
                     $("input[name='CarModel']").val(data.nama_mobil);
                     $("input[name='Fuel']").val(data.bahan_bakar);
+                    $("input[name='Skala']").val(data.skala);
                     $("input[name='NamaMhs']").val(data.nama);
                     $("input[name='NIM']").val(data.nim);
                     $("input[name='Job']").val(data.deskripsi);
@@ -225,6 +236,10 @@
                 }
             });
         });
+        var today = new Date().toISOString().split('T')[0];
+
+        // Mengatur nilai input tanggal menjadi hari ini
+        $('#tanggalPemeriksaan').val(today);
     });
 
 </script>

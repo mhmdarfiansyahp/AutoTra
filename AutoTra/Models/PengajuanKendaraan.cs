@@ -77,33 +77,135 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
+        public void insertdetailpemeriksaan(PengajuanKendaraanModel pengajuanmodel)
+        {
+            try
+            {
+                if(pengajuanmodel.hasil_inspeksi == "Yes" || pengajuanmodel.alasan == null)
+                {
+                    pengajuanmodel.alasan = "null";
+                }
+                else if (pengajuanmodel.hasil_inspeksi == null || pengajuanmodel.alasan != null)
+                {
+                    pengajuanmodel.hasil_inspeksi = "null";
+                }
+                string storedProcedureName = "[sp_InsertDetailPemeriksaan]";
+                SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
+                command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
+                command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
+                command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
+
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
 
         public List<PengajuanKendaraanModel> getForm(int? id)
         {
             PengajuanKendaraanModel dtlmodel = new PengajuanKendaraanModel();
-            PengajuanKendaraanModel dtlmodel1 = new PengajuanKendaraanModel();
+            PengajuanKendaraanModel dtlmodel1 = new PengajuanKendaraanModel(); 
+            List<PengajuanKendaraanModel> formlist = new List<PengajuanKendaraanModel>();
             try
             {
-                string query = "SELECT * FROM dbo.Pgn_Unit_Praktek where id_pgn_unit = @p1";
+                string query = "select * from dbo.Pgn_Unit_Praktek where id_pgn_unit = @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", id);
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
-                reader.Read();
-                dtlmodel.id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString());
-                dtlmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
-                dtlmodel.skala = reader["skala"].ToString();
+                if (reader.Read())
+                {
+                    dtlmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
+                    dtlmodel.skala = reader["skala"].ToString();
+                    dtlmodel.nim = reader["nim"].ToString();
+                }
                 reader.Close();
 
-                string query1 = "select * from dbo.CRUD_Frm_Pemeriksaan where id_mobil = @p2 AND skala = @p3";
+                // Query kedua
+                string jenis_form = "First Check";
+                string query1 = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan WHERE id_mobil = @p2 AND skala = @p3 AND jenis_form = @jenis_form AND status <> 0";
+                SqlCommand command1 = new SqlCommand(query1, _connection);
+                command1.Parameters.AddWithValue("@p2", dtlmodel.id_mobil);
+                command1.Parameters.AddWithValue("@p3", dtlmodel.skala);
+                command1.Parameters.AddWithValue("@jenis_form", jenis_form);
+                SqlDataReader reader1 = command1.ExecuteReader();    
+                    if (reader1.Read())
+                    {
+                        dtlmodel1.id_form = Convert.ToInt32(reader1["id_form"].ToString());
+                    }
+                    reader1.Close();
+
+                // Query ketiga
+                string query2 = "SELECT * FROM dbo.Dtl_CRUD_Frm_Pemeriksaan where id_form = @p6";
+                SqlCommand command2 = new SqlCommand(query2, _connection);
+                command2.Parameters.AddWithValue("@p6", dtlmodel1.id_form);
+                SqlDataReader reader2 = command2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    PengajuanKendaraanModel form = new PengajuanKendaraanModel
+                    {
+                        id_form = Convert.ToInt32(reader2["id_form"].ToString()),
+                        id_item = Convert.ToInt32(reader2["id_item"].ToString())
+                    };
+                    formlist.Add(form);
+                }
+                reader2.Close();
+                _connection.Close();
+            }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+
+    return formlist;
+        }
+
+        public PengajuanKendaraanModel getPemeriksaan(int? id)
+        {
+            PengajuanKendaraanModel dtlmodel = new PengajuanKendaraanModel();
+            try
+            {
+                string query = "select * from dbo.Pgn_Unit_Praktek where id_pgn_unit = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", id);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    dtlmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
+                    dtlmodel.skala = reader["skala"].ToString();
+                    dtlmodel.nim = reader["nim"].ToString();
+                }
+                reader.Close();
+
+                string query1 = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan WHERE id_mobil = @p2 AND skala = @p3 AND status <> 0";
                 SqlCommand command1 = new SqlCommand(query1, _connection);
                 command1.Parameters.AddWithValue("@p2", dtlmodel.id_mobil);
                 command1.Parameters.AddWithValue("@p3", dtlmodel.skala);
                 SqlDataReader reader1 = command1.ExecuteReader();
-                reader1.Read();
-                dtlmodel1.id_form = Convert.ToInt32(reader1["id_form"].ToString());
-                dtlmodel1.jenis_form = reader1["jenis_form"].ToString();
+                if (reader1.Read())
+                {
+                    dtlmodel.id_form = Convert.ToInt32(reader1["id_form"].ToString());
+                }
                 reader1.Close();
+
+                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 0";
+                SqlCommand command2 = new SqlCommand(query2, _connection);
+                command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
+                command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya
+                SqlDataReader reader2 = command2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    dtlmodel.id_pemeriksaan = Convert.ToInt32(reader2["id_pemeriksaan"].ToString());
+                }
+                reader2.Close();
                 _connection.Close();
             }
             catch (Exception ex)
@@ -111,34 +213,7 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
 
-            List<PengajuanKendaraanModel> formlist = new List<PengajuanKendaraanModel>();
-            try
-            {
-                string query = "SELECT * FROM dbo.Dtl_CRUD_Frm_Pemeriksaan where id_form = @p1";
-                SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", dtlmodel1.id_form);
-                _connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    PengajuanKendaraanModel form = new PengajuanKendaraanModel
-                    {
-                        id_form = Convert.ToInt32(reader["id_form"].ToString()),
-                        id_item = Convert.ToInt32(reader["id_item"].ToString()),
-                    };
-                    formlist.Add(form);
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                _connection.Close();
-            }
-            return formlist;
+            return dtlmodel;
         }
 
         public List<MobilModel> getAllCarIndex()
@@ -212,5 +287,6 @@ namespace AutoTra.Models
             }
             return itmlist;
         }
+
     }
 }

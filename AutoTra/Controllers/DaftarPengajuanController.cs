@@ -45,7 +45,7 @@ namespace AutoTra.Controllers
             return View(pengajuan);
         }
         [HttpPost]
-        public IActionResult Approve1(int approvalStatus, int id_pengajuan, int id_mobil)
+        public IActionResult Approve1(int approvalStatus, int id_pengajuan, int id_mobil, DateTime tanggal_pemeriksaan, string skala, string NIM, int status_pemeriksaan)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace AutoTra.Controllers
                     // Lakukan sesuatu dengan data yang diterima dari formulir
                     if (approvalStatus == 2 || approvalStatus == 1) // Mengubah dua blok if menjadi satu dengan || (atau)
                     {
-                        Dpengajuanrepositori.approval1(approvalStatus, id_pengajuan, id_mobil);
+                        Dpengajuanrepositori.approval1(approvalStatus, id_pengajuan, id_mobil, tanggal_pemeriksaan, skala, NIM, status_pemeriksaan);
                     }
                     else
                     {

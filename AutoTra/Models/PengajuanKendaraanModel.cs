@@ -24,5 +24,7 @@ namespace AutoTra.Models
         public string? skala { get; set; }
         [RegularExpression(@"^(?!null$).*", ErrorMessage = "Type of Form must be chosen!")]
         public string? jenis_form { get; set; }
+        public string? hasil_inspeksi { get; set; }
+        public string? alasan { get; set; }
     }
 }

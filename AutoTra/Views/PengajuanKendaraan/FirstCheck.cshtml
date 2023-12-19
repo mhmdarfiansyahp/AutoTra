@@ -28,61 +28,82 @@
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
+<!-- Form untuk seluruh tabel -->
+<form method="post" asp-action="FirstCheck" asp-controller="PengajuanKendaraan">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
 
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-<div class="card">
-
-    <!-- Table with stripped rows -->
-    <table class="table datable">
-        <thead>
-            <tr>
-                <th scope="col">No</th>
-                <th scope="col">Inspection Item</th>
-                <th scope="col">Inspection Standart</th>
-                <th scope="col">Inspection Category</th>
-                <th scope="col">Inspection Method</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var form in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataForm"])
-            {
-                @foreach (var item in (IEnumerable<ItemModel>)ViewData["DataItem"])
-                {
-                    @if (item.id_item == form.id_item)
-                    {
+                <table class="table datable">
+                    <thead>
                         <tr>
-                            <td>
-                                <span>@(no++)</span>
-                            </td>
-                            <td>
-                                <span>@item.item_pemeriksaan</span>
-                            </td>
-                            <td>
-                                <span>@item.standart_pemeriksaan</span>
-                            </td>
-                            <td>
-                                <span>@item.kategori_pemeriksaan</span>
-                            </td>
-                            <td>
-                                <span>@item.metode_pemeriksaan</span>
-                            </td>
+                            <th scope="col">No</th>
+                            <th scope="col">Inspection Item</th>
+                            <th scope="col">Inspection Standard</th>
+                            <th scope="col">Inspection Category</th>
+                            <th scope="col">Inspection Method</th>
+                            <th scope="col">Inspection Result</th>
+                            <th scope="col">Reason Not Suitable</th>
                         </tr>
-
-                    }
-                }
-
-            }
-        </tbody>
-    </table>
-    <!-- End Table with stripped rows -->
-                </div>
-
-            </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var form in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataForm"])
+                        {
+                            @foreach (var item in (IEnumerable<ItemModel>)ViewData["DataItem"])
+                            {
+                                @if (item.id_item == form.id_item)
+                                {
+                                    <tr>
+                                        <td>@(no++)</td>
+                                        <td>@item.item_pemeriksaan</td>
+                                        <td>@item.standart_pemeriksaan</td>
+                                        <td>@item.kategori_pemeriksaan</td>
+                                        <td>@item.metode_pemeriksaan</td>
+                                        <td>
+                                            <input id="id_pemeriksaan" name="id_pemeriksaan" value="@ViewBag.id_pemeriksaan" asp-for="id_pemeriksaan" hidden/>
+                                            <input id="id_item" name="id_item" value="@form.id_item" asp-for="id_item" hidden/> 
+                                            <div class="form-group">
+                                                <input value="Yes" asp-for="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" id="hasil_inspeksi_@(no)" style="transform:scale(1.3);">
+                                                <span asp-validation-for="hasil_inspeksi" class="text-danger"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input asp-for="alasan" class="form-control alasan-textbox" id="alasan_@(no)" style="border-color:darkgray;">
+                                                <span asp-validation-for="alasan" class="text-danger"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>
-</div>
+    <button type="submit" class="btn btn-primary">Submit Form</button> 
+</form>
+<style>
+
+    .alasan-textbox:focus {
+        border-color:cornflowerblue; 
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.hasil-inspeksi-checkbox').change(function () {
+            var index = $(this).closest('tr').index() + 2;
+            var alasanTextbox = $('#alasan_' + index);
+
+            if ($(this).is(':checked')) {
+                alasanTextbox.prop('disabled', true);
+                alasanTextbox.val(''); 
+            } else {
+                alasanTextbox.prop('disabled', false);
+            }
+        });
+    });
+</script>
