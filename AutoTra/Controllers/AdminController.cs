@@ -11,11 +11,24 @@ namespace AutoTra.Controllers
         {
             adminrepositori = new Admin(configuration);
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View(adminrepositori.getAllData());
         }
 
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            if (search != null)
+            {
+                return View(adminrepositori.getSearch(search));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         [HttpGet]
         public IActionResult Create() 
         {
@@ -29,19 +42,30 @@ namespace AutoTra.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Check if the username already exists
-                    if (adminrepositori.IsUsernameExists(adm.username))
+                    // Check if the NPK or username already exists
+                    if (adminrepositori.IsNpkExists(adm.npk) || adminrepositori.IsUsernameExists(adm.username, adm.npk))
                     {
-                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
-                        return View(adm);
+                        if (adminrepositori.IsNpkExists(adm.npk))
+                        {
+                            ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
+                        }
+
+                        if (adminrepositori.IsUsernameExists(adm.username, adm.npk))
+                        {
+                            ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        }
                     }
 
-                    // If the username is unique, insert data
-                    adminrepositori.insertData(adm);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
-                    return RedirectToAction("Index");
+                    // If both NPK and username are unique, insert data
+                    if (ModelState.IsValid)
+                    {
+                        adminrepositori.insertData(adm);
+                        TempData["SuccessMessage"] = "Data added successfully";
+                        return RedirectToAction("Index");
+                    }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
@@ -66,6 +90,13 @@ namespace AutoTra.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Pemeriksaan apakah username sudah ada
+                if (adminrepositori.IsUsernameExists(admmodel.username, admmodel.npk))
+                {
+                    ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                    return View(admmodel);
+                }
+
                 if (int.TryParse(admmodel.npk, out int Npk))
                 {
                     AdminModel newadm = adminrepositori.getData(Npk);
@@ -80,10 +111,11 @@ namespace AutoTra.Controllers
                     newadm.peran = admmodel.peran;
                     newadm.status = admmodel.status;
                     adminrepositori.updateData(newadm);
-                    TempData["SuccessMessage"] = "Admin berhasil diupdate.";
+                    TempData["SuccessMessage"] = "Admin updated successfully.";
                     return RedirectToAction("Index");
                 }
             }
+
             return View(admmodel);
         }
 
@@ -97,7 +129,7 @@ namespace AutoTra.Controllers
                 if (!string.IsNullOrEmpty(id))
                 {
                     adminrepositori.deleteData(id);
-                    response = new { success = true, message = "Admin berhasil dihapus." };
+                    response = new { success = true, message = "Admin successfully changed his status." };
                 }
                 else
                 {

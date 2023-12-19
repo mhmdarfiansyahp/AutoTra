@@ -20,15 +20,11 @@
     Console.WriteLine("Role: " + role);
     if (role == "admin")
     {
-        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+        Layout = "~/Views/Shared/_Layout.cshtml";
     }
     else if (role == "Dosen")
     {
         Layout = "~/Views/Shared/LayoutDosen.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
 
@@ -108,7 +104,7 @@
                         </div>
                         <br />
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary" title="Submit">Submit</button>
                         </div>
                     </form>
                 </div>

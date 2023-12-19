@@ -21,10 +21,6 @@
     Console.WriteLine("Role: " + role);
     if (role == "admin")
     {
-        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
-    }
-    else
-    {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
@@ -53,7 +49,7 @@
                 </div>
             }
 
-            <a asp-controller="Item" class="btn btn-primary" asp-action="Create">+ Add Item Inspection</a>
+            <a asp-controller="Item" class="btn btn-primary" asp-action="Create" title="Add Item Inspection">+ Add Item Inspection</a>
             <br />
             <br />
             <form method="post">
@@ -61,7 +57,7 @@
                     <div class="col-lg-12">
                         <div class="input-group mb-12">
                             <input class="form-control" type="text" placeholder="Search Item Inspection data by name.." aria-describedby="button-addon2" name="search">
-                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit" title="Search">Search</button>
                         </div>
                     </div>
                 </div>
@@ -93,11 +89,11 @@
                                 <td>@itm.metode_pemeriksaan</td>
                                 <td>@(itm.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
-                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@itm.id_item">
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@itm.id_item" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    <a asp-controller="Item" asp-action="Edit" asp-route-id="@itm.id_item" class="btn btn-sm btn-primary">
+                                    <a asp-controller="Item" asp-action="Edit" asp-route-id="@itm.id_item" class="btn btn-sm btn-primary" title="Update">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>

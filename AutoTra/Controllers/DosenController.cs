@@ -43,14 +43,21 @@ namespace AutoTra.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Check if the username already exists
-                    if (dosenrepositori.IsUsernameExists(adm.username))
+                    if (dosenrepositori.IsNpkExists(adm.npk) || dosenrepositori.IsUsernameExists(adm.username, adm.npk))
                     {
-                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
-                        return View(adm);
+                        if (dosenrepositori.IsNpkExists(adm.npk))
+                        {
+                            ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
+                        }
+
+                        // Check if the username already exists
+                        if (dosenrepositori.IsUsernameExists(adm.username, adm.npk))
+                        {
+                            ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        }
                     }
                     dosenrepositori.insertdata(adm);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             }
@@ -80,6 +87,12 @@ namespace AutoTra.Controllers
             {
                 if (int.TryParse(dsnmodel.npk, out int Npk))
                 {
+                    if (dosenrepositori.IsUsernameExists(dsnmodel.username, dsnmodel.npk))
+                    {
+                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        return View(dsnmodel);
+                    }
+
                     DosenModel newadm = dosenrepositori.getdata(Npk);
                     if (newadm == null)
                     {
@@ -92,7 +105,7 @@ namespace AutoTra.Controllers
                     newadm.peran = dsnmodel.peran;
                     newadm.status = dsnmodel.status;
                     dosenrepositori.updatedata(newadm);
-                    TempData["SuccessMessage"] = "Dosen berhasil diupdate.";
+                    TempData["SuccessMessage"] = "Dosen updated successfully.";
                     return RedirectToAction("Index");
                 }
             }
@@ -109,7 +122,7 @@ namespace AutoTra.Controllers
                 if (!string.IsNullOrEmpty(id))
                 {
                     dosenrepositori.deletedata(id);
-                    response = new { success = true, message = "Dosen berhasil dihapus." };
+                    response = new { success = true, message = "Dosen successfully changed his status." };
                 }
                 else
                 {

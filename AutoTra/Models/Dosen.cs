@@ -13,20 +13,48 @@ namespace AutoTra.Models
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
         }
-        public bool IsUsernameExists(string username)
+        public bool IsUsernameExists(string username, string npk)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM Dosen WHERE username = @username", connection))
+                // Tambahkan pengecualian untuk admin yang sedang diedit
+                string query = "SELECT COUNT(*) FROM Dosen WHERE username = @username AND npk != @npk";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@npk", npk);
 
                     int count = (int)command.ExecuteScalar();
 
                     return count > 0;
                 }
+            }
+        }
+
+        public bool IsNpkExists(string npk)
+        {
+            try
+            {
+                string query = "SELECT COUNT(*) FROM Dosen WHERE npk = @npk";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@npk", npk);
+
+                _connection.Open();
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
 

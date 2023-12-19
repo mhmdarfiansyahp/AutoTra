@@ -43,13 +43,20 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     // Check if the username already exists
-                    if (picrepositori.IsUsernameExists(pic.username))
-                    {
-                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
-                        return View(pic);
+                    if (picrepositori.IsNpkExists(pic.nim) || picrepositori.IsUsernameExists(pic.username, pic.nim))
+                    { 
+                        if (picrepositori.IsNpkExists(pic.nim))
+                        {
+                            ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
+                        }
+
+                         if (picrepositori.IsUsernameExists(pic.username, pic.nim))
+                        {
+                            ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        }
                     }
                     picrepositori.insertData(pic);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             }
@@ -77,7 +84,13 @@ namespace AutoTra.Controllers
         {
             if (ModelState.IsValid)
             {
-                    PICModel newadm = picrepositori.getData(picmodel.nim);
+                if (picrepositori.IsUsernameExists(picmodel.username, picmodel.nim))
+                {
+                    ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                    return View(picmodel);
+                }
+
+                PICModel newadm = picrepositori.getData(picmodel.nim);
                     if (newadm == null)
                     {
                         return NotFound();
@@ -88,7 +101,7 @@ namespace AutoTra.Controllers
                     newadm.password = picmodel.password;
                     newadm.peran = picmodel.peran;
                     picrepositori.updateData(newadm);
-                    TempData["SuccessMessage"] = "PIC berhasil diupdate.";
+                    TempData["SuccessMessage"] = "PIC updated successfully.";
                     return RedirectToAction("Index");
                 }
             return View(picmodel);
@@ -104,7 +117,7 @@ namespace AutoTra.Controllers
                 if (!string.IsNullOrEmpty(id))
                 {
                     picrepositori.deleteData(id);
-                    response = new { success = true, message = "PIC berhasil dihapus." };
+                    response = new { success = true, message = "PIC successfully changed his status." };
                 }
                 else
                 {

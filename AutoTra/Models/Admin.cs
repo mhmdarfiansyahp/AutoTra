@@ -14,20 +14,48 @@ namespace AutoTra.Models
             _connection = new SqlConnection(_connectionString);
         }
 
-        public bool IsUsernameExists(string username)
+        public bool IsUsernameExists(string username, string npk)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM Admin WHERE username = @username", connection))
+                // Tambahkan pengecualian untuk admin yang sedang diedit
+                string query = "SELECT COUNT(*) FROM Admin WHERE username = @username AND npk != @npk";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@npk", npk);
 
                     int count = (int)command.ExecuteScalar();
 
                     return count > 0;
                 }
+            }
+        }
+
+        public bool IsNpkExists(string npk)
+        {
+            try
+            {
+                string query = "SELECT COUNT(*) FROM Admin WHERE npk = @npk";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@npk", npk);
+
+                _connection.Open();
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
 
@@ -199,5 +227,70 @@ namespace AutoTra.Models
             }
         }
 
+        public List<AdminModel> getSearch(string cari)
+        {
+            int check = 0;
+            List<AdminModel> dsnlist = new List<AdminModel>();
+            try
+            {
+                string query = "SELECT * FROM Admin where nama = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", cari);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    AdminModel adm = new AdminModel
+                    {
+                        npk = reader["npk"].ToString(),
+                        nama = reader["nama"].ToString(),
+                        username = reader["username"].ToString(),
+                        password = reader["password"].ToString(),
+                        peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    check = 1;
+                    dsnlist.Add(adm);
+                }
+                reader.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                check = 0;
+            }
+            if (check == 0)
+            {
+                try
+                {
+                    string query = "SELECT * FROM Admin where npk = @p1";
+                    SqlCommand command = new SqlCommand(query, _connection);
+                    command.Parameters.AddWithValue("@p1", cari);
+                    _connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        AdminModel adm = new AdminModel
+                        {
+                            npk = reader["npk"].ToString(),
+                            nama = reader["nama"].ToString(),
+                            username = reader["username"].ToString(),
+                            password = reader["password"].ToString(),
+                            peran = reader["peran"].ToString(),
+                            status = Convert.ToInt32(reader["status"].ToString()),
+                        };
+                        check = 1;
+                        dsnlist.Add(adm);
+                    }
+                    reader.Close();
+                    _connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return dsnlist;
+        }
     }
 }

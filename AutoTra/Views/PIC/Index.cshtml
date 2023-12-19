@@ -22,10 +22,6 @@
     Console.WriteLine("Role: " + role);
     if (role == "admin")
     {
-        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
-    }
-    else 
-    {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
@@ -54,15 +50,15 @@
                 </div>
             }
 
-            <a asp-controller="PIC" class="btn btn-primary" asp-action="Create">+ Tambah PIC</a>
+            <a asp-controller="PIC" class="btn btn-primary" asp-action="Create" title="Create PIC">+ Create PIC</a>
             <br />
             <br />
-            <form method="post">
+            <form method="post" onsubmit="return validateSearchForm()">
                 <div style="padding-left: 1080px;">
                 <div class="col-lg-12">
                 <div class="input-group mb-12">
                             <input class="form-control" type="text" placeholder="Search PIC Student data by name or nim.." aria-describedby="button-addon2" name="search">
-                    <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+                    <button class="btn btn-outline-secondary" id="button-addon2" type="submit" title="Search">Search</button>
                 </div>
                 </div>
                 </div>
@@ -98,24 +94,23 @@
                                 <td>@adm.peran</td>
                                 <td>@(adm.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
-                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-nim="@adm.nim">
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-nim="@adm.nim" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    <a asp-controller="PIC" asp-action="Edit" asp-route-id="@adm.nim" class="btn btn-sm btn-primary">
+                                    <a asp-controller="PIC" asp-action="Edit" asp-route-id="@adm.nim" class="btn btn-sm btn-primary" title="Update">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button class="btn btn-sm btn-info btn-info-modal" data-toggle="modal" data-target="#infoModal_@adm.nim">
+                                    <button class="btn btn-sm btn-info btn-info-modal" data-toggle="modal" data-target="#infoModal_@adm.nim" title="Info">
                                         <i class="fas fa-info-circle"></i>
                                     </button>
 
                                     <div class="modal fade" id="infoModal_@adm.nim" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Informasi Buku</h5>
-                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                                                    </button>
+                                                <div class="modal-header text-center">
+                                                    <h5 class="modal-title mx-auto">PIC Information</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <strong>NIM :</strong>@adm.nim<br />
@@ -123,10 +118,10 @@
                                                     <strong>Username :</strong>@adm.username<br />
                                                     <strong>Password :</strong>@adm.password<br />
                                                     <strong>Role :</strong>@adm.peran<br />
-                                                    <strong>Status :</strong>@adm.status<br />
+                                                    <strong>Status :</strong>@(adm.status == 1 ? "Active" : "Non Active")<br />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Close">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,4 +180,22 @@
             });
         });
     });
+</script>
+
+<script>
+    function validateSearchForm() {
+        var searchTerm = document.forms[0]["search"].value;
+
+        // Jika kolom pencarian kosong, tampilkan SweetAlert dan batalkan pengiriman formulir
+        if (searchTerm.trim() === "") {
+            Swal.fire({
+                title: "Error!",
+                text: "Please enter a search term.",
+                icon: "error",
+            });
+            return false;
+        }
+
+        return true;
+    }
 </script>

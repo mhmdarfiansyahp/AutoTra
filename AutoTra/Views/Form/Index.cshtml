@@ -21,10 +21,6 @@
     Console.WriteLine("Role: " + role);
     if (role == "admin")
     {
-        Layout = "~/Views/Shared/LayoutAdmin.cshtml";
-    }
-    else
-    {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
@@ -53,7 +49,7 @@
                 </div>
             }
 
-            <a asp-controller="Form" class="btn btn-primary" asp-action="Create">+ Add Inspection Form</a>
+            <a asp-controller="Form" class="btn btn-primary" asp-action="Create" title="Add Inspection Form">+ Add Inspection Form</a>
             <br />
             <br />
             <form method="post">
@@ -61,7 +57,7 @@
                     <div class="col-lg-12">
                         <div class="input-group mb-12">
                             <input class="form-control" type="text" placeholder="Search Inspection form data by car model.." aria-describedby="button-addon2" name="search">
-                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit" title="Search">Search</button>
                         </div>
                     </div>
                 </div>
@@ -99,17 +95,17 @@
                                 <td>@form.jenis_form</td>
                                 <td>@(form.status == 1 ? "Active" : "Non Active")</td>
                                 <td>
-                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@form.id_form">
+                                    <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@form.id_form" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    <a asp-controller="Form" asp-action="Edit" asp-route-id="@form.id_form" class="btn btn-sm btn-primary">
+                                    <a asp-controller="Form" asp-action="Edit" asp-route-id="@form.id_form" class="btn btn-sm btn-primary" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a asp-controller="DetailForm" asp-action="Detail" asp-route-id="@form.id_form" class="btn btn-sm btn-success add-detail-button">
+                                    <a asp-controller="DetailForm" asp-action="Detail" asp-route-id="@form.id_form" class="btn btn-sm btn-success add-detail-button" title="Detail Form">
                                         <i class="fa-solid fa-asterisk"></i>
                                     </a>
-                                    <button id="detail-button" class="btn btn-sm btn-primary detail-button">
+                                    <button id="detail-button" class="btn btn-sm btn-primary detail-button" >
                                         <i class="fa-solid fa-bars"></i>
                                     </button>
                                 </td>

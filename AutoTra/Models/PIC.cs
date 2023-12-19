@@ -13,20 +13,47 @@ namespace AutoTra.Models
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
         }
-        public bool IsUsernameExists(string username)
+        public bool IsUsernameExists(string username, string nim)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM PIC WHERE username = @username", connection))
+                string query = "SELECT COUNT(*) FROM PIC WHERE username = @username AND nim != @nim";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@nim", nim);
 
                     int count = (int)command.ExecuteScalar();
 
                     return count > 0;
                 }
+            }
+        }
+
+        public bool IsNpkExists(string nim)
+        {
+            try
+            {
+                string query = "SELECT COUNT(*) FROM PIC WHERE nim = @nim";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@nim", nim);
+
+                _connection.Open();
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
 

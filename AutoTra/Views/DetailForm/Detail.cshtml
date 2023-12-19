@@ -95,7 +95,7 @@
                     }
                 </select>
                 <span asp-validation-for="id_item" class="text-danger"></span>
-                <button class="btn btn-primary" type="submit">Add</button>
+                <button class="btn btn-primary" type="submit" title="Add">Add</button>
             </div>
         </div>
     </div>
@@ -142,7 +142,7 @@
                                         <span>@item.metode_pemeriksaan</span>                                    
                                     </td>
                                                                 <td>
-                                <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@item.id_item">
+                                <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id="@item.id_item" title="Delete">
                                 <i class="fas fa-trash"></i>
                                 </button>
                             </td>
