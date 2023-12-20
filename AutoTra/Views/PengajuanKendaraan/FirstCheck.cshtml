@@ -61,6 +61,7 @@
                                         <td>
                                             <input name="id_pemeriksaan" type="hidden" value="@ViewBag.id_pemeriksaan" />
                                             <input name="id_item" type="hidden" value="@form.id_item" />
+                                            <input name="id_pengajuan" type="hidden" value="@ViewBag.id_pengajuan" />
                                             <input value="Yes" name="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" />
                                             <span class="text-danger"></span>
                                         </td>
@@ -95,6 +96,7 @@
             $('table tbody tr').each(function (index, row) {
                 var isChecked = $(row).find('input[name="hasil_inspeksi"]').is(':checked');
                 var rowData = {
+                    id_pengajuan: $(row).find('input[name="id_pengajuan"]').val(),
                     id_pemeriksaan: $(row).find('input[name="id_pemeriksaan"]').val(),
                     id_item: $(row).find('input[name="id_item"]').val(),
                     hasil_inspeksi: isChecked ? 'Yes' : null,

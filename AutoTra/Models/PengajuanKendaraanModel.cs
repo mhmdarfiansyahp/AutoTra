@@ -26,5 +26,7 @@ namespace AutoTra.Models
         public string? jenis_form { get; set; }
         public string? hasil_inspeksi { get; set; }
         public string? alasan { get; set; }
+
+
     }
 }

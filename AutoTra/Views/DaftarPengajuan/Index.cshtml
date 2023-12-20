@@ -119,7 +119,11 @@
                                     }
                                     @if (@pengajuan.status == 2)
                                     {
-                                        <button class="btn btn-sm btn-success acc1-button" data-toggle="modal" data-target="@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
+
+                                    }
+                                    @if (@pengajuan.status == 3)
+                                    {
+                                        <button class="btn btn-sm btn-success acc2-button" data-toggle="modal" data-target="@pengajuan.id_pengajuan" data-id_pengajuan="@pengajuan.id_pengajuan">
                                             <i class="fa-regular fa-file"></i>
                                         </button>
                                     }
@@ -185,6 +189,48 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="acc2Modal_@pengajuan.id_pengajuan" tabindex="-1" role="dialog" aria-labelledby="acc2ModelLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title" style="font-size:28px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">First Check Approval Menu</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card">
+                                                    <table class="table datable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">No</th>
+                                                                <th scope="col">Inspection Item</th>
+                                                                <th scope="col">Inspection Standard</th>
+                                                                <th scope="col">Inspection Category</th>
+                                                                <th scope="col">Inspection Method</th>
+                                                                <th scope="col">Inspection Result</th>
+                                                                <th scope="col">Reason Not Suitable</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbody">
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                    <hr />
+                                                    <form class="approvalcar2" method="post">
+                                                        <input class="form-control" type="hidden" name="id_pengajuan" />
+                                                        <div class="mb-3">
+                                                            <input type="radio" value=2 name="approvalStatus" id="inspSetuju" />
+                                                            <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
+                                                            <input type="radio" value=1 name="approvalStatus" id="inspTidakSetuju" />
+                                                            <label for="inspTidakSetuju" style="font-size:18px;font-family:'Segoe UI'">Reject</label><br />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="button" class="btn btn-success submitApproval2">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -194,6 +240,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <script>
     $(document).ready(function () {
@@ -242,10 +291,42 @@
                 }
             });
         });
+
         var today = new Date().toISOString().split('T')[0];
 
         // Mengatur nilai input tanggal menjadi hari ini
         $('#tanggalPemeriksaan').val(today);
     });
 
+    $(".acc2-button").click(function () {
+        var id_pengajuan = $(this).data("id_pengajuan");
+        Approval2Action(id_pengajuan);
+    });
+
+    function Approval2Action(id_pengajuan) {
+        $.ajax({
+            url: "/DaftarPengajuan/Approval2/" + id_pengajuan,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                $('#tbody').empty(); // Clear previous data before appending new data
+                data.forEach(function (insp) {
+                    var newRow = '<tr>' +
+                        '<td>' + insp.item_pemeriksaan + '</td>' +
+                        '<td>' + insp.standart_pemeriksaan + '</td>' +
+                        '<td>' + insp.kategori_pemeriksaan + '</td>' +
+                        '<td>' + insp.metode_pemeriksaan + '</td>' +
+                        '<td>' + insp.hasil_inspeksi + '</td>' +
+                        '<td>' + insp.alasan + '</td>' +
+                        '</tr>';
+                    $('#tbody').append(newRow);
+                });
+                $("#acc2Modal_" + id_pengajuan).modal("show"); // Show the modal after data population
+            },
+            error: function () {
+                console.log("Error during AJAX request for Approval 2");
+                // Handle error scenario - Show an alert or message to the user
+            }
+        });
+    }
 </script>

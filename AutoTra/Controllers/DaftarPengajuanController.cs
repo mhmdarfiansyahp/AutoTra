@@ -90,6 +90,17 @@ namespace AutoTra.Controllers
 
             return Json(dpengajuan);
         }
+        [HttpGet]
+        public IActionResult Approval2(int id)
+        {
+            DaftarPengajuanModel dpengajuan = Dpengajuanrepositori.getdetailacc2(id);
+            if (dpengajuan == null)
+            {
+                return NotFound();
+            }
+
+            return Json(dpengajuan);
+        }
 
     }
 }

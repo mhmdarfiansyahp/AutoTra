@@ -36,5 +36,18 @@ namespace AutoTra.Models
         public string? skala { get; set; }
 
         public int? id_form { get; set; }
+
+        public int? id_pemeriksaan { get; set; }
+
+        public int? id_item { get; set; }
+        public string? item_pemeriksaan { get; set; }
+        public string? kategori_pemeriksaan { get; set; }
+        public string? standart_pemeriksaan { get; set; }
+
+        public string? metode_pemeriksaan { get; set; }
+
+        public string? hasil_inspeksi { get; set; }
+        public string? alasan { get; set; }
+
     }
 }

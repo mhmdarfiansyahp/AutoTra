@@ -92,6 +92,9 @@ namespace AutoTra.Models
                     else if (pengajuanmodel.hasil_inspeksi == null || pengajuanmodel.alasan != null)
                     {
                         pengajuanmodel.hasil_inspeksi = "null";
+                    }else if (pengajuanmodel.hasil_inspeksi == null && pengajuanmodel.alasan == null)
+                    {
+                        return;
                     }
                     string storedProcedureName = "[sp_InsertDetailPemeriksaan]";
                     SqlCommand command = new SqlCommand(storedProcedureName, _connection);
@@ -101,10 +104,12 @@ namespace AutoTra.Models
                     command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
                     command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
                     command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
+                    command.Parameters.AddWithValue("@id_pengajuan", pengajuanmodel.id_pengajuan);
 
                     _connection.Open();
                     command.ExecuteNonQuery();
                     _connection.Close();
+
 
                 }
                 catch (Exception ex)
