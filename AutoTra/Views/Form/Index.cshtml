@@ -52,12 +52,12 @@
             <a asp-controller="Form" class="btn btn-primary" asp-action="Create" title="Add Inspection Form">+ Add Inspection Form</a>
             <br />
             <br />
-            <form method="post">
+            <form method="post" onsubmit="return validateSearchForm()">
                 <div style="padding-left: 1080px;">
                     <div class="col-lg-12">
                         <div class="input-group mb-12">
                             <input class="form-control" type="text" placeholder="Search Inspection form data by car model.." aria-describedby="button-addon2" name="search">
-                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit" title="Search">Search</button>
+                            <button class="btn btn-primary" id="button-addon2" type="submit" title="Search">Search</button>
                         </div>
                     </div>
                 </div>
@@ -163,4 +163,22 @@
             });
         });
     });
+</script>
+
+<script>
+    function validateSearchForm() {
+        var searchTerm = document.forms[0]["search"].value;
+
+        // Jika kolom pencarian kosong, tampilkan SweetAlert dan batalkan pengiriman formulir
+        if (searchTerm.trim() === "") {
+            Swal.fire({
+                title: "Error!",
+                text: "Please enter a search term.",
+                icon: "error",
+            });
+            return false;
+        }
+
+        return true;
+    }
 </script>

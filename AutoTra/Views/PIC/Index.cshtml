@@ -83,7 +83,7 @@
                     <tbody>
                         @foreach (var adm in Model)
                         {
-                            <tr>
+                            <tr class="@((adm.status != 1) ? "nonactive-row" : "")">
                                 <td>@(no++)</td>
                                 <td>@adm.nim</td>
                                 <td>@adm.nama</td>
@@ -181,6 +181,12 @@
         });
     });
 </script>
+
+<style>
+    .nonactive-row {
+        background-color: #ffcccc; /* Warna merah */
+    }
+</style>
 
 <script>
     function validateSearchForm() {

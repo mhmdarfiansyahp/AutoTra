@@ -104,7 +104,7 @@
                                     switch (pengajuan.status)
                                     {
                                         case 0:
-                                            statusText = "Diajukan";
+                                            statusText = "Menunggu Konfirmasi";
                                             break;
                                         case 1:
                                             statusText = "Tidak Disetujui";
@@ -113,8 +113,14 @@
                                             statusText = "Disetujui";
                                             break;
                                         case 3:
-                                            statusText = "Diselesaikan";
+                                                statusText = "Menunggu Konfirmasi";
                                             break;
+                                        case 4:
+                                            statusText = "Dalam Pengerjaan";
+                                        break;
+                                            case 5:
+                                                statusText = "Diselesaikan";
+                                                break;
                                         default:
                                             statusText = "Status Tidak Dikenali";
                                             break;
@@ -131,11 +137,12 @@
                                         <button id="detail-button" class="btn btn-sm btn-danger detail-button">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
-                                    }@if (pengajuan.status == 1){
-                                    <button id="detail-button" class="btn btn-sm btn-primary detail-button">
-                                        <i class="fa-solid fa-bars"></i>
-                                    </button>
-                                    }@if (@pengajuan.status == 2)
+                                    }
+                                    @if (pengajuan.status == 1)
+                                    {
+                                        
+                                    }
+                                    @if (@pengajuan.status == 2)
                                     {
                                         <a asp-controller="PengajuanKendaraan" asp-action="FirstCheck" asp-route-id="@pengajuan.id_pengajuan" class="btn btn-sm btn-success">
                                             <i class="fa-regular fa-file"></i>
