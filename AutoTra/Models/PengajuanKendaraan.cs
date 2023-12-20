@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 
@@ -77,34 +78,39 @@ namespace AutoTra.Models
                 Console.WriteLine(ex.Message);
             }
         }
-        public void insertdetailpemeriksaan(PengajuanKendaraanModel pengajuanmodel)
+        public void insertdetailpemeriksaan(List<PengajuanKendaraanModel> pengajuan)
         {
-            try
+            foreach (var pengajuanmodel in pengajuan)
             {
-                if(pengajuanmodel.hasil_inspeksi == "Yes" || pengajuanmodel.alasan == null)
+                try
                 {
-                    pengajuanmodel.alasan = "null";
+
+                    if (pengajuanmodel.hasil_inspeksi == "Yes" || pengajuanmodel.alasan == null)
+                    {
+                        pengajuanmodel.alasan = "null";
+                    }
+                    else if (pengajuanmodel.hasil_inspeksi == null || pengajuanmodel.alasan != null)
+                    {
+                        pengajuanmodel.hasil_inspeksi = "null";
+                    }
+                    string storedProcedureName = "[sp_InsertDetailPemeriksaan]";
+                    SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
+                    command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
+                    command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
+                    command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
+
+                    _connection.Open();
+                    command.ExecuteNonQuery();
+                    _connection.Close();
+
                 }
-                else if (pengajuanmodel.hasil_inspeksi == null || pengajuanmodel.alasan != null)
+                catch (Exception ex)
                 {
-                    pengajuanmodel.hasil_inspeksi = "null";
+                    Console.WriteLine(ex.Message);
                 }
-                string storedProcedureName = "[sp_InsertDetailPemeriksaan]";
-                SqlCommand command = new SqlCommand(storedProcedureName, _connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
-                command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
-                command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
-                command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
-
-                _connection.Open();
-                command.ExecuteNonQuery();
-                _connection.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
 

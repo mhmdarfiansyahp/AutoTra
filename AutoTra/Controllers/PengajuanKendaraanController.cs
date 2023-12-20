@@ -101,15 +101,22 @@ namespace AutoTra.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult FirstCheck(PengajuanKendaraanModel pengajuan)
+        public IActionResult FirstCheck([FromBody] List<PengajuanKendaraanModel> pengajuanmodel)
         {
+            try
+            {
                 if (ModelState.IsValid)
                 {
-                    pengajuanrepositori.insertdetailpemeriksaan(pengajuan);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
-                    return RedirectToAction("Index");
+
+                        pengajuanrepositori.insertdetailpemeriksaan(pengajuanmodel);
+                    
+                    return Ok("Data berhasil diproses");
                 }
-            return View(pengajuan);
+            }catch(Exception ex) 
+            {
+                return StatusCode(500, $"Terjadi kesalahan: {ex.Message}");
+            }
+            return View(pengajuanmodel);
         }
     }
 }

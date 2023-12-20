@@ -30,10 +30,9 @@
 }
 <!-- Form untuk seluruh tabel -->
 <form method="post" asp-action="FirstCheck" asp-controller="PengajuanKendaraan">
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
                 <table class="table datable">
                     <thead>
                         <tr>
@@ -51,27 +50,23 @@
                         {
                             @foreach (var item in (IEnumerable<ItemModel>)ViewData["DataItem"])
                             {
-                                @if (item.id_item == form.id_item)
+                                if (item.id_item == form.id_item)
                                 {
-                                    <tr>
+                                    <tr id="row_@(no)">
                                         <td>@(no++)</td>
                                         <td>@item.item_pemeriksaan</td>
                                         <td>@item.standart_pemeriksaan</td>
                                         <td>@item.kategori_pemeriksaan</td>
                                         <td>@item.metode_pemeriksaan</td>
                                         <td>
-                                            <input id="id_pemeriksaan" name="id_pemeriksaan" value="@ViewBag.id_pemeriksaan" asp-for="id_pemeriksaan" hidden/>
-                                            <input id="id_item" name="id_item" value="@form.id_item" asp-for="id_item" hidden/> 
-                                            <div class="form-group">
-                                                <input value="Yes" asp-for="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" id="hasil_inspeksi_@(no)" style="transform:scale(1.3);">
-                                                <span asp-validation-for="hasil_inspeksi" class="text-danger"></span>
-                                            </div>
+                                            <input name="id_pemeriksaan" type="hidden" value="@ViewBag.id_pemeriksaan" />
+                                            <input name="id_item" type="hidden" value="@form.id_item" />
+                                            <input value="Yes" name="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" />
+                                            <span class="text-danger"></span>
                                         </td>
                                         <td>
-                                            <div class="form-group">
-                                                <input asp-for="alasan" class="form-control alasan-textbox" id="alasan_@(no)" style="border-color:darkgray;">
-                                                <span asp-validation-for="alasan" class="text-danger"></span>
-                                            </div>
+                                            <input name="alasan" class="form-control alasan-textbox" style="border-color:darkgray;" />
+                                            <span class="text-danger"></span>
                                         </td>
                                     </tr>
                                 }
@@ -79,31 +74,66 @@
                         }
                     </tbody>
                 </table>
+            </div>
         </div>
     </div>
-</div>
-    <button type="submit" class="btn btn-primary">Submit Form</button> 
+    <button id="submitBtn" type="submit" class="btn btn-primary">Submit Form</button>
 </form>
 <style>
-
     .alasan-textbox:focus {
-        border-color:cornflowerblue; 
+        border-color: cornflowerblue;
     }
 </style>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+            e.preventDefault();
+
+            var dataArray = []; // Menyimpan data setiap baris
+
+            $('table tbody tr').each(function (index, row) {
+                var isChecked = $(row).find('input[name="hasil_inspeksi"]').is(':checked');
+                var rowData = {
+                    id_pemeriksaan: $(row).find('input[name="id_pemeriksaan"]').val(),
+                    id_item: $(row).find('input[name="id_item"]').val(),
+                    hasil_inspeksi: isChecked ? 'Yes' : null,
+                    alasan: isChecked ? null : $(row).find('input[name="alasan"]').val()
+                };
+                dataArray.push(rowData); // Menambahkan data ke dalam array
+            });
+
+            console.log(dataArray);
+
+            // Mengirim dataArray ke Controller menggunakan AJAX
+            $.ajax({
+                type: "POST",
+                url: "/PengajuanKendaraan/FirstCheck",
+                contentType: "application/json",
+                data: JSON.stringify(dataArray), // Mengirim seluruh data sebagai array
+                success: function (response) {
+                    console.log(response);
+                    // Lakukan sesuatu setelah berhasil, jika diperlukan
+                },
+                error: function (err) {
+                    console.error('Error:', err);
+                    // Lakukan penanganan kesalahan, jika diperlukan
+                }
+            });
+        });
+
+        // Logika checkbox
         $('.hasil-inspeksi-checkbox').change(function () {
             var index = $(this).closest('tr').index() + 2;
-            var alasanTextbox = $('#alasan_' + index);
+            var alasanTextbox = $('.alasan-textbox' + index);
 
             if ($(this).is(':checked')) {
                 alasanTextbox.prop('disabled', true);
-                alasanTextbox.val(''); 
+                alasanTextbox.val('');
             } else {
                 alasanTextbox.prop('disabled', false);
             }
         });
     });
-</script>
+
+    </script>
