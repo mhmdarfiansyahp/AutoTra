@@ -81,7 +81,8 @@
                             <th scope="col">Engine Number</th>
                             <th scope="col">Vechile Color</th>
                             <th scope="col">Kilometer</th>
-                            <th scope="col">Fuel</th>
+                            <th scope="col">Fuel</th
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -97,6 +98,23 @@
                                 <td>@mbl.warna</td>
                                 <td>@mbl.kilometer</td>
                                 <td>@mbl.bahan_bakar</td>
+                                <td>                                    
+                                    @{
+                                        string statusText = "";
+                                        switch (mbl.status)
+                                        {
+                                            case 1:
+                                                statusText = "Ready to Use";
+                                                break;
+                                            case 2:
+                                                statusText = "In Used";
+                                                break;
+                                            default:
+                                                statusText = "Status Tidak Dikenali";
+                                                break;
+                                        }
+                                    }
+                                    @statusText</td>
                                 <td>
                                     <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id_mobil="@mbl.id_mobil" title="Delete">
                                         <i class="fas fa-trash"></i>

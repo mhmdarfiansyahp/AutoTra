@@ -4,6 +4,8 @@
     int no = 1;
     var httpcontext = ViewContext.HttpContext;
     string role = httpcontext.Session.GetString("Role");
+    string loggedInNIM = httpcontext.Session.GetString("nim");
+
     if (string.IsNullOrEmpty(role))
     {
         // Session is expired or role is not set, redirect to login layout
@@ -83,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var pengajuan in Model)
+                        @foreach (var pengajuan in Model.Where(p => p.nim == loggedInNIM))
                         {
                             <tr>
                                 <td>@(no++)</td>
@@ -145,6 +147,12 @@
                                     @if (@pengajuan.status == 2)
                                     {
                                         <a asp-controller="PengajuanKendaraan" asp-action="FirstCheck" asp-route-id="@pengajuan.id_pengajuan" class="btn btn-sm btn-success">
+                                            <i class="fa-regular fa-file"></i>
+                                        </a>
+                                    }
+                                    @if (pengajuan.status == 4)
+                                    {
+                                        <a asp-controller="PengajuanKendaraan" asp-action="FinalCheck" asp-route-id="@pengajuan.id_pengajuan" class="btn btn-sm btn-success">
                                             <i class="fa-regular fa-file"></i>
                                         </a>
                                     }

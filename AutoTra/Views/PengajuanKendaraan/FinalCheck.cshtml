@@ -3,7 +3,7 @@
 *@
 @model AutoTra.Models.PengajuanKendaraanModel
 @{
-    ViewData["Title"] = "First Check Form Menu";
+    ViewData["Title"] = "Final Check Form Menu";
     int no = 1;
     var httpcontext = ViewContext.HttpContext;
     string role = httpcontext.Session.GetString("Role");
@@ -29,7 +29,7 @@
     }
 }
 <!-- Form untuk seluruh tabel -->
-<form method="post" asp-action="FirstCheck" asp-controller="PengajuanKendaraan">
+<form method="post">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -59,7 +59,7 @@
                                         <td>@item.kategori_pemeriksaan</td>
                                         <td>@item.metode_pemeriksaan</td>
                                         <td>
-                                            <input name="id_pemeriksaan" type="hidden" value="@ViewBag.id_pemeriksaan" />
+                                            <input name="id_pemeriksaan" type="hidden" value="@ViewBag.id" />
                                             <input name="id_item" type="hidden" value="@form.id_item" />
                                             <input name="id_pengajuan" type="hidden" value="@ViewBag.id_pengajuan" />
                                             <input value="Yes" name="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" />
@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    <button id="submitBtn" type="submit" class="btn btn-primary">Submit Form</button>
+    <button id="submitBtn" type="submit" class="btn btn-primary">Submit Final Form</button>
 </form>
 <style>
     .alasan-textbox:focus {
@@ -110,7 +110,7 @@
             // Mengirim dataArray ke Controller menggunakan AJAX
             $.ajax({
                 type: "POST",
-                url: "/PengajuanKendaraan/FirstCheck",
+                url: "/PengajuanKendaraan/FinalCheck",
                 contentType: "application/json",
                 data: JSON.stringify(dataArray), // Mengirim seluruh data sebagai array
                 success: function (response) {
@@ -133,9 +133,9 @@
                 alasanTextbox.prop('disabled', true);
                 alasanTextbox.val('');
             } else {
-                alasanTextbox.prop('disabled', false);  
+                alasanTextbox.prop('disabled', false);
             }
         });
     });
 
-    </script>
+</script>

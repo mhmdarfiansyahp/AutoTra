@@ -119,6 +119,48 @@ namespace AutoTra.Models
             }
         }
 
+        public void insertdetailpemeriksaanfinal(List<PengajuanKendaraanModel> pengajuan)
+        {
+            foreach (var pengajuanmodel in pengajuan)
+            {
+                try
+                {
+
+                    if (pengajuanmodel.hasil_inspeksi == "Yes" || pengajuanmodel.alasan == null)
+                    {
+                        pengajuanmodel.alasan = "null";
+                    }
+                    else if (pengajuanmodel.hasil_inspeksi == null || pengajuanmodel.alasan != null)
+                    {
+                        pengajuanmodel.hasil_inspeksi = "null";
+                    }
+                    else if (pengajuanmodel.hasil_inspeksi == null && pengajuanmodel.alasan == null)
+                    {
+                        return;
+                    }
+                    string storedProcedureName = "[sp_InsertDetailPemeriksaan2]";
+                    SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
+                    command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
+                    command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
+                    command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
+                    command.Parameters.AddWithValue("@id_pengajuan", pengajuanmodel.id_pengajuan);
+
+                    _connection.Open();
+                    command.ExecuteNonQuery();
+                    _connection.Close();
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
         public List<PengajuanKendaraanModel> getForm(int? id)
         {
             PengajuanKendaraanModel dtlmodel = new PengajuanKendaraanModel();
@@ -207,7 +249,7 @@ namespace AutoTra.Models
                 }
                 reader1.Close();
 
-                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 0";
+                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 2";
                 SqlCommand command2 = new SqlCommand(query2, _connection);
                 command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
                 command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya

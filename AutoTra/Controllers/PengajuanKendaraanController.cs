@@ -119,7 +119,34 @@ namespace AutoTra.Controllers
                 }
                 return View(pengajuanmodel);
             }
+        [HttpGet]
+        public IActionResult FinalCheck(int? id)
+        {
+            ViewData["DataForm"] = pengajuanrepositori.getForm(id);
+            ViewData["DataItem"] = pengajuanrepositori.getDataItem();
+            PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan(id);
+            ViewBag.id = pengajuan.id_pemeriksaan;
+            ViewBag.id_pengajuan = id;
+            return View();
         }
+        [HttpPost]
+        public IActionResult FinalCheck([FromBody] List<PengajuanKendaraanModel> pengajuanmodel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    pengajuanrepositori.insertdetailpemeriksaanfinal(pengajuanmodel);
+                    return Ok("Data berhasil diproses");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Terjadi kesalahan: {ex.Message}");
+            }
+            return View(pengajuanmodel);
+        }
+    }
     }
 
 

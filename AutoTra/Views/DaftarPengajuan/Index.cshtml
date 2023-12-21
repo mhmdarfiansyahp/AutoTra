@@ -77,7 +77,7 @@
                                         @ViewBag.Mobildictinary[pengajuan.id_mobil]
                                     }
                                 </td>
-                                <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
+                                <td>@(pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd"))</td>
                                 <td>@pengajuan.skala</td>
                                 <td>@pengajuan.deskripsi</td>
                                 <td>
@@ -171,10 +171,10 @@
                                                     <form class="approvalcar1" method="post">
                                                         <input class="form-control" type="hidden" name="id_pengajuan" />
                                                         <input class="form-control" type="hidden" name="id_mobil" />
-                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" id="tanggalPemeriksaan" hidden/>
+                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden/>
                                                         <input class="form-control" name="Skala" hidden />
                                                         <input class="form-control" name="NIM" hidden />
-                                                        <input class="form-control" name="status_pemeriksaan" value="0" hidden />
+                                                        <input class="form-control" name="status_pemeriksaan" value=0 hidden />
                                                         <div class="mb-3">
                                                             <input type="radio" value=2 name="approvalStatus" id="inspSetuju" />
                                                             <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
@@ -191,13 +191,12 @@
                                     </div>
 
                                     <div class="modal fade" id="acc2Modal_@pengajuan.id_pengajuan" tabindex="-1" role="dialog" aria-labelledby="acc2ModelLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-dialog modal-dialog-centered" style="max-width:1140px;">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title" style="font-size:28px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">First Check Approval Menu</h1>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="card">
+                                                <div class="modal-body" >
                                                     <table class="table datable">
                                                         <thead>
                                                             <tr>
@@ -213,12 +212,16 @@
                                                         <tbody id="tbody">
                                                         </tbody>
                                                     </table>
-                                                    </div>
                                                     <hr />
                                                     <form class="approvalcar2" method="post">
-                                                        <input class="form-control" type="hidden" name="id_pengajuan" />
+                                                        <input class="form-control" type="hidden" name="id_pengajuan" value="@pengajuan.id_pengajuan"/>
+                                                        <input class="form-control" type="hidden" name="id_mobil" value="@pengajuan.id_mobil"/>
+                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden />
+                                                        <input class="form-control" name="Skala" hidden value="@pengajuan.skala"/>
+                                                        <input class="form-control" name="NIM" hidden value="@pengajuan.nim"/>
+                                                        <input class="form-control" name="status_pemeriksaan" value=2 hidden />
                                                         <div class="mb-3">
-                                                            <input type="radio" value=2 name="approvalStatus" id="inspSetuju" />
+                                                            <input type="radio" value=4 name="approvalStatus" id="inspSetuju" />
                                                             <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
                                                             <input type="radio" value=1 name="approvalStatus" id="inspTidakSetuju" />
                                                             <label for="inspTidakSetuju" style="font-size:18px;font-family:'Segoe UI'">Reject</label><br />
@@ -295,38 +298,68 @@
         var today = new Date().toISOString().split('T')[0];
 
         // Mengatur nilai input tanggal menjadi hari ini
-        $('#tanggalPemeriksaan').val(today);
-    });
+        $('.tanggalPemeriksaan').val(today);
 
     $(".acc2-button").click(function () {
-        var id_pengajuan = $(this).data("id_pengajuan");
-        Approval2Action(id_pengajuan);
+        var id_pengajuan1 = $(this).data("id_pengajuan");
+        Approval2Action(id_pengajuan1);
     });
 
-    function Approval2Action(id_pengajuan) {
-        $.ajax({
-            url: "/DaftarPengajuan/Approval2/" + id_pengajuan,
-            type: "GET",
-            success: function (data) {
-                console.log(data);
-                $('#tbody').empty(); // Clear previous data before appending new data
-                data.forEach(function (insp) {
-                    var newRow = '<tr>' +
-                        '<td>' + insp.item_pemeriksaan + '</td>' +
-                        '<td>' + insp.standart_pemeriksaan + '</td>' +
-                        '<td>' + insp.kategori_pemeriksaan + '</td>' +
-                        '<td>' + insp.metode_pemeriksaan + '</td>' +
-                        '<td>' + insp.hasil_inspeksi + '</td>' +
-                        '<td>' + insp.alasan + '</td>' +
-                        '</tr>';
-                    $('#tbody').append(newRow);
-                });
-                $("#acc2Modal_" + id_pengajuan).modal("show"); // Show the modal after data population
-            },
-            error: function () {
-                console.log("Error during AJAX request for Approval 2");
-                // Handle error scenario - Show an alert or message to the user
-            }
+        function Approval2Action(id_pengajuan1) {
+            $.ajax({
+                url: "/DaftarPengajuan/Approval2/" + id_pengajuan1,
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    var tableBody = $('#acc2Modal_' + id_pengajuan1).find('table tbody');
+
+                    if (tableBody.length > 0) {
+                        tableBody.empty(); 
+
+                        if (data && data.$values && Array.isArray(data.$values)) {
+                            data.$values.forEach(function (item, index) {
+                                var newRow = '<tr>' +
+                                    '<td>' + (index + 1) + '</td>' + // Nomor urut
+                                    '<td>' + item.item_pemeriksaan + '</td>' +
+                                    '<td>' + item.standart_pemeriksaan + '</td>' +
+                                    '<td>' + item.kategori_pemeriksaan + '</td>' +
+                                    '<td>' + item.metode_pemeriksaan + '</td>' +
+                                    '<td>' + item.hasil_inspeksi + '</td>' +
+                                    '<td>' + item.alasan + '</td>' +
+                                    '</tr>';
+                                tableBody.append(newRow);
+                            });
+
+                            $("#acc2Modal_" + id_pengajuan1).modal("show");
+                        } else {
+                            console.log("Data tidak sesuai atau tidak ada dalam format yang diharapkan.");
+                        }
+                    } else {
+                        console.log("Tabel tidak ditemukan.");
+                    }
+                },
+                error: function () {
+                    console.log("Error saat melakukan permintaan AJAX untuk Approval 2");
+                    // Handle error scenario
+                }
+            });
+        }
+        $(".submitApproval2").click(function () {
+            var approvalData = $(".approvalcar2").serialize(); // Mengambil data dari formulir
+
+            $.ajax({
+                type: "POST",
+                url: "/DaftarPengajuan/Approve2",
+                data: approvalData,
+                success: function () {
+                    console.log(approvalData);
+                    location.reload(); // Memuat ulang halaman setelah berhasil
+                },
+                error: function () {
+                    console.log("Error during AJAX request for approval");
+                    Swal.fire("Error!", "Terjadi kesalahan saat menyetujui atau menolak.", "error");
+                }
+            });
         });
-    }
+    });
 </script>

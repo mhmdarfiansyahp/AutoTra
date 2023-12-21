@@ -6,7 +6,7 @@ namespace AutoTra.Models
     {
         public int? id_pengajuan { get; set; }
 
-        public DateTime? tanggl_pengajuan { get; set; }
+        public DateTime tanggl_pengajuan { get; set; }
 
         public string? nim {get; set; }
         public string? nama { get; set; }
