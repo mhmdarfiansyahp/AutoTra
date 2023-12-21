@@ -13,7 +13,7 @@ namespace AutoTra.Models
         [MaxLength(100, ErrorMessage = "Nama maksimal 100 karakter.")]
         public string? nama { get; set; }
 
-        [Required(ErrorMessage = "VIN number must be filled in.")]
+        [VinValidation(ErrorMessage = "VIN number must be filled in.")]
         [RegularExpression(@"^\w{17}$", ErrorMessage = "The VIN number must consist of 17 alphanumeric characters.")]
         public string? vin { get; set; }
 
@@ -30,5 +30,29 @@ namespace AutoTra.Models
         [RegularExpression(@"^(?!null$).*", ErrorMessage = "Fuel must be chosen!")]
         public string? bahan_bakar { get; set; }
         public int? status { get; set; }
+
+        public class VinValidationAttribute : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                var mobilModel = (MobilModel)validationContext.ObjectInstance;
+
+                // Cek apakah jenis_mobil adalah "Non Asset" dan vin kosong
+                if (mobilModel.jenis_mobil == "Non Asset" && string.IsNullOrEmpty((string)value))
+                {
+                    return ValidationResult.Success; // VIN kosong diizinkan untuk "Non Asset"
+                }
+
+                // Cek apakah jenis_mobil adalah "Asset" dan vin tidak kosong
+                if (mobilModel.jenis_mobil == "Asset" && string.IsNullOrEmpty((string)value))
+                {
+                    return new ValidationResult(ErrorMessage); // VIN wajib diisi untuk "Asset"
+                }
+
+                // Lakukan validasi lainnya sesuai kebutuhan
+
+                return ValidationResult.Success;
+            }
+        }
     }
 }

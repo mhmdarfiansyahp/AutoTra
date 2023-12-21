@@ -38,7 +38,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="jenis_mobil" class="control-label">Vechile Type</label>
-                            <select asp-for="jenis_mobil" class="form-control">
+                            <select asp-for="jenis_mobil" class="form-control" id="jenis_mobil" onchange="handleVehicleTypeChange()">
                                 <option disabled selected>-- Select Vechile Type --</option>
                                 <option value="Non Asset">Non Asset</option>
                                 <option value="Asset">Asset</option>
@@ -53,13 +53,14 @@
                         <div class="vin-input">
                             <label for="vin" class="control-label">VIN (Vehicle Identification Number)</label>
                             <div class="vin-boxes">
-                                <input asp-for="vin" type="hidden" />
+                                <!-- Perubahan pada input VIN -->
+                                <input asp-for="vin" type="hidden" id="vin" name="vin" readonly />
                                 @for (var i = 0; i < 17; i++)
                                 {
-                                    <input class="vin-box" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
+                                    <input class="vin-box" type="text" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
                                 }
                             </div>
-                            <span asp-validation-for="vin" class="text-danger"></span>
+                            <span asp-validation-for="vin" class="text-danger" data-valmsg-for="vin" data-valmsg-replace="true"></span>
                         </div>
                         <br />
                         <div class="form-group">
@@ -133,18 +134,28 @@
     }
     </style>
 
-    <script>
-        function validateNumberInput(input) {
-            // Hapus karakter selain angka
-            input.value = input.value.replace(/\D/g, '');
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        handleVehicleTypeChange();
+    });
 
-            // Pastikan panjang tidak melebihi 15 karakter
-            if (input.value.length > 15) {
-                input.value = input.value.slice(0, 15);
-            }
+    function validateNumberInput(input) {
+        // Hapus karakter selain angka
+        input.value = input.value.replace(/\D/g, '');
+
+        // Pastikan panjang tidak melebihi 15 karakter
+        if (input.value.length > 15) {
+            input.value = input.value.slice(0, 15);
         }
+    }
+
+    function autoCapsLock(input) {
+        input.value = input.value.toUpperCase();
+        moveToNextInput(input, event); // Tambahkan objek event di sini
+    }
+
     function moveToNextInput(input, event) {
-        var keyCode = event.keyCode || event.which;
+        var keyCode = event ? (event.keyCode || event.which) : undefined; // Periksa apakah event didefinisikan
         if (keyCode === 8 || keyCode === 46) {
             var inputs = document.querySelectorAll('.vin-box');
             var currentInput = input;
@@ -178,9 +189,36 @@
 
         document.getElementById('vin').value = vinValue;
     }
-        function autoCapsLock(input) {
-            input.value = input.value.toUpperCase();
-            moveToNextInput(input);
-        }
 
-    </script>
+
+    function handleVehicleTypeChange() {
+        var vehicleTypeDropdown = document.getElementById('jenis_mobil');
+        var vinInput = document.getElementById('vin');
+        var vinBoxes = document.querySelectorAll('.vin-box');
+        var vinValidationSpan = document.querySelector('[data-valmsg-for="vin"]');
+
+        // Check if the selected Vehicle Type is "Non Asset"
+        if (vehicleTypeDropdown.value === 'Non Asset') {
+            // Set VIN input readonly
+            vinBoxes.forEach(function (box) {
+                box.setAttribute('readonly', 'readonly');
+            });
+
+            // Clear VIN input values
+            vinBoxes.forEach(function (box) {
+                box.value = '';
+            });
+
+            // Hide validation message
+            vinValidationSpan.innerText = '';
+        } else {
+            // Remove readonly attribute from VIN input
+            vinBoxes.forEach(function (box) {
+                box.removeAttribute('readonly');
+            });
+        }
+    }
+
+</script>
+
+
