@@ -44,13 +44,13 @@ namespace AutoTra.Controllers
                 {
                     // Check if the username already exists
                     if (picrepositori.IsNpkExists(pic.nim) || picrepositori.IsUsernameExists(pic.username, pic.nim))
-                    { 
+                    {
                         if (picrepositori.IsNpkExists(pic.nim))
                         {
                             ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
                         }
 
-                         if (picrepositori.IsUsernameExists(pic.username, pic.nim))
+                        if (picrepositori.IsUsernameExists(pic.username, pic.nim))
                         {
                             ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
                         }
@@ -91,10 +91,10 @@ namespace AutoTra.Controllers
                 }
 
                 PICModel newadm = picrepositori.getData(picmodel.nim);
-                    if (newadm == null)
-                    {
-                        return NotFound();
-                    }
+                if (newadm == null)
+                {
+                    return NotFound();
+                }
 
                     newadm.nama = picmodel.nama;
                     newadm.username = picmodel.username;
