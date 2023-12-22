@@ -97,7 +97,7 @@ namespace AutoTra.Controllers
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
             PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan(id);
-            ViewBag.id_pemeriksaan = pengajuan.id_pemeriksaan;
+            ViewBag.id = pengajuan.id_pemeriksaan;
             ViewBag.id_pengajuan = id;
             return View();
         }
@@ -124,11 +124,12 @@ namespace AutoTra.Controllers
         {
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
-            PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan(id);
+            PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan1(id);
             ViewBag.id = pengajuan.id_pemeriksaan;
             ViewBag.id_pengajuan = id;
             return View();
         }
+
         [HttpPost]
         public IActionResult FinalCheck([FromBody] List<PengajuanKendaraanModel> pengajuanmodel)
         {

@@ -96,8 +96,8 @@ namespace AutoTra.Models
                     {
                         return;
                     }
-                    string storedProcedureName = "[sp_InsertDetailPemeriksaan]";
-                    SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                    string storedProcedureName = "sp_InsertDetailPemeriksaan";
+                    using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
@@ -138,8 +138,8 @@ namespace AutoTra.Models
                     {
                         return;
                     }
-                    string storedProcedureName = "[sp_InsertDetailPemeriksaan2]";
-                    SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                    string storedProcedureName = "sp_InsertDetailPemeriksaan2";
+                    using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
@@ -249,12 +249,61 @@ namespace AutoTra.Models
                 }
                 reader1.Close();
 
+                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 0";
+                SqlCommand command2 = new SqlCommand(query2, _connection);
+                command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
+                command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya
+                SqlDataReader reader2 = command2.ExecuteReader();
+                if (reader2.Read())
+                {
+                    dtlmodel.id_pemeriksaan = Convert.ToInt32(reader2["id_pemeriksaan"].ToString());
+                }
+                reader2.Close();
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return dtlmodel;
+        }
+
+        public PengajuanKendaraanModel getPemeriksaan1(int? id)
+        {
+            PengajuanKendaraanModel dtlmodel = new PengajuanKendaraanModel();
+            try
+            {
+                string query = "select * from dbo.Pgn_Unit_Praktek where id_pgn_unit = @p1";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", id);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    dtlmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
+                    dtlmodel.skala = reader["skala"].ToString();
+                    dtlmodel.nim = reader["nim"].ToString();
+                }
+                reader.Close();
+
+                string query1 = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan WHERE id_mobil = @p2 AND skala = @p3 AND status <> 0";
+                SqlCommand command1 = new SqlCommand(query1, _connection);
+                command1.Parameters.AddWithValue("@p2", dtlmodel.id_mobil);
+                command1.Parameters.AddWithValue("@p3", dtlmodel.skala);
+                SqlDataReader reader1 = command1.ExecuteReader();
+                if (reader1.Read())
+                {
+                    dtlmodel.id_form = Convert.ToInt32(reader1["id_form"].ToString());
+                }
+                reader1.Close();
+
                 string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 2";
                 SqlCommand command2 = new SqlCommand(query2, _connection);
                 command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
                 command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya
                 SqlDataReader reader2 = command2.ExecuteReader();
-                while (reader2.Read())
+                if (reader2.Read())
                 {
                     dtlmodel.id_pemeriksaan = Convert.ToInt32(reader2["id_pemeriksaan"].ToString());
                 }
