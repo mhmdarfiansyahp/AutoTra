@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label asp-for="jenis_mobil" class="control-label">Vechile Type</label>
                             <select asp-for="jenis_mobil" class="form-control" id="jenis_mobil" onchange="handleVehicleTypeChange()">
-                                <option disabled selected>-- Select Vechile Type --</option>
+                                <option value="null">-- Select Vechile Type --</option>
                                 <option value="Non Asset">Non Asset</option>
                                 <option value="Asset">Asset</option>
                             </select>
@@ -54,7 +54,7 @@
                             <label for="vin" class="control-label">VIN (Vehicle Identification Number)</label>
                             <div class="vin-boxes">
                                 <!-- Perubahan pada input VIN -->
-                                <input asp-for="vin" type="hidden" id="vin" name="vin" readonly />
+                                <input asp-for="vin" type="hidden" id="vin" name="vin"  />
                                 @for (var i = 0; i < 17; i++)
                                 {
                                     <input class="vin-box" type="text" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
@@ -155,8 +155,9 @@
     }
 
     function moveToNextInput(input, event) {
-        var keyCode = event ? (event.keyCode || event.which) : undefined; // Periksa apakah event didefinisikan
-        if (keyCode === 8 || keyCode === 46) {
+        var key = event.key || String.fromCharCode(event.keyCode || event.which);
+
+        if (key === 'Backspace' || key === 'Delete') {
             var inputs = document.querySelectorAll('.vin-box');
             var currentInput = input;
 
@@ -190,7 +191,6 @@
         document.getElementById('vin').value = vinValue;
     }
 
-
     function handleVehicleTypeChange() {
         var vehicleTypeDropdown = document.getElementById('jenis_mobil');
         var vinInput = document.getElementById('vin');
@@ -198,7 +198,7 @@
         var vinValidationSpan = document.querySelector('[data-valmsg-for="vin"]');
 
         // Check if the selected Vehicle Type is "Non Asset"
-        if (vehicleTypeDropdown.value === 'Non Asset') {
+        if (vehicleTypeDropdown.value === 'Asset') {
             // Set VIN input readonly
             vinBoxes.forEach(function (box) {
                 box.setAttribute('readonly', 'readonly');
