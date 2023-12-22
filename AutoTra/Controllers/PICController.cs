@@ -96,14 +96,14 @@ namespace AutoTra.Controllers
                     return NotFound();
                 }
 
-                    newadm.nama = picmodel.nama;
-                    newadm.username = picmodel.username;
-                    newadm.password = picmodel.password;
-                    newadm.peran = picmodel.peran;
-                    picrepositori.updateData(newadm);
-                    TempData["IsUpdateSuccess"] = true;
-                    return RedirectToAction("Index");
-                }
+                newadm.nama = picmodel.nama;
+                newadm.username = picmodel.username;
+                newadm.password = picmodel.password;
+                newadm.peran = picmodel.peran;
+                picrepositori.updateData(newadm);
+                TempData["IsUpdateSuccess"] = true;
+                return RedirectToAction("Index");
+            }
             return View(picmodel);
         }
 

@@ -23,13 +23,13 @@ namespace AutoTra.Controllers
         public IActionResult Create(ItemModel itm)
         {
 
-                if (ModelState.IsValid)
-                {
-                    itmrepositori.insertdata(itm);
+            if (ModelState.IsValid)
+            {
+                itmrepositori.insertdata(itm);
                 TempData["Success"] = true;
                 return RedirectToAction("Index");
-                }
-            
+            }
+
             return View(itm);
         }
         [HttpGet]
@@ -48,22 +48,22 @@ namespace AutoTra.Controllers
         public IActionResult Edit(ItemModel itmmodel)
         {
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                ItemModel newitm = itmrepositori.getdata(itmmodel.id_item);
+                if (newitm == null)
                 {
-                    ItemModel newitm = itmrepositori.getdata(itmmodel.id_item);
-                    if (newitm == null)
-                    {
-                        return NotFound();
-                    }
-                    newitm.item_pemeriksaan = itmmodel.item_pemeriksaan;
-                    newitm.kategori_pemeriksaan = itmmodel.kategori_pemeriksaan;
-                    newitm.standart_pemeriksaan = itmmodel.standart_pemeriksaan;
-                    newitm.metode_pemeriksaan = itmmodel.metode_pemeriksaan;
-                    newitm.status = itmmodel.status;
-                    itmrepositori.updatedata(newitm);
+                    return NotFound();
+                }
+                newitm.item_pemeriksaan = itmmodel.item_pemeriksaan;
+                newitm.kategori_pemeriksaan = itmmodel.kategori_pemeriksaan;
+                newitm.standart_pemeriksaan = itmmodel.standart_pemeriksaan;
+                newitm.metode_pemeriksaan = itmmodel.metode_pemeriksaan;
+                newitm.status = itmmodel.status;
+                itmrepositori.updatedata(newitm);
                 TempData["IsUpdateSuccess"] = true;
                 return RedirectToAction("Index");
-                }
+            }
             return View(itmmodel);
         }
 

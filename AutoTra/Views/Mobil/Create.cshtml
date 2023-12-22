@@ -54,7 +54,7 @@
                             <label for="vin" class="control-label">VIN (Vehicle Identification Number)</label>
                             <div class="vin-boxes">
                                 <!-- Perubahan pada input VIN -->
-                                <input asp-for="vin" type="hidden" id="vin" name="vin"  />
+                                <input asp-for="vin" type="hidden" id="vin" name="vin" />
                                 @for (var i = 0; i < 17; i++)
                                 {
                                     <input class="vin-box" type="text" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
@@ -221,5 +221,4 @@
     }
 
 </script>
-
 

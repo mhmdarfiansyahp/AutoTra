@@ -85,10 +85,10 @@
             <form method="post" onsubmit="return validateSearchForm()">
                 <div style="padding-left: 1080px;">
                     <div class="col-lg-12">
-                <div class="input-group mb-12">
+                        <div class="input-group mb-12">
                             <input class="form-control" type="text" placeholder="Search Car data by name.." aria-describedby="button-addon2" name="search">
                             <button class="btn btn-primary" id="button-addon2" type="submit" title="Search">Search</button>
-                </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -123,7 +123,7 @@
                                 <td>@mbl.warna</td>
                                 <td>@mbl.kilometer</td>
                                 <td>@mbl.bahan_bakar</td>
-                                <td>                                    
+                                <td>
                                     @{
                                         string statusText = "";
                                         switch (mbl.status)
@@ -139,7 +139,8 @@
                                                 break;
                                         }
                                     }
-                                    @statusText</td>
+                                    @statusText
+                                </td>
                                 <td>
                                     <button id="delete-button" class="btn btn-sm btn-danger delete-button" data-id_mobil="@mbl.id_mobil" title="Delete">
                                         <i class="fas fa-trash"></i>
@@ -172,7 +173,7 @@
                                                     <strong>Status</strong>@mbl.status<br />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" title ="Close">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Close">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -217,7 +218,7 @@
                                 Swal.fire("Sukses!", data.message, "success");
                                 location.reload();
                             } else {
-                                console.log("Failed to delete vechile" +id_mobil);
+                                console.log("Failed to delete vechile" + id_mobil);
                                 Swal.fire("Gagal!", data.message, "error");
                             }
                         },
