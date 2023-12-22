@@ -126,6 +126,7 @@ namespace AutoTra.Models
                 reader.Close();
                 _connection.Close();
 
+                string formattedDate = tanggal_pemeriksaan.ToString("yyyy-MM-dd");
                 string storedProcedureName = "sp_ApprovalPengajuan1";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -133,7 +134,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
                 command.Parameters.AddWithValue("@id_mobil", id_mobil);
                 command.Parameters.AddWithValue("@status", approvalStatus);
-                command.Parameters.AddWithValue("@tanggal_pemeriksaan", tanggal_pemeriksaan);
+                command.Parameters.AddWithValue("@tanggal_pemeriksaan", formattedDate);
                 command.Parameters.AddWithValue("@id_form", dtlacc.id_form);
                 command.Parameters.AddWithValue("@nim", NIM);
                 command.Parameters.AddWithValue("@status_pemeriksaan", status_pemeriksaan);
@@ -164,14 +165,17 @@ namespace AutoTra.Models
                 reader.Close();
                 _connection.Close();
 
+
+                string formattedDate = tanggal_pemeriksaan.ToString("yyyy-MM-dd");
                 string storedProcedureName = "sp_ApprovalPengajuan2";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@id_pengajuan", id_pengajuan);
+                command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
                 command.Parameters.AddWithValue("@id_mobil", id_mobil);
+                command.Parameters.AddWithValue("@skala", Skala);
                 command.Parameters.AddWithValue("@status", approvalStatus);
-                command.Parameters.AddWithValue("@tanggal_pemeriksaan", tanggal_pemeriksaan);
+                command.Parameters.AddWithValue("@tanggal_pemeriksaan", formattedDate);
                 command.Parameters.AddWithValue("@id_form", dtlacc.id_form);
                 command.Parameters.AddWithValue("@nim", NIM);
                 command.Parameters.AddWithValue("@status_pemeriksaan", status_pemeriksaan);
