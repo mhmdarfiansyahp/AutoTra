@@ -26,8 +26,8 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     itmrepositori.insertdata(itm);
-                TempData["Success"] = true;
-                return RedirectToAction("Index");
+                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    return RedirectToAction("Index");
                 }
             
             return View(itm);
@@ -61,8 +61,8 @@ namespace AutoTra.Controllers
                     newitm.metode_pemeriksaan = itmmodel.metode_pemeriksaan;
                     newitm.status = itmmodel.status;
                     itmrepositori.updatedata(newitm);
-                TempData["IsUpdateSuccess"] = true;
-                return RedirectToAction("Index");
+                    TempData["SuccessMessage"] = "Item Inspection data updated successfully.";
+                    return RedirectToAction("Index");
                 }
             return View(itmmodel);
         }

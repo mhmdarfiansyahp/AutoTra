@@ -60,7 +60,7 @@ namespace AutoTra.Controllers
                     if (ModelState.IsValid)
                     {
                         adminrepositori.insertData(adm);
-                        TempData["Success"] = true;
+                        TempData["SuccessMessage"] = "Data added successfully";
                         return RedirectToAction("Index");
                     }
                 }
@@ -111,7 +111,7 @@ namespace AutoTra.Controllers
                     newadm.peran = admmodel.peran;
                     newadm.status = admmodel.status;
                     adminrepositori.updateData(newadm);
-                    TempData["IsUpdateSuccess"] = true;
+                    TempData["SuccessMessage"] = "Admin updated successfully.";
                     return RedirectToAction("Index");
                 }
             }

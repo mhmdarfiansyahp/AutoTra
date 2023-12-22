@@ -57,7 +57,7 @@ namespace AutoTra.Controllers
                         }
                     }
                     dosenrepositori.insertdata(adm);
-                    TempData["Success"] = true;
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             }
@@ -85,15 +85,14 @@ namespace AutoTra.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Pemeriksaan apakah username sudah ada
-                if (dosenrepositori.IsUsernameExists(dsnmodel.username, dsnmodel.npk))
-                {
-                    ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
-                    return View(dsnmodel);
-                }
-
                 if (int.TryParse(dsnmodel.npk, out int Npk))
                 {
+                    if (dosenrepositori.IsUsernameExists(dsnmodel.username, dsnmodel.npk))
+                    {
+                        ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                        return View(dsnmodel);
+                    }
+
                     DosenModel newadm = dosenrepositori.getdata(Npk);
                     if (newadm == null)
                     {
@@ -106,7 +105,7 @@ namespace AutoTra.Controllers
                     newadm.peran = dsnmodel.peran;
                     newadm.status = dsnmodel.status;
                     dosenrepositori.updatedata(newadm);
-                    TempData["IsUpdateSuccess"] = true;
+                    TempData["SuccessMessage"] = "Dosen updated successfully.";
                     return RedirectToAction("Index");
                 }
             }

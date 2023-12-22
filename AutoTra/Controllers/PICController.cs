@@ -56,7 +56,7 @@ namespace AutoTra.Controllers
                         }
                     }
                     picrepositori.insertData(pic);
-                    TempData["Success"] = true;
+                    TempData["SuccessMessage"] = "Data added successfully";
                     return RedirectToAction("Index");
                 }
             }
@@ -101,7 +101,7 @@ namespace AutoTra.Controllers
                     newadm.password = picmodel.password;
                     newadm.peran = picmodel.peran;
                     picrepositori.updateData(newadm);
-                    TempData["IsUpdateSuccess"] = true;
+                    TempData["SuccessMessage"] = "PIC updated successfully.";
                     return RedirectToAction("Index");
                 }
             return View(picmodel);

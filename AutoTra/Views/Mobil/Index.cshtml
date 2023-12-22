@@ -28,31 +28,6 @@
         Layout = "~/Views/Shared/LayoutDosen.cshtml";
     }
 
-    @if (TempData["Success"] != null)
-    {
-        <script>
-            Swal.fire({
-                title: "Success!",
-                text: "Data added successfully",
-                icon: "success"
-            }).then(() => {
-                location.reload();
-            });
-        </script>
-    }
-
-    @if (TempData["IsUpdateSuccess"] != null)
-    {
-        <script>
-            Swal.fire({
-                title: "Success!",
-                text: "Data updated successfully",
-                icon: "success"
-            }).then(() => {
-                location.reload();
-            });
-        </script>
-    }
 }
 
 <div class="row">

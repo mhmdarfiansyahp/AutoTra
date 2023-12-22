@@ -28,7 +28,7 @@ namespace AutoTra.Controllers
             if (ModelState.IsValid)
             {
                 formrepositori.insertdata(form);
-                TempData["Success"] = true;
+                TempData["SuccessMessage"] = "Data added succesfully";
                 return RedirectToAction("Index");
             }
             ViewData["CarList"] = formrepositori.getAllCar();

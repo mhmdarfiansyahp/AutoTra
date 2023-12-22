@@ -37,14 +37,14 @@ namespace AutoTra.Models
             {
                 var mobilModel = (MobilModel)validationContext.ObjectInstance;
 
-                // Jika jenis_mobil adalah "Asset," tidak perlu validasi VIN
-                if (mobilModel.jenis_mobil == "Asset")
+                // Cek apakah jenis_mobil adalah "Non Asset" dan vin kosong
+                if (mobilModel.jenis_mobil == "Non Asset" && string.IsNullOrEmpty((string)value))
                 {
-                    return ValidationResult.Success;
+                    return ValidationResult.Success; // VIN kosong diizinkan untuk "Non Asset"
                 }
 
                 // Cek apakah jenis_mobil adalah "Asset" dan vin tidak kosong
-                if (mobilModel.jenis_mobil == "Non Asset" && string.IsNullOrEmpty((string)value))
+                if (mobilModel.jenis_mobil == "Asset" && string.IsNullOrEmpty((string)value))
                 {
                     return new ValidationResult(ErrorMessage); // VIN wajib diisi untuk "Asset"
                 }
