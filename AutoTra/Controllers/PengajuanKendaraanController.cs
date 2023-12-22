@@ -124,7 +124,6 @@ namespace AutoTra.Controllers
         {
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
-            ViewData["DataPengajuan"] = pengajuanrepositori.getPengajuan(id);
             PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan1(id);
             ViewBag.id = pengajuan.id_pemeriksaan;
             ViewBag.id_pengajuan = id;
@@ -147,35 +146,6 @@ namespace AutoTra.Controllers
                 return StatusCode(500, $"Terjadi kesalahan: {ex.Message}");
             }
             return View(pengajuanmodel);
-        }
-
-        [HttpGet]
-        public IActionResult Laporan()
-        {
-            try
-            {
-                List<PengajuanKendaraanModel> data = pengajuanrepositori.getdetailpemeriksaan();
-                if (data == null)
-                {
-                    return NotFound();
-                }
-
-                ViewData["DataPIC"] = pengajuanrepositori.getAllPIC();
-                return View(data);
-            }
-            catch (Exception ex)
-            {
-                // Tangani pengecualian jika terjadi kesalahan
-                return StatusCode(500, "Error: " + ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult LaporanDetail(int id)
-        {
-            ViewData["DataItem"] = pengajuanrepositori.getDataItem();
-            ViewData["DataDetail"] = pengajuanrepositori.getDetailPemeriksaan(id);
-            return View();
         }
     }
     }

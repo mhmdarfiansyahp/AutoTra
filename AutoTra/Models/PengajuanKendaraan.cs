@@ -53,44 +53,6 @@ namespace AutoTra.Models
             return mbllist;
         }
 
-        public List<PengajuanKendaraanModel> getPengajuan(int? id)
-        {
-            List<PengajuanKendaraanModel> mbllist = new List<PengajuanKendaraanModel>();
-            try
-            {
-                string query = "SELECT * FROM Pgn_Unit_Praktek where id_pgn_unit = @p1";
-                SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", id);
-                _connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    PengajuanKendaraanModel pengajuan = new PengajuanKendaraanModel
-                    {
-                        id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString()),
-                        tanggl_pengajuan = reader.GetDateTime(reader.GetOrdinal("tanggal_pengajuan")),
-                        nim = reader["nim"].ToString(),
-                        npk = reader["npk"].ToString(),
-                        id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
-                        skala = reader["skala"].ToString(),
-                        deskripsi = reader["deskripsi"].ToString(),
-                        status = Convert.ToInt32(reader["status"].ToString()),
-                    };
-                    mbllist.Add(pengajuan);
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                _connection.Close();
-            }
-            return mbllist;
-        }
-
         public void insertdata(PengajuanKendaraanModel pengajuanmodel)
         {
             try
@@ -180,14 +142,11 @@ namespace AutoTra.Models
                     using SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                     command.CommandType = CommandType.StoredProcedure;
 
-                    string formattedDate = pengajuanmodel.tanggl_pengajuan.ToString("yyyy-MM-dd");
                     command.Parameters.AddWithValue("@id_pemeriksaan", pengajuanmodel.id_pemeriksaan);
                     command.Parameters.AddWithValue("@id_item", pengajuanmodel.id_item);
                     command.Parameters.AddWithValue("@hasil", pengajuanmodel.hasil_inspeksi);
                     command.Parameters.AddWithValue("@alasan", pengajuanmodel.alasan);
                     command.Parameters.AddWithValue("@id_pengajuan", pengajuanmodel.id_pengajuan);
-
-
 
                     _connection.Open();
                     command.ExecuteNonQuery();
@@ -328,12 +287,10 @@ namespace AutoTra.Models
                 }
                 reader.Close();
 
-                string jenis_form = "Final Check";
-                string query1 = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan WHERE id_mobil = @p2 AND skala = @p3 AND jenis_form = @p6 AND status = 1";
+                string query1 = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan WHERE id_mobil = @p2 AND skala = @p3 AND status <> 0";
                 SqlCommand command1 = new SqlCommand(query1, _connection);
                 command1.Parameters.AddWithValue("@p2", dtlmodel.id_mobil);
                 command1.Parameters.AddWithValue("@p3", dtlmodel.skala);
-                command1.Parameters.AddWithValue("@p6", jenis_form);
                 SqlDataReader reader1 = command1.ExecuteReader();
                 if (reader1.Read())
                 {
@@ -341,7 +298,7 @@ namespace AutoTra.Models
                 }
                 reader1.Close();
 
-                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 3";
+                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 2";
                 SqlCommand command2 = new SqlCommand(query2, _connection);
                 command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
                 command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya
@@ -431,148 +388,6 @@ namespace AutoTra.Models
                 _connection.Close();
             }
             return itmlist;
-        }
-        public List<PengajuanKendaraanModel> getdetailpemeriksaan()
-        {
-            List<PengajuanKendaraanModel> dtlacc = new List<PengajuanKendaraanModel>();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
-
-                    string queryUnits = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE status = 5";
-
-                    using (SqlCommand commandUnits = new SqlCommand(queryUnits, connection))
-                    {
-                        using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
-                        {
-                            while (readerUnits.Read())
-                            {
-                                PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
-                                {
-                                    id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
-                                    tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
-                                    npk = readerUnits["npk"].ToString(),
-                                    nim = readerUnits["nim"].ToString(),
-                                    skala = readerUnits["skala"].ToString(),
-                                    deskripsi = readerUnits["deskripsi"].ToString()
-                                };
-
-                                dtlacc.Add(pmodel); // Add to dtlacc1, not dtlacc
-                            }
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                // Consider logging the exception for further analysis
-            }
-
-            return dtlacc;
-        }
-        public List<PICModel> getAllPIC()
-        {
-            List<PICModel> filmList = new List<PICModel>();
-            try
-            {
-                string query = "SELECT * FROM PIC";
-                SqlCommand command = new SqlCommand(query, _connection);
-                _connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    PICModel adm = new PICModel
-                    {
-                        nim = reader["nim"].ToString(),
-                        nama = reader["nama"].ToString(),
-                        username = reader["username"].ToString(),
-                        password = reader["password"].ToString(),
-                        peran = reader["peran"].ToString(),
-                        status = Convert.ToInt32(reader["status"].ToString()),
-                    };
-                    filmList.Add(adm);
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                _connection.Close();
-            }
-            return filmList;
-        }
-        public List<PengajuanKendaraanModel> getDetailPemeriksaan(int? id)
-        {
-            List<PengajuanKendaraanModel> dtllist = new List<PengajuanKendaraanModel>();
-            try
-            {
-                string query = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE id_pgn_unit = @p1";
-                SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", id);
-                _connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    PengajuanKendaraanModel dtllist2 = new PengajuanKendaraanModel
-                    {
-                        skala = reader["skala"].ToString(),
-                        nim = reader["nim"].ToString(),
-                        tanggl_pengajuan = Convert.ToDateTime(reader["tanggal_pengajuan"])
-                    };
-
-                    string formattedDate = dtllist2.tanggl_pengajuan.ToString("yyyy-MM-dd");
-                    reader.Close(); // Close the first reader before opening a new one
-
-                    string queryPemeriksaan = "SELECT id_pemeriksaan FROM dbo.Pemeriksaan WHERE nim = @p3 AND tanggal_pemeriksaan = @p5 AND [status] = 3";
-                    SqlCommand commandPemeriksaan = new SqlCommand(queryPemeriksaan, _connection);
-                    commandPemeriksaan.Parameters.AddWithValue("@p3", dtllist2.nim);
-                    commandPemeriksaan.Parameters.AddWithValue("@p5", formattedDate);
-
-                    SqlDataReader readerPemeriksaan = commandPemeriksaan.ExecuteReader();
-
-                    if (readerPemeriksaan.Read())
-                    {
-                        int idPemeriksaan = Convert.ToInt32(readerPemeriksaan["id_pemeriksaan"]);
-                        readerPemeriksaan.Close(); // Close the second reader before opening a new one
-
-                        string queryDetailPemeriksaan = "SELECT * FROM dbo.Detail_Pemeriksaan WHERE id_pemeriksaan = @p4";
-                        SqlCommand commandDetailPemeriksaan = new SqlCommand(queryDetailPemeriksaan, _connection);
-                        commandDetailPemeriksaan.Parameters.AddWithValue("@p4", idPemeriksaan);
-
-                        SqlDataReader readerDetailPemeriksaan = commandDetailPemeriksaan.ExecuteReader();
-
-                        while (readerDetailPemeriksaan.Read())
-                        {
-                            PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
-                            {
-                                id_item = Convert.ToInt32(readerDetailPemeriksaan["id_item"]),
-                                hasil_inspeksi = readerDetailPemeriksaan["hasil_inspeksi"].ToString(),
-                                alasan = readerDetailPemeriksaan["alasan_tidak_sesuai"].ToString()
-                            };
-                            dtllist.Add(pmodel);
-                        }
-                        readerDetailPemeriksaan.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                _connection.Close();
-            }
-            return dtllist;
         }
 
     }
