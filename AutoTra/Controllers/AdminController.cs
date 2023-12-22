@@ -30,7 +30,7 @@ namespace AutoTra.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Create() 
+        public IActionResult Create()
         {
             return View();
         }
@@ -145,3 +145,5 @@ namespace AutoTra.Controllers
 
     }
 }
+
+
