@@ -42,14 +42,10 @@ namespace AutoTra.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (mbl.jenis_mobil == "Non Asset")
-                    {
-                        // Jika jenis_mobil adalah "Non Asset", set vin ke string kosong
-                        mbl.vin = string.Empty;
-                    }
+                    // Panggil insertdata dengan allowNullVin berdasarkan jenis_mobil
+                    mobilrepositori.insertdata(mbl, allowNullVin: mbl.jenis_mobil == "Asset");
 
-                    mobilrepositori.insertdata(mbl);
-                    TempData["SuccessMessage"] = "Data berhasil ditambahkan";
+                    TempData["Success"] = true;
                     return RedirectToAction("Index");
                 }
                 else
@@ -102,29 +98,35 @@ namespace AutoTra.Controllers
         [HttpPost]
         public IActionResult Edit(MobilModel mblmodel)
         {
-            if (true)
+            if (ModelState.IsValid) // Pastikan model valid sebelum melanjutkan
             {
                 Console.WriteLine(mblmodel.jenis_mobil);
 
-                MobilModel newmbl = mobilrepositori.getdata(mblmodel.id_mobil);
-                if (newmbl == null)
+                MobilModel existingMbl = mobilrepositori.getdata(mblmodel.id_mobil);
+                if (existingMbl == null)
                 {
                     return NotFound();
                 }
 
-                newmbl.jenis_mobil = mblmodel.jenis_mobil;
-                newmbl.nama = mblmodel.nama;
-                newmbl.vin = mblmodel.vin;
-                newmbl.no_engine = mblmodel.no_engine;
-                newmbl.warna = mblmodel.warna;
-                newmbl.kilometer = mblmodel.kilometer;
-                newmbl.bahan_bakar = mblmodel.bahan_bakar;
-                newmbl.status = mblmodel.status;
-                mobilrepositori.updatedata(newmbl);
-                TempData["SuccessMessage"] = "Mobil berhasil diupdate.";
-                return RedirectToAction("Index");
+                // Periksa apakah jenis_mobil bukan 'Asset' sebelum mengupdate vin
+                if (mblmodel.jenis_mobil != "Asset")
+                {
+                    existingMbl.vin = mblmodel.vin;
+                }
 
+                existingMbl.jenis_mobil = mblmodel.jenis_mobil;
+                existingMbl.nama = mblmodel.nama;
+                existingMbl.no_engine = mblmodel.no_engine;
+                existingMbl.warna = mblmodel.warna;
+                existingMbl.kilometer = mblmodel.kilometer;
+                existingMbl.bahan_bakar = mblmodel.bahan_bakar;
+                existingMbl.status = mblmodel.status;
+
+                mobilrepositori.updatedata(existingMbl);
+                TempData["IsUpdateSuccess"] = true;
+                return RedirectToAction("Index");
             }
+
             return View(mblmodel);
         }
 
@@ -142,12 +144,11 @@ namespace AutoTra.Controllers
                     Console.WriteLine("if");
                     Console.WriteLine("if" + id_mobil);
                     mobilrepositori.deletedata(id_mobil);
-                    TempData["SuccessMessage"] = "Mobil berhasil dihapus!.";
-                    response = new { success = true, message = "Mobil berhasil dihapus." };
+                    response = new { success = true, message = "Car successfully deleted." };
                 }
                 else
                 {
-                    response = new { success = false, message = "Mobil tidak ditemukan." };
+                    response = new { success = false, message = "Car not found." };
                     Console.WriteLine("else");
                 }
             }

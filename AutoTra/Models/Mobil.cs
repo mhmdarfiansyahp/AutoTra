@@ -87,7 +87,7 @@ namespace AutoTra.Models
             return mbllist;
         }
 
-        public void insertdata(MobilModel mobilModel)
+        public void insertdata(MobilModel mobilModel,  bool allowNullVin = false)
         {
             try
             {
@@ -97,7 +97,14 @@ namespace AutoTra.Models
 
                 command.Parameters.AddWithValue("@jenis_kendaraan", mobilModel.jenis_mobil);
                 command.Parameters.AddWithValue("@nama", mobilModel.nama);
-                command.Parameters.AddWithValue("@vin", mobilModel.vin);
+                if (mobilModel.jenis_mobil == "Asset" && !allowNullVin)
+                {
+                    command.Parameters.AddWithValue("@vin", string.Empty); // Set VIN ke string kosong
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@vin", mobilModel.vin);
+                }
                 command.Parameters.AddWithValue("@no_engine", mobilModel.no_engine);
                 command.Parameters.AddWithValue("@warna", mobilModel.warna);
                 command.Parameters.AddWithValue("@kilometer", mobilModel.kilometer);

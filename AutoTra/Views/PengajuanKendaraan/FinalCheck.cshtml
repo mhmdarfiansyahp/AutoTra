@@ -62,11 +62,6 @@
                                             <input name="id_pemeriksaan" type="hidden" value="@ViewBag.id" />
                                             <input name="id_item" type="hidden" value="@form.id_item" />
                                             <input name="id_pengajuan" type="hidden" value="@ViewBag.id_pengajuan" />
-                                            @foreach (var pgn in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataPengajuan"])
-                                            {
-                                            <input name="nim" type="hidden" value="@pgn.nim" />
-                                            <input name="tanggal_pemeriksaan" type="hidden" value="@pgn.tanggl_pengajuan.ToString("yyyy-MM-dd")" />
-                                            }
                                             <input value="Yes" name="hasil_inspeksi" type="checkbox" class="form-check-input hasil-inspeksi-checkbox" />
                                             <span class="text-danger"></span>
                                         </td>
@@ -104,8 +99,6 @@
                     id_pengajuan: $(row).find('input[name="id_pengajuan"]').val(),
                     id_pemeriksaan: $(row).find('input[name="id_pemeriksaan"]').val(),
                     id_item: $(row).find('input[name="id_item"]').val(),
-                    nim: $(row).find('input[name="nim"]').val(),
-                    tanggl_pengajuan: $(row).find('input[name="tanggal_pemeriksaan"]').val(),
                     hasil_inspeksi: isChecked ? 'Yes' : null,
                     alasan: isChecked ? null : $(row).find('input[name="alasan"]').val()
                 };
