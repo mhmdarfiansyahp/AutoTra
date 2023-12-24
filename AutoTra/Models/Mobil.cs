@@ -87,7 +87,7 @@ namespace AutoTra.Models
             return mbllist;
         }
 
-        public void insertdata(MobilModel mobilModel,  bool allowNullVin = false)
+        public void insertdata(MobilModel mobilModel, bool allowNullVin = false)
         {
             try
             {

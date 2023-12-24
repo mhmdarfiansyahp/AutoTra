@@ -54,7 +54,7 @@
                             <label for="vin" class="control-label">VIN (Vehicle Identification Number)</label>
                             <div class="vin-boxes">
                                 <!-- Perubahan pada input VIN -->
-                                <input asp-for="vin" type="hidden" id="vin" name="vin"  />
+                                <input asp-for="vin" type="hidden" id="vin" name="vin" />
                                 @for (var i = 0; i < 17; i++)
                                 {
                                     <input class="vin-box" type="text" maxlength="1" oninput="autoCapsLock(this)" onkeyup="moveToNextInput(this, event)" />
@@ -105,34 +105,35 @@
     </div>
 </div>
 
-    <style>
-        .vin-input {
-            width: fit-content;
-        }
+<style>
+    .vin-input {
+        width: fit-content;
+    }
 
-        .vin-boxes {
-            display: flex;
-            gap: 9px;
-        }
+    .vin-boxes {
+        display: flex;
+        gap: 9px;
+    }
 
-        .vin-box {
-            width: 30px;
-            height: 30px;
-            text-transform: uppercase;
-            text-align: center;
-            border: 1px solid #ccc;
+    .vin-box {
+        width: 30px;
+        height: 30px;
+        text-transform: uppercase;
+        text-align: center;
+        border: 1px solid #ccc;
         border-radius: 3px;
-        }
-        .vin-box:focus{
-            outline:none;
+    }
+
+        .vin-box:focus {
+            outline: none;
             border: 1px solid #4283db;
             border-radius: 3px;
         }
 
-    .vin-box::placeholder {
-        opacity: 20px;
-    }
-    </style>
+        .vin-box::placeholder {
+            opacity: 20px;
+        }
+</style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -220,5 +221,4 @@
     }
 
 </script>
-
 

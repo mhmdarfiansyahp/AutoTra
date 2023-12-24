@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoTra.Controllers
 {
-    
+
     public class DosenController : Controller
     {
         private readonly Dosen dosenrepositori;
@@ -15,7 +15,7 @@ namespace AutoTra.Controllers
         public IActionResult Index()
         {
             return View(dosenrepositori.getAllData());
-            
+
         }
         [HttpPost]
         public IActionResult Index(string search)

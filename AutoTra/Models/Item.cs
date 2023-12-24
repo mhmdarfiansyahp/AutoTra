@@ -47,7 +47,7 @@ namespace AutoTra.Models
             }
             return itmlist;
         }
-        
+
         public ItemModel getname(string? item_pemeriksaan)
         {
             ItemModel itmModel = new ItemModel();
@@ -174,3 +174,4 @@ namespace AutoTra.Models
 
     }
 }
+
