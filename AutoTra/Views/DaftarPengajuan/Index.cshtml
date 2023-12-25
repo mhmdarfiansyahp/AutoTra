@@ -171,7 +171,7 @@
                                                     <form class="approvalcar1" method="post">
                                                         <input class="form-control" type="hidden" name="id_pengajuan" />
                                                         <input class="form-control" type="hidden" name="id_mobil" />
-                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden/>
+                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden />
                                                         <input class="form-control" name="Skala" hidden />
                                                         <input class="form-control" name="NIM" hidden />
                                                         <input class="form-control" name="status_pemeriksaan" value=0 hidden />
@@ -196,7 +196,7 @@
                                                 <div class="modal-header">
                                                     <h1 class="modal-title" style="font-size:28px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">First Check Approval Menu</h1>
                                                 </div>
-                                                <div class="modal-body" >
+                                                <div class="modal-body">
                                                     <table class="table datable">
                                                         <thead>
                                                             <tr>
@@ -214,11 +214,11 @@
                                                     </table>
                                                     <hr />
                                                     <form class="approvalcar2" method="post">
-                                                        <input class="form-control" type="hidden" name="id_pengajuan" value="@pengajuan.id_pengajuan"/>
-                                                        <input class="form-control" type="hidden" name="id_mobil" value="@pengajuan.id_mobil"/>
+                                                        <input class="form-control" type="hidden" name="id_pengajuan" value="@pengajuan.id_pengajuan" />
+                                                        <input class="form-control" type="hidden" name="id_mobil" value="@pengajuan.id_mobil" />
                                                         <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden />
-                                                        <input class="form-control" name="Skala" hidden value="@pengajuan.skala"/>
-                                                        <input class="form-control" name="NIM" hidden value="@pengajuan.nim"/>
+                                                        <input class="form-control" name="Skala" hidden value="@pengajuan.skala" />
+                                                        <input class="form-control" name="NIM" hidden value="@pengajuan.nim" />
                                                         <input class="form-control" name="status_pemeriksaan" value=2 hidden />
                                                         <div class="mb-3">
                                                             <input type="radio" value=4 name="approvalStatus" id="inspSetuju" />
@@ -300,10 +300,10 @@
         // Mengatur nilai input tanggal menjadi hari ini
         $('.tanggalPemeriksaan').val(today);
 
-    $(".acc2-button").click(function () {
-        var id_pengajuan1 = $(this).data("id_pengajuan");
-        Approval2Action(id_pengajuan1);
-    });
+        $(".acc2-button").click(function () {
+            var id_pengajuan1 = $(this).data("id_pengajuan");
+            Approval2Action(id_pengajuan1);
+        });
 
         function Approval2Action(id_pengajuan1) {
             $.ajax({
@@ -314,7 +314,7 @@
                     var tableBody = $('#acc2Modal_' + id_pengajuan1).find('table tbody');
 
                     if (tableBody.length > 0) {
-                        tableBody.empty(); 
+                        tableBody.empty();
 
                         if (data && data.$values && Array.isArray(data.$values)) {
                             data.$values.forEach(function (item, index) {

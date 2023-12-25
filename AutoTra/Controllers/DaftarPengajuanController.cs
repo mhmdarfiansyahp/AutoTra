@@ -39,7 +39,7 @@ namespace AutoTra.Controllers
 
             var dsndictinory = dsn.ToDictionary(d => d.npk, d => d.nama);
             var mobildictionary = mobil.ToDictionary(m => m.id_mobil, m => m.nama);
-            var Picdictionary = pic.ToDictionary(p => p.nim, p =>  p.nama);
+            var Picdictionary = pic.ToDictionary(p => p.nim, p => p.nama);
 
             ViewBag.dsndictinary = dsndictinory;
             ViewBag.Mobildictinary = mobildictionary;
@@ -52,7 +52,7 @@ namespace AutoTra.Controllers
             try
             {
                 // Lakukan validasi jika diperlukan
-                if (approvalStatus != 0) 
+                if (approvalStatus != 0)
                 {
                     // Lakukan sesuatu dengan data yang diterima dari formulir
                     if (approvalStatus == 2 || approvalStatus == 1) // Mengubah dua blok if menjadi satu dengan || (atau)

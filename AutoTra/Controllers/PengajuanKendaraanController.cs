@@ -91,8 +91,8 @@ namespace AutoTra.Controllers
             return View(mbl);
         }
 
-        [HttpGet]   
-        public IActionResult FirstCheck(int? id) 
+        [HttpGet]
+        public IActionResult FirstCheck(int? id)
         {
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
@@ -102,28 +102,29 @@ namespace AutoTra.Controllers
             return View();
         }
 
-            [HttpPost]
-            public IActionResult FirstCheck([FromBody] List<PengajuanKendaraanModel> pengajuanmodel)
+        [HttpPost]
+        public IActionResult FirstCheck([FromBody] List<PengajuanKendaraanModel> pengajuanmodel)
+        {
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
-                    {
-                        pengajuanrepositori.insertdetailpemeriksaan(pengajuanmodel);
-                        return Ok("Data berhasil diproses");
-                    }
+                    pengajuanrepositori.insertdetailpemeriksaan(pengajuanmodel);
+                    return Ok("Data berhasil diproses");
                 }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Terjadi kesalahan: {ex.Message}");
-                }
-                return View(pengajuanmodel);
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Terjadi kesalahan: {ex.Message}");
+            }
+            return View(pengajuanmodel);
+        }
         [HttpGet]
         public IActionResult FinalCheck(int? id)
         {
             ViewData["DataForm"] = pengajuanrepositori.getForm(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
+            ViewData["DataPengajuan"] = pengajuanrepositori.getPengajuan(id);
             PengajuanKendaraanModel pengajuan = pengajuanrepositori.getPemeriksaan1(id);
             ViewBag.id = pengajuan.id_pemeriksaan;
             ViewBag.id_pengajuan = id;
@@ -147,8 +148,37 @@ namespace AutoTra.Controllers
             }
             return View(pengajuanmodel);
         }
+
+        [HttpGet]
+        public IActionResult Laporan()
+        {
+            try
+            {
+                List<PengajuanKendaraanModel> data = pengajuanrepositori.getdetailpemeriksaan();
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                ViewData["DataPIC"] = pengajuanrepositori.getAllPIC();
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                // Tangani pengecualian jika terjadi kesalahan
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult LaporanDetail(int id)
+        {
+            ViewData["DataItem"] = pengajuanrepositori.getDataItem();
+            ViewData["DataDetail"] = pengajuanrepositori.getDetailPemeriksaan(id);
+            return View();
+        }
     }
-    }
+}
 
 
 

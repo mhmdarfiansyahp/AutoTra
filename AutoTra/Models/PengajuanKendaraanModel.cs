@@ -4,19 +4,19 @@ namespace AutoTra.Models
 {
     public class PengajuanKendaraanModel
     {
-        public int? id_pengajuan { get; set; }  
+        public int? id_pengajuan { get; set; }
         public int? id_pemeriksaan { get; set; }
         public int? id_item { get; set; }
 
-        public DateTime? tanggl_pengajuan { get; set; }
+        public DateTime tanggl_pengajuan { get; set; }
 
-        public string? nim {get; set; }
+        public string? nim { get; set; }
         public string? nama { get; set; }
         public string? npk { get; set; }
         public int? id_mobil { get; set; }
 
         public string? deskripsi { get; set; }
-        
+
         public int? status { get; set; }
 
         public int? id_form { get; set; }
@@ -26,6 +26,12 @@ namespace AutoTra.Models
         public string? jenis_form { get; set; }
         public string? hasil_inspeksi { get; set; }
         public string? alasan { get; set; }
+
+        public string? item_pemeriksaan { get; set; }
+        public string? kategori_pemeriksaan { get; set; }
+        public string? standart_pemeriksaan { get; set; }
+
+        public string? metode_pemeriksaan { get; set; }
 
 
     }

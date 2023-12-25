@@ -8,7 +8,7 @@ namespace AutoTra.Models
 
         public DateTime tanggl_pengajuan { get; set; }
 
-        public string? nim {get; set; }
+        public string? nim { get; set; }
         public string? nama { get; set; }
         public string? username { get; set; }
 
@@ -16,7 +16,7 @@ namespace AutoTra.Models
         public int? id_mobil { get; set; }
 
         public string? deskripsi { get; set; }
-        
+
         public int? status { get; set; }
 
         public string? jenis_mobil { get; set; }

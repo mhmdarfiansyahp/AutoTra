@@ -56,15 +56,15 @@
             <a asp-controller="PengajuanKendaraan" class="btn btn-primary" asp-action="Create">+ Add Submission</a>
             <br />
             <br />
-@*            <form method="post">
-                <div style="padding-left: 1080px;">
-                    <div class="col-lg-12">
-                        <div class="input-group mb-12">
-                            <input class="form-control" type="text" placeholder="Search Category Inspection data by name.." aria-describedby="button-addon2" name="search">
-                            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
-                        </div>
-                    </div>
-                </div>
+            @*            <form method="post">
+            <div style="padding-left: 1080px;">
+            <div class="col-lg-12">
+            <div class="input-group mb-12">
+            <input class="form-control" type="text" placeholder="Search Category Inspection data by name.." aria-describedby="button-addon2" name="search">
+            <button class="btn btn-outline-secondary" id="button-addon2" type="submit">Cari</button>
+            </div>
+            </div>
+            </div>
             </form>
             <br />*@
             <div class="card">
@@ -89,7 +89,7 @@
                         {
                             <tr>
                                 <td>@(no++)</td>
-                                <td>@(pengajuan.tanggl_pengajuan?.ToString("dd-MM-yyyy"))</td>
+                                <td>@(pengajuan.tanggl_pengajuan.ToString("dd-MM-yyyy"))</td>
                                 <td>@pengajuan.nim</td>
                                 <td>@ViewBag.dsndictinary[pengajuan.npk]</td> <!-- Displaying lecturer's name based on npk -->
                                 <td>
@@ -101,34 +101,34 @@
                                 <td>@pengajuan.skala</td>
                                 <td>@pengajuan.deskripsi</td>
                                 <td>
-                                @{
-                                    string statusText = "";
-                                    switch (pengajuan.status)
-                                    {
-                                        case 0:
-                                            statusText = "Menunggu Konfirmasi";
-                                            break;
-                                        case 1:
-                                            statusText = "Tidak Disetujui";
-                                            break;
-                                        case 2:
-                                            statusText = "Disetujui";
-                                            break;
-                                        case 3:
+                                    @{
+                                        string statusText = "";
+                                        switch (pengajuan.status)
+                                        {
+                                            case 0:
                                                 statusText = "Menunggu Konfirmasi";
-                                            break;
-                                        case 4:
-                                            statusText = "Dalam Pengerjaan";
-                                        break;
-                                        case 5:
-                                              statusText = "Diselesaikan";
                                                 break;
-                                        default:
-                                            statusText = "Status Tidak Dikenali";
-                                            break;
+                                            case 1:
+                                                statusText = "Tidak Disetujui";
+                                                break;
+                                            case 2:
+                                                statusText = "Disetujui";
+                                                break;
+                                            case 3:
+                                                statusText = "Menunggu Konfirmasi";
+                                                break;
+                                            case 4:
+                                                statusText = "Dalam Pengerjaan";
+                                                break;
+                                            case 5:
+                                                statusText = "Diselesaikan";
+                                                break;
+                                            default:
+                                                statusText = "Status Tidak Dikenali";
+                                                break;
+                                        }
                                     }
-                                }
-                                @statusText
+                                    @statusText
                                 </td>
                                 <td>
                                     @if (pengajuan.status == 0)
@@ -142,7 +142,7 @@
                                     }
                                     @if (pengajuan.status == 1)
                                     {
-                                        
+
                                     }
                                     @if (@pengajuan.status == 2)
                                     {

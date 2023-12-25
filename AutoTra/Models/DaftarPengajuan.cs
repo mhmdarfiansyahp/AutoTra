@@ -126,6 +126,7 @@ namespace AutoTra.Models
                 reader.Close();
                 _connection.Close();
 
+                string formattedDate = tanggal_pemeriksaan.ToString("yyyy-MM-dd");
                 string storedProcedureName = "sp_ApprovalPengajuan1";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -133,7 +134,7 @@ namespace AutoTra.Models
                 command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
                 command.Parameters.AddWithValue("@id_mobil", id_mobil);
                 command.Parameters.AddWithValue("@status", approvalStatus);
-                command.Parameters.AddWithValue("@tanggal_pemeriksaan", tanggal_pemeriksaan);
+                command.Parameters.AddWithValue("@tanggal_pemeriksaan", formattedDate);
                 command.Parameters.AddWithValue("@id_form", dtlacc.id_form);
                 command.Parameters.AddWithValue("@nim", NIM);
                 command.Parameters.AddWithValue("@status_pemeriksaan", status_pemeriksaan);
@@ -164,14 +165,17 @@ namespace AutoTra.Models
                 reader.Close();
                 _connection.Close();
 
+
+                string formattedDate = tanggal_pemeriksaan.ToString("yyyy-MM-dd");
                 string storedProcedureName = "sp_ApprovalPengajuan2";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@id_pengajuan", id_pengajuan);
+                command.Parameters.AddWithValue("@id_pgn_unit", id_pengajuan);
                 command.Parameters.AddWithValue("@id_mobil", id_mobil);
+                command.Parameters.AddWithValue("@skala", Skala);
                 command.Parameters.AddWithValue("@status", approvalStatus);
-                command.Parameters.AddWithValue("@tanggal_pemeriksaan", tanggal_pemeriksaan);
+                command.Parameters.AddWithValue("@tanggal_pemeriksaan", formattedDate);
                 command.Parameters.AddWithValue("@id_form", dtlacc.id_form);
                 command.Parameters.AddWithValue("@nim", NIM);
                 command.Parameters.AddWithValue("@status_pemeriksaan", status_pemeriksaan);
@@ -213,36 +217,36 @@ namespace AutoTra.Models
                             }
                             reader.Close();
                         }
-                                string formattedDate = dtlacc1.tanggl_pengajuan.ToString("yyyy-MM-dd");
-                                string query1 = "SELECT P.id_pemeriksaan, DP.hasil_inspeksi, DP.alasan_tidak_sesuai, IP.item_pemeriksaan, IP.kategori_pemeriksaan, IP.standart_pemeriksaan, IP.metode_pemeriksaan " +
-                                                "FROM dbo.Pemeriksaan P " +
-                                                "JOIN dbo.Detail_Pemeriksaan DP ON P.id_pemeriksaan = DP.id_pemeriksaan " +
-                                                "JOIN dbo.Itm_Pemeriksaan IP ON DP.id_item = IP.id_item " +
-                                                "WHERE P.nim = @p3 AND P.tanggal_pemeriksaan = @p2 AND P.status = 1";
+                        string formattedDate = dtlacc1.tanggl_pengajuan.ToString("yyyy-MM-dd");
+                        string query1 = "SELECT P.id_pemeriksaan, DP.hasil_inspeksi, DP.alasan_tidak_sesuai, IP.item_pemeriksaan, IP.kategori_pemeriksaan, IP.standart_pemeriksaan, IP.metode_pemeriksaan " +
+                                        "FROM dbo.Pemeriksaan P " +
+                                        "JOIN dbo.Detail_Pemeriksaan DP ON P.id_pemeriksaan = DP.id_pemeriksaan " +
+                                        "JOIN dbo.Itm_Pemeriksaan IP ON DP.id_item = IP.id_item " +
+                                        "WHERE P.nim = @p3 AND P.tanggal_pemeriksaan = @p2 AND P.status = 1";
 
-                                using (SqlCommand command1 = new SqlCommand(query1, connection))
+                        using (SqlCommand command1 = new SqlCommand(query1, connection))
+                        {
+                            command1.Parameters.AddWithValue("@p2", formattedDate);
+                            command1.Parameters.AddWithValue("@p3", dtlacc1.nim);
+                            using (SqlDataReader reader1 = command1.ExecuteReader())
+                            {
+                                while (reader1.Read())
                                 {
-                                    command1.Parameters.AddWithValue("@p2", formattedDate);
-                                    command1.Parameters.AddWithValue("@p3", dtlacc1.nim);
-                                    using (SqlDataReader reader1 = command1.ExecuteReader())
+                                    DaftarPengajuanModel pmodel = new DaftarPengajuanModel
                                     {
-                                        while (reader1.Read())
-                                        {
-                                            DaftarPengajuanModel pmodel = new DaftarPengajuanModel
-                                            {
-                                                id_pemeriksaan = Convert.ToInt32(reader1["id_pemeriksaan"]),
-                                                hasil_inspeksi = reader1["hasil_inspeksi"].ToString(),
-                                                alasan = reader1["alasan_tidak_sesuai"].ToString(),
-                                                item_pemeriksaan = reader1["item_pemeriksaan"].ToString(),
-                                                kategori_pemeriksaan = reader1["kategori_pemeriksaan"].ToString(),
-                                                standart_pemeriksaan = reader1["standart_pemeriksaan"].ToString(),
-                                                metode_pemeriksaan = reader1["metode_pemeriksaan"].ToString()
-                                            };
-                                            dtlacc.Add(pmodel);
-                                        }
-                                        reader1.Close();
-                                    }
+                                        id_pemeriksaan = Convert.ToInt32(reader1["id_pemeriksaan"]),
+                                        hasil_inspeksi = reader1["hasil_inspeksi"].ToString(),
+                                        alasan = reader1["alasan_tidak_sesuai"].ToString(),
+                                        item_pemeriksaan = reader1["item_pemeriksaan"].ToString(),
+                                        kategori_pemeriksaan = reader1["kategori_pemeriksaan"].ToString(),
+                                        standart_pemeriksaan = reader1["standart_pemeriksaan"].ToString(),
+                                        metode_pemeriksaan = reader1["metode_pemeriksaan"].ToString()
+                                    };
+                                    dtlacc.Add(pmodel);
                                 }
+                                reader1.Close();
+                            }
+                        }
                     }
                 }
             }
