@@ -81,7 +81,7 @@ namespace AutoTra.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Approve2(int approvalStatus, int id_pengajuan, int id_mobil, DateTime tanggal_pemeriksaan, string skala, string NIM, int status_pemeriksaan)
+        public IActionResult Approve2(int approvalStatus, int idpengajuan, int idmobil, DateTime tanggalpemeriksaan, string skala, string nim, int statuspemeriksaan)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace AutoTra.Controllers
                     // Lakukan sesuatu dengan data yang diterima dari formulir
                     if (approvalStatus == 4 || approvalStatus == 1) // Mengubah dua blok if menjadi satu dengan || (atau)
                     {
-                        Dpengajuanrepositori.approval2(approvalStatus, id_pengajuan, id_mobil, tanggal_pemeriksaan, skala, NIM, status_pemeriksaan);
+                        Dpengajuanrepositori.approval2(approvalStatus, idpengajuan, idmobil, tanggalpemeriksaan, skala, nim, statuspemeriksaan);
                     }
                     else
                     {
@@ -136,7 +136,6 @@ namespace AutoTra.Controllers
                 {
                     return NotFound();
                 }
-
                 return Json(data);
             }
             catch (Exception ex)

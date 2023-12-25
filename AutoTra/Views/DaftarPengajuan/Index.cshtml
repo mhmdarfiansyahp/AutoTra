@@ -171,7 +171,7 @@
                                                     <form class="approvalcar1" method="post">
                                                         <input class="form-control" type="hidden" name="id_pengajuan" />
                                                         <input class="form-control" type="hidden" name="id_mobil" />
-                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden />
+                                                        <input class="form-control tanggalPemeriksaan" type="date" name="tanggal_pemeriksaan"  />
                                                         <input class="form-control" name="Skala" hidden />
                                                         <input class="form-control" name="NIM" hidden />
                                                         <input class="form-control" name="status_pemeriksaan" value=0 hidden />
@@ -214,12 +214,12 @@
                                                     </table>
                                                     <hr />
                                                     <form class="approvalcar2" method="post">
-                                                        <input class="form-control" type="hidden" name="id_pengajuan" value="@pengajuan.id_pengajuan" />
-                                                        <input class="form-control" type="hidden" name="id_mobil" value="@pengajuan.id_mobil" />
-                                                        <input class="form-control" type="date" name="tanggal_pemeriksaan" value="@pengajuan.tanggl_pengajuan.ToString("yyyy-MM-dd")" hidden />
-                                                        <input class="form-control" name="Skala" hidden value="@pengajuan.skala" />
-                                                        <input class="form-control" name="NIM" hidden value="@pengajuan.nim" />
-                                                        <input class="form-control" name="status_pemeriksaan" value=2 hidden />
+                                                        <input class="form-control" type="hidden" name="idpengajuan"  />
+                                                        <input class="form-control" type="hidden" name="idmobil"  />
+                                                        <input class="form-control tanggalPemeriksaan" type="date" name="tanggalpemeriksaan" hidden />
+                                                        <input class="form-control" name="skala" hidden />
+                                                        <input class="form-control" name="nim" hidden />
+                                                        <input class="form-control" name="statuspemeriksaan" value=2 hidden />
                                                         <div class="mb-3">
                                                             <input type="radio" value=4 name="approvalStatus" id="inspSetuju" />
                                                             <label for="inspSetuju" style="font-size:18px; font-family:'Segoe UI'">Approve</label>
@@ -311,15 +311,29 @@
                 method: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    var tableBody = $('#acc2Modal_' + id_pengajuan1).find('table tbody');
+                    if (data && data.$values && Array.isArray(data.$values) && data.$values.length > 0) {
+                        var data2 = data.$values[0]; // Mengambil data dari indeks 0
 
-                    if (tableBody.length > 0) {
-                        tableBody.empty();
+                        $("input[name='idpengajuan']").val(data2.id_pengajuan);
+                        $("input[name='idmobil']").val(data2.id_mobil);
+                        $("input[name='CarModel']").val(data2.nama_mobil);
+                        $("input[name='Fuel']").val(data2.bahan_bakar);
+                        $("input[name='skala']").val(data2.skala);
+                        $("input[name='NamaMhs']").val(data2.nama);
+                        $("input[name='nim']").val(data2.nim);
+                        $("input[name='Job']").val(data2.deskripsi);
 
-                        if (data && data.$values && Array.isArray(data.$values)) {
-                            data.$values.forEach(function (item, index) {
+                        console.log(data2);
+
+                        var tableBody = $('#acc2Modal_' + id_pengajuan1).find('table tbody');
+
+                        if (tableBody.length > 0) {
+                            tableBody.empty();
+
+                            for (var index = 1; index < data.$values.length; index++) {
+                                var item = data.$values[index];
                                 var newRow = '<tr>' +
-                                    '<td>' + (index + 1) + '</td>' + // Nomor urut
+                                    '<td>' + index + '</td>' + // Nomor urut
                                     '<td>' + item.item_pemeriksaan + '</td>' +
                                     '<td>' + item.standart_pemeriksaan + '</td>' +
                                     '<td>' + item.kategori_pemeriksaan + '</td>' +
@@ -328,14 +342,14 @@
                                     '<td>' + item.alasan + '</td>' +
                                     '</tr>';
                                 tableBody.append(newRow);
-                            });
+                            }
 
                             $("#acc2Modal_" + id_pengajuan1).modal("show");
                         } else {
-                            console.log("Data tidak sesuai atau tidak ada dalam format yang diharapkan.");
+                            console.log("Tabel tidak ditemukan.");
                         }
                     } else {
-                        console.log("Tabel tidak ditemukan.");
+                        console.log("Data tidak sesuai atau tidak ada dalam format yang diharapkan.");
                     }
                 },
                 error: function () {
@@ -344,8 +358,9 @@
                 }
             });
         }
+
         $(".submitApproval2").click(function () {
-            var approvalData = $(".approvalcar2").serialize(); // Mengambil data dari formulir
+            var approvalData = $('.approvalcar2').serialize();
 
             $.ajax({
                 type: "POST",

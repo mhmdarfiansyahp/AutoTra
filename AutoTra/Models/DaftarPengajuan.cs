@@ -210,11 +210,13 @@ namespace AutoTra.Models
                             {
 
                                 dtlacc1.id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"]);
+                                dtlacc1.id_mobil = Convert.ToInt32(reader["id_mobil"]);
                                 dtlacc1.tanggl_pengajuan = Convert.ToDateTime(reader["tanggal_pengajuan"]);
                                 dtlacc1.nim = reader["nim"].ToString();
                                 dtlacc1.skala = reader["skala"].ToString();
                                 dtlacc1.deskripsi = reader["deskripsi"].ToString();
                             }
+                            dtlacc.Add(dtlacc1);
                             reader.Close();
                         }
                         string formattedDate = dtlacc1.tanggl_pengajuan.ToString("yyyy-MM-dd");
