@@ -35,7 +35,7 @@ namespace AutoTra.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var mobilData = mobilrepository.getAllData();
+            var mobilData = mobilrepository.getActiveCar();
             var DsnData = dsnrepository.getAllData();
 
             ViewBag.Dosen = new SelectList(DsnData, "npk", "nama");
