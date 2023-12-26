@@ -115,14 +115,14 @@
                 data: JSON.stringify(dataArray), // Mengirim seluruh data sebagai array
                 success: function (response) {
                     console.log(response);
-                    // Lakukan sesuatu setelah berhasil, jika diperlukan
+                    window.location.href = '/PengajuanKendaraan/Index'; 
+
                 },
                 error: function (err) {
                     console.error('Error:', err);
                     // Lakukan penanganan kesalahan, jika diperlukan
                 }
             });
-        });
 
         // Logika checkbox
         $('.hasil-inspeksi-checkbox').change(function () {

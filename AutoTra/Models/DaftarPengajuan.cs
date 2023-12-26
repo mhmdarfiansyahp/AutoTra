@@ -21,28 +21,39 @@ namespace AutoTra.Models
 
             try
             {
-                // Use npk in the query to filter data
-                string query = $"SELECT * FROM Pgn_Unit_Praktek WHERE npk = '{npk}'";
+                // Hitung tanggal satu minggu yang lalu
+                DateTime satuMingguYangLalu = DateTime.Today.AddDays(-7);
+
+                // Gunakan npk dalam query untuk filter data
+                string query = $"SELECT * FROM Pgn_Unit_Praktek WHERE npk = @Npk AND tanggal_pengajuan >= @Tanggal";
 
                 using (SqlCommand command = new SqlCommand(query, _connection))
                 {
+                    command.Parameters.AddWithValue("@Npk", npk);
+                    command.Parameters.AddWithValue("@Tanggal", satuMingguYangLalu.ToString("yyyy-MM-dd"));
+
                     _connection.Open();
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            DaftarPengajuanModel pengajuan = new DaftarPengajuanModel
+                            DateTime tanggalPengajuan = reader.GetDateTime(reader.GetOrdinal("tanggal_pengajuan"));
+                            // Periksa apakah tanggal pengajuan lebih dari satu minggu yang lalu
+                            if (tanggalPengajuan >= satuMingguYangLalu)
                             {
-                                id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString()),
-                                tanggl_pengajuan = reader.GetDateTime(reader.GetOrdinal("tanggal_pengajuan")),
-                                nim = reader["nim"].ToString(),
-                                npk = reader["npk"].ToString(),
-                                id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
-                                skala = reader["skala"].ToString(),
-                                deskripsi = reader["deskripsi"].ToString(),
-                                status = Convert.ToInt32(reader["status"].ToString()),
-                            };
-                            mbllist.Add(pengajuan);
+                                DaftarPengajuanModel pengajuan = new DaftarPengajuanModel
+                                {
+                                    id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString()),
+                                    tanggl_pengajuan = tanggalPengajuan,
+                                    nim = reader["nim"].ToString(),
+                                    npk = reader["npk"].ToString(),
+                                    id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
+                                    skala = reader["skala"].ToString(),
+                                    deskripsi = reader["deskripsi"].ToString(),
+                                    status = Convert.ToInt32(reader["status"].ToString()),
+                                };
+                                mbllist.Add(pengajuan);
+                            }
                         }
                     }
                 }
@@ -58,6 +69,7 @@ namespace AutoTra.Models
 
             return mbllist;
         }
+
         public DaftarPengajuanModel getdetailacc1(int? id_pengajuan)
         {
             DaftarPengajuanModel dtlacc = new DaftarPengajuanModel();
