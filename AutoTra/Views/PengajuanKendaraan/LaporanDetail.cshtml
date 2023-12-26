@@ -75,10 +75,10 @@
                                                 <span>@item.metode_pemeriksaan</span>
                                             </td>
                                             <td>
-                                                <span>@dtl.hasil_inspeksi</span>
+                                                <span>@(dtl.hasil_inspeksi != "null" ? dtl.hasil_inspeksi : "Not Good")</span>
                                             </td>
                                             <td>
-                                                <span>@dtl.alasan</span>
+                                                <span>@(dtl.alasan != "null" ? dtl.alasan : "-")</span>
                                             </td>
                                         </tr>
                                     }
