@@ -156,6 +156,9 @@ namespace AutoTra.Controllers
         {
             try
             {
+                var mobil = mobilrepository.getAllData();
+                var mobildictionary = mobil.ToDictionary(m => m.id_mobil, m => m.nama);
+                ViewBag.Mobildictinary = mobildictionary;
                 List<PengajuanKendaraanModel> data = pengajuanrepositori.getdetailpemeriksaan();
                 if (data == null)
                 {

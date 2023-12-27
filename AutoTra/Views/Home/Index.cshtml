@@ -52,7 +52,7 @@
                 <br />
                 <div style="padding-left: 175px;">
                 <input type="checkbox" id="showPasswordCheckbox" onchange="togglePasswordVisibility()">
-                <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
+                <label class="form-check-label" for="showPasswordCheckbox" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size:16px; font-weight:450">Show Password</label>
                 </div>
             </div>
         </div>
@@ -73,3 +73,13 @@
 
     </style>
 </form>
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+    }
+</script>

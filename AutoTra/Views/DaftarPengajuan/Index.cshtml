@@ -171,7 +171,7 @@
                                                     <form class="approvalcar1" method="post">
                                                         <input class="form-control" type="hidden" name="id_pengajuan" />
                                                         <input class="form-control" type="hidden" name="id_mobil" />
-                                                        <input class="form-control tanggalPemeriksaan" type="date" name="tanggal_pemeriksaan"  />
+                                                        <input class="form-control tanggalPemeriksaan" type="date" name="tanggal_pemeriksaan" hidden />
                                                         <input class="form-control" name="Skala" hidden />
                                                         <input class="form-control" name="NIM" hidden />
                                                         <input class="form-control" name="status_pemeriksaan" value=0 hidden />
@@ -338,8 +338,8 @@
                                     '<td>' + item.standart_pemeriksaan + '</td>' +
                                     '<td>' + item.kategori_pemeriksaan + '</td>' +
                                     '<td>' + item.metode_pemeriksaan + '</td>' +
-                                    '<td>' + item.hasil_inspeksi + '</td>' +
-                                    '<td>' + item.alasan + '</td>' +
+                                    '<td>' + (item.hasil_inspeksi !== "null" ? item.hasil_inspeksi : "Not Good") + '</td>' +
+                                    '<td>' + (item.alasan !== "null" ? item.alasan : "-") + '</td>' +
                                     '</tr>';
                                 tableBody.append(newRow);
                             }

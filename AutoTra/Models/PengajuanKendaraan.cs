@@ -455,6 +455,7 @@ namespace AutoTra.Models
                                 {
                                     id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
                                     tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
+                                    id_mobil = Convert.ToInt32(readerUnits["id_mobil"]),
                                     npk = readerUnits["npk"].ToString(),
                                     nim = readerUnits["nim"].ToString(),
                                     skala = readerUnits["skala"].ToString(),
