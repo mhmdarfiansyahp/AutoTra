@@ -81,16 +81,30 @@
                     <img src="~/Content/Images/IMG_1687.png" style="height: 50px;" />
                 </a>
             </div>
-            <div class="polman-menu">
-                <div style="padding-top: 15px; margin-right: -30px;">
-                    Hai, <span style="font-size: 16px; font-weight: bold;"> @Context.Session.GetString("nama") (@Context.Session.GetString("Role"))</span>
-                </div>
-            </div>
 
+            <div class="polman-menu">
+                <nav class="nav justify-content-end" style="padding-top: 5px;">
+                    <span style="font-size: 16px; margin-top: 7px; width: 135px; font-weight: bold; margin-bottom: 10px;">
+                            @Context.Session.GetString("nama") (@Context.Session.GetString("Role"))
+                        </span>
+                </nav>
+                <br />
+                <br/>
+            </div>
 
             <div class="polman-menu-bar">
                 <div class="float-right">
                     <div class="fa fa-bars fa-2x" style="margin-top: 9px; cursor: pointer;" aria-hidden="true" data-toggle="collapse" data-target="#menu" aria-expanded="false" aria-controls="menu"></div>
+                </div>
+            </div>
+
+            <div class="polman-notifikasi">
+                <div class="float-right">
+                    <a href="@Url.Action("Index", "Notifikasi")">
+                        <div class="fa fa-envelope fa-2x" style="margin-top: 8px; margin-right: 15px; cursor: pointer; color: black;">
+                            <span class="badge badge-pill badge-info polman-badge notification-count"></span>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -151,6 +165,73 @@
 
     <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
     </asp:ContentPlaceHolder>
+
+    <style>
+        .badge {
+            display: inline-block;
+            padding: 0.2em 0.3em; /* Ubah padding agar lebih kecil */
+            font-size: 35%; 
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.2rem; /* Ubah border-radius agar lebih kecil */
+        }
+
+        .badge-pill {
+            padding-right: 0.5em; /* Ubah padding agar lebih kecil */
+            padding-left: 0.5em; /* Ubah padding agar lebih kecil */
+            border-radius: 8rem; /* Ubah border-radius agar lebih kecil */
+        }
+
+        .polman-badge {
+            position: absolute;
+            top: 6px; /* Sesuaikan posisi top */
+            margin-left: -13px; /* Sesuaikan margin-left */
+        }
+
+        .badge-info {
+            background-color: #5bc0de;
+        }
+    </style>
+
+    <script>
+        function updateNotificationCount() {
+            $.ajax({
+                url: '@Url.Action("GetUnreadNotificationCount", "Notifikasi")',
+                type: 'GET',
+                success: function (result) {
+                    if (result.unreadCount > 0) {
+                        // Perbarui jumlah notifikasi di UI
+                        $('.notification-count').text(result.unreadCount).show();
+                    } else {
+                        // Sembunyikan jumlah jika tidak ada notifikasi yang belum dibaca
+                        $('.notification-count').hide();
+                    }
+                },
+                error: function () {
+                    console.error('Error fetching notification count');
+                }
+            });
+        }
+
+        // Panggil fungsi updateNotificationCount saat halaman dimuat
+        $(document).ready(function () {
+            updateNotificationCount();
+        });
+
+        // Anda dapat memanggil fungsi ini setiap kali status berubah untuk memperbarui jumlahnya
+        // Sebagai contoh, panggil setelah mengirim formulir untuk mengubah status
+        function onStatusChange() {
+            // ... (kode yang sudah ada untuk mengubah status)
+
+            // Perbarui jumlah notifikasi setelah perubahan status
+            updateNotificationCount();
+        }
+
+    </script>
 
 </body>
 </html>

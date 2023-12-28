@@ -284,9 +284,22 @@
                 type: "POST",
                 url: "/DaftarPengajuan/Approve1",
                 data: approvalData,
-                success: function () {
-                    console.log(approvalData);
-                    location.reload(); // Memuat ulang halaman setelah berhasil
+                success: function (response) {
+                    console.log(response);
+
+                    // Tunggu SweetAlert2 selesai dan kemudian muat ulang halaman jika perlu
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Setelah popup SweetAlert2 ditutup, maka jalankan location.reload()
+                            location.reload();
+                        }
+                    });
                 },
                 error: function () {
                     console.log("Error during AJAX request for approval");
@@ -294,6 +307,7 @@
                 }
             });
         });
+
 
         var today = new Date().toISOString().split('T')[0];
 

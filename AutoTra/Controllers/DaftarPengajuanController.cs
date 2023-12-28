@@ -7,6 +7,7 @@ namespace AutoTra.Controllers
     public class DaftarPengajuanController : Controller
     {
         private readonly DaftarPengajuan Dpengajuanrepositori;
+        private readonly Notifikasi notifikasirepositori;
         private readonly Mobil mobilrepository;
         private readonly Dosen dsnrepository;
         private readonly PIC picrepository;
@@ -15,6 +16,7 @@ namespace AutoTra.Controllers
         public DaftarPengajuanController(IConfiguration configuration)
         {
             Dpengajuanrepositori = new DaftarPengajuan(configuration);
+            notifikasirepositori = new Notifikasi(configuration);
             mobilrepository = new Mobil(configuration);
             dsnrepository = new Dosen(configuration);
             picrepository = new PIC(configuration);
@@ -58,6 +60,9 @@ namespace AutoTra.Controllers
                     if (approvalStatus == 2 || approvalStatus == 1) // Mengubah dua blok if menjadi satu dengan || (atau)
                     {
                         Dpengajuanrepositori.approval1(approvalStatus, id_pengajuan, id_mobil, tanggal_pemeriksaan, skala, NIM, status_pemeriksaan);
+
+                        var notifikasiList = notifikasirepositori.GetNotifikasiListFromPgnUnitPraktek();
+                        return Json(new { success = true, message = "Data berhasil diproses.", notifications = notifikasiList, showAlert = true });
                     }
                     else
                     {
