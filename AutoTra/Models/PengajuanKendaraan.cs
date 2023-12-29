@@ -326,6 +326,8 @@ namespace AutoTra.Models
                     dtlmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
                     dtlmodel.skala = reader["skala"].ToString();
                     dtlmodel.nim = reader["nim"].ToString();
+                    dtlmodel.tanggl_pengajuan = Convert.ToDateTime(reader["tanggal_pengajuan"]);
+
                 }
                 reader.Close();
 
@@ -342,10 +344,12 @@ namespace AutoTra.Models
                 }
                 reader1.Close();
 
-                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 3";
+                string formattedDate = dtlmodel.tanggl_pengajuan.ToString("yyyy-MM-dd");
+                string query2 = "SELECT * FROM dbo.Pemeriksaan WHERE id_form = @p4 AND nim = @p5 AND [status] = 3 AND tanggal_pemeriksaan = @p7";
                 SqlCommand command2 = new SqlCommand(query2, _connection);
                 command2.Parameters.AddWithValue("@p4", dtlmodel.id_form); // dtlmodel.id_form belum diisi sebelumnya
                 command2.Parameters.AddWithValue("@p5", dtlmodel.nim); // dtlmodel.nim belum diisi sebelumnya
+                command2.Parameters.AddWithValue("@p7", formattedDate);
                 SqlDataReader reader2 = command2.ExecuteReader();
                 if (reader2.Read())
                 {
