@@ -1,10 +1,10 @@
-﻿@model List<AutoTra.Models.NotifikasiModel>
+﻿@model List<AutoTra.Models.Notifikasi2Model>
 @{
     ViewData["Title"] = "Notification";
     int no = 1;
     var httpcontext = ViewContext.HttpContext;
     string role = httpcontext.Session.GetString("Role");
-    string loggedInNIM = httpcontext.Session.GetString("nim");
+    string loggedInNIM = httpcontext.Session.GetString("npk");
 
     if (string.IsNullOrEmpty(role))
     {
@@ -18,9 +18,9 @@
         return;
     }
     Console.WriteLine("Role: " + role);
-    if (role == "PIC")
+    if (role == "Dosen")
     {
-        Layout = "~/Views/Shared/LayoutPIC.cshtml";
+        Layout = "~/Views/Shared/LayoutDosen.cshtml";
     }
 }
 
@@ -50,7 +50,7 @@
                             {
                                 <tr>
                                     <td>@(no++)</td>
-                                    <td style="text-align: center;">@ViewBag.dsndictinary[notifikasi.npk]</td>
+                                    <td style="text-align: center;">@ViewBag.picdictinary[notifikasi.nim]</td>
                                     <td style="text-align: center;">@notifikasi.deskripsi</td>
                                     <td style="text-align: center;">@notifikasi.tanggl_pengajuan.ToString("dddd, yyyy-MM-dd HH:mm:ss")</td>
                                     <td style="text-align: center;">
@@ -59,7 +59,7 @@
                                             switch (notifikasi.status)
                                             {
                                                 case 0:
-                                                    statusText = "Diajukan";
+                                                    statusText = "Menunggu Konfirmasi";
                                                     break;
                                                 case 1:
                                                     statusText = "Tidak Disetujui";
@@ -68,7 +68,7 @@
                                                     statusText = "Disetujui";
                                                     break;
                                                 case 3:
-                                                    statusText = "Belum Dikonfirmasi";
+                                                    statusText = "Menunggu Konfirmasi";
                                                     break;
                                                 case 4:
                                                     statusText = "Dalam Pengerjaan";
@@ -89,6 +89,7 @@
                     </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
+
             </div>
 
         </div>

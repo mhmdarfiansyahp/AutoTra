@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoTra.Controllers
 {
-    public class NotifikasiController : Controller
+    public class Notifikasi2Controller : Controller
     {
-        private readonly Notifikasi notifikasirepositori;
+        private readonly Notifikasi2 notifikasirepositori;
         private readonly Dosen dsnrepository;
         private readonly PIC picrepository;
         ResponseModel response = new ResponseModel();
 
-        public NotifikasiController(IConfiguration configuration)
+        public Notifikasi2Controller(IConfiguration configuration)
         {
-            notifikasirepositori = new Notifikasi(configuration);
+            notifikasirepositori = new Notifikasi2(configuration);
             dsnrepository = new Dosen(configuration);
             picrepository = new PIC(configuration);
         }
@@ -28,16 +28,22 @@ namespace AutoTra.Controllers
 
             ViewBag.dsndictinary = dsndictinory;
             ViewBag.picdictinary = Picdictionary;
-            return View(notifikasiList);
+            var notifikasi2List = notifikasiList.Select(n => new Notifikasi2Model
+            {
+                nim = n.nim,
+                deskripsi = n.deskripsi,
+                tanggl_pengajuan = n.tanggl_pengajuan,
+                status = n.status
+            }).ToList();
+            return View(notifikasi2List);
         }
 
         [HttpGet]
         public IActionResult GetUnreadNotificationCount()
         {
             var notifikasiList = notifikasirepositori.GetNotifikasiListFromPgnUnitPraktek();
-            var unreadCount = notifikasiList.Count(n => n.status != 0 && !n.IsRead);
+            var unreadCount = notifikasiList.Count(n => !n.IsRead && (n.status == 0 || n.status == 3));
             return Json(new { unreadCount });
         }
-
     }
 }
