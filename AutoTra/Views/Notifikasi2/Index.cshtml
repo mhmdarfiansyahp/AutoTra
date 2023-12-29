@@ -44,15 +44,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var notifikasi in Model)
+                        @foreach (var notifikasi in Model.Where(n => n.status == 0 || n.status == 3))
                         {
-                            @if (notifikasi.status != 0)
-                            {
                                 <tr>
                                     <td>@(no++)</td>
                                     <td style="text-align: center;">@ViewBag.picdictinary[notifikasi.nim]</td>
                                     <td style="text-align: center;">@notifikasi.deskripsi</td>
-                                    <td style="text-align: center;">@notifikasi.tanggl_pengajuan.ToString("dddd, yyyy-MM-dd HH:mm:ss")</td>
+                                <td style="text-align: center;">@notifikasi.tanggl_pengajuan.ToString("dddd, dd-MM-yyyy")</td>
                                     <td style="text-align: center;">
                                         @{
                                             string statusText = "";
@@ -84,7 +82,6 @@
                                         @statusText
                                     </td>
                                 </tr>
-                            }
                         }
                     </tbody>
                 </table>
