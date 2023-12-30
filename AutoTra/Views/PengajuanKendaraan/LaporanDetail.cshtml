@@ -67,11 +67,11 @@
                                 if (car.id_mobil == pengajuan.id_mobil){
                         <div class="mb-3">
                             <label class="control-label">Car Model</label>
-                            <input class="form-control" readonly name="Job" value="@car.nama">
+                            <input class="form-control" readonly name="car" value="@car.nama">
                         </div>
                                     <div class="mb-3">
                                         <label class="control-label">Fuel</label>
-                                        <input class="form-control" readonly name="Job" value="@car.bahan_bakar">
+                                        <input class="form-control" readonly name="fuel" value="@car.bahan_bakar">
                                     </div>
                                 }
                             }
@@ -237,7 +237,36 @@
                     text: 'Download PDF',
                     customize: function (doc) {
                         // Custom styling for PDF
+                        var nim = $('[name="NIM"]').val();
+                        var namaMahasiswa = $('[name="NamaMhs"]').val();
+                        var namadosen = $('[name="CarModel"]').val();
+                        var scop = $('[name="Scope"]').val();
+                        var job = $('[name="Job"]').val();
+                        var mobil = $('[name="car"]').val();
+                        var fuel = $('[name="fuel"]').val();
+
+                        // Panjang maksimum untuk bagian kiri (label) dan kanan (nilai)
+                        var maxLeftLength = 30;
+
+                        // Custom styling for PDF
                         var tableRows = doc.content[1].table.body;
+
+                        // Tambahkan informasi tambahan di atas tabel
+                        var additionalData = [
+                            { text: '\n\n' }, // Add space between title and additional data
+                            { text: 'NIM            : ' + nim, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Student Name   : ' + namaMahasiswa, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Lecturer Name  : ' + namadosen, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Scope          : ' + scop, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Job Description: ' + job, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Car Model      : ' + mobil, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'Fuel           : ' + fuel, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: '\n\n' },
+                        ];
+
+                        doc.content.splice(1, 0, additionalData);
+
+                        // Center align all cells in the table
                         for (var i = 0; i < tableRows.length; i++) {
                             for (var j = 0; j < tableRows[i].length; j++) {
                                 tableRows[i][j].alignment = 'center';
