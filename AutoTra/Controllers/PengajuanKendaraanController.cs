@@ -178,9 +178,14 @@ namespace AutoTra.Controllers
         [HttpGet]
         public IActionResult LaporanDetail(int id)
         {
-
+            var dsn = dsnrepository.getAllData();
+            var dsndictinory = dsn.ToDictionary(d => d.npk, d => d.nama);
+            ViewBag.dsndictinary = dsndictinory;
+            ViewData["DataPengajuan"] = pengajuanrepositori.getdetailpemeriksaan2(id);
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
             ViewData["DataDetail"] = pengajuanrepositori.getDetailPemeriksaan(id);
+            ViewData["DataMobil"] = pengajuanrepositori.getAllCarData();
+            ViewData["DataPIC"] = pengajuanrepositori.getAllPIC();
             return View();
         }
     }

@@ -28,6 +28,58 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                <div class="card-body">
+                    <form>
+                        @foreach (var pengajuan in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataPengajuan"]){
+                        <div class="mb-3">
+                            <label class="control-label">NIM</label>
+                            <input class="form-control" readonly name="NIM" value="@pengajuan.nim">
+                        </div>
+                            @foreach (var PIC in (IEnumerable<PICModel>)ViewData["DataPIC"])
+                            {
+                                if (PIC.nim == pengajuan.nim){
+                        <div class="mb-3">
+                            <label class="control-label">Student Name</label>
+                                        <input class="form-control" readonly name="NamaMhs" value="@PIC.nama">
+                        </div>
+                                }
+                            }
+                            @if (ViewBag.dsndictinary != null && ViewBag.dsndictinary.ContainsKey(pengajuan.npk))
+                            {
+                        <div class="mb-3">
+                            <label class="control-label">Lecturer Name</label>
+
+                                    <input class="form-control" readonly name="CarModel" value="@ViewBag.dsndictinary[pengajuan.npk]">
+
+                        </div>
+                            }
+                        <div class="mb-3">
+                            <label class="control-label">Scope</label>
+                            <input class="form-control" readonly name="Scope" value="@pengajuan.skala">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="control-label">Job Description</label>
+                            <input class="form-control" readonly name="Job" value="@pengajuan.deskripsi">
+                        </div>
+                            @foreach (var car in (IEnumerable<MobilModel>)ViewData["DataMobil"])
+                            {
+                                if (car.id_mobil == pengajuan.id_mobil){
+                        <div class="mb-3">
+                            <label class="control-label">Car Model</label>
+                            <input class="form-control" readonly name="Job" value="@car.nama">
+                        </div>
+                                    <div class="mb-3">
+                                        <label class="control-label">Fuel</label>
+                                        <input class="form-control" readonly name="Job" value="@car.bahan_bakar">
+                                    </div>
+                                }
+                            }
+                        }
+                    </form>
+                </div>
+                <hr/>
+
                 <div class="card">
                     <div class="table-container">
                         <!-- Table with stripped rows -->

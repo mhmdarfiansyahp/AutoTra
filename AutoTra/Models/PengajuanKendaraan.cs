@@ -366,7 +366,7 @@ namespace AutoTra.Models
             return dtlmodel;
         }
 
-        public List<MobilModel> getAllCarIndex()
+        public List<MobilModel> getAllCarData()
         {
             List<MobilModel> mbllist = new List<MobilModel>();
             try
@@ -538,7 +538,7 @@ namespace AutoTra.Models
                     string formattedDate = dtllist2.tanggl_pengajuan.ToString("yyyy-MM-dd");
                     reader.Close(); // Close the first reader before opening a new one
 
-                    string queryPemeriksaan = "SELECT id_pemeriksaan FROM dbo.Pemeriksaan WHERE nim = @p3 AND tanggal_pemeriksaan = @p5 AND [status] = 3";
+                    string queryPemeriksaan = "SELECT id_pemeriksaan FROM dbo.Pemeriksaan WHERE nim = @p3 AND tanggal_pemeriksaan = @p5 AND [status] = 4";
                     SqlCommand commandPemeriksaan = new SqlCommand(queryPemeriksaan, _connection);
                     commandPemeriksaan.Parameters.AddWithValue("@p3", dtllist2.nim);
                     commandPemeriksaan.Parameters.AddWithValue("@p5", formattedDate);
@@ -579,6 +579,52 @@ namespace AutoTra.Models
                 _connection.Close();
             }
             return dtllist;
+        }
+
+        public List<PengajuanKendaraanModel> getdetailpemeriksaan2(int id)
+        {
+            List<PengajuanKendaraanModel> dtlacc = new List<PengajuanKendaraanModel>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string queryUnits = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE id_pgn_unit = @p1 AND status = 5";
+
+                    using (SqlCommand commandUnits = new SqlCommand(queryUnits, connection))
+                    {
+                        commandUnits.Parameters.AddWithValue("@p1", id);
+                        using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
+                        {
+                            while (readerUnits.Read())
+                            {
+                                PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
+                                {
+                                    id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
+                                    tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
+                                    id_mobil = Convert.ToInt32(readerUnits["id_mobil"]),
+                                    npk = readerUnits["npk"].ToString(),
+                                    nim = readerUnits["nim"].ToString(),
+                                    skala = readerUnits["skala"].ToString(),
+                                    deskripsi = readerUnits["deskripsi"].ToString()
+                                };
+
+                                dtlacc.Add(pmodel); // Add to dtlacc1, not dtlacc
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // Consider logging the exception for further analysis
+            }
+
+            return dtlacc;
         }
 
     }
