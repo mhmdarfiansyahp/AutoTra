@@ -8,11 +8,9 @@
     {
         // Session is expired or role is not set, redirect to login layout
         Layout = "~/Views/Shared/Layoutlogin.cshtml";
-
         <script>
             window.location.href = '@Url.Action("Index", "Home")';
         </script>
-
         return;
     }
     Console.WriteLine("Role: " + role);
@@ -29,64 +27,65 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-
             <div class="col-md-12">
-
                 <div class="card">
-
-                    <!-- Table with stripped rows -->
-                    <table id="example" class="display table table-hover table-bordered table-condensed table-striped grid nowrap">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Inspection Item</th>
-                                <th scope="col">Inspection Standard</th>
-                                <th scope="col">Inspection Category</th>
-                                <th scope="col">Inspection Method</th>
-                                <th scope="col">Inspection Result</th>
-                                <th scope="col">Reason Not Suitable</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var dtl in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataDetail"])
-                            {
-                                @foreach (var item in (IEnumerable<ItemModel>)ViewData["DataItem"])
+                    <div class="table-container">
+                        <!-- Table with stripped rows -->
+                        <table id="example" class="display table table-hover table-bordered table-condensed table-striped grid nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Inspection Item</th>
+                                    <th scope="col">Inspection Standard</th>
+                                    <th scope="col">Inspection Category</th>
+                                    <th scope="col">Inspection Method</th>
+                                    <th scope="col">Inspection Result</th>
+                                    <th scope="col">Reason Not Suitable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var dtl in (IEnumerable<PengajuanKendaraanModel>)ViewData["DataDetail"])
                                 {
-                                    @if (item.id_item == dtl.id_item)
+                                    @foreach (var item in (IEnumerable<ItemModel>)ViewData["DataItem"])
                                     {
-                                        <tr>
-                                            <td>
-                                                <span>
-                                                    @(
-                                                        no++
-                                                        )
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span>@item.item_pemeriksaan</span>
-                                            </td>
-                                            <td>
-                                                <span>@item.standart_pemeriksaan</span>
-                                            </td>
-                                            <td>
-                                                <span>@item.kategori_pemeriksaan</span>
-                                            </td>
-                                            <td>
-                                                <span>@item.metode_pemeriksaan</span>
-                                            </td>
-                                            <td>
-                                                <span>@(dtl.hasil_inspeksi != "null" ? dtl.hasil_inspeksi : "Not Good")</span>
-                                            </td>
-                                            <td>
-                                                <span>@(dtl.alasan != "null" ? dtl.alasan : "-")</span>
-                                            </td>
-                                        </tr>
+                                        @if (item.id_item == dtl.id_item)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span>
+                                                        @(no++)
+                                                    </span>
+                                                </td>
+                                                <td style ="text-align: center;">
+                                                    <span>@item.item_pemeriksaan</span>
+                                                </td>
+                                                <td style ="text-align: center;">
+                                                    <span>@item.standart_pemeriksaan</span>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span>@item.kategori_pemeriksaan</span>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span>@item.metode_pemeriksaan</span>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span>@(dtl.hasil_inspeksi != "null" ? dtl.hasil_inspeksi : "Not Good")</span>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span>@(dtl.alasan != "null" ? dtl.alasan : "-")</span>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 }
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+
+                        <!-- Container for PDF button at the bottom -->
+                        <div class="buttons-container-bottom">
+                            <!-- Place the PDF button here -->
+                        </div>
+                    </div>
                     <!-- End Table with stripped rows -->
                 </div>
             </div>
@@ -114,8 +113,8 @@
     }
 
         .vin-box[readonly] {
-            background-color: #f0f0f0; /* Warna latar abu-abu saat dalam mode readonly */
-            border-color: #ccc; /* Warna border sesuai preferensi Anda */
+            background-color: #f0f0f0;
+            border-color: #ccc;
         }
 
         .vin-box:focus {
@@ -127,18 +126,82 @@
         .vin-box::placeholder {
             opacity: 20px;
         }
+
+    #example_wrapper .dt-buttons {
+        margin-bottom: 20px;
+    }
+
+        #example_wrapper .dt-buttons .buttons-pdf {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+            margin-right: 10px;
+        }
+
+    .table-container {
+        position: relative;
+    }
+
+    .buttons-container-bottom {
+        margin-top: 20px;
+    }
+
+    #example_wrapper .dt-buttons,
+    #example {
+        clear: both;
+    }
+
+        #example th,
+        #example td {
+            text-align: center;
+        }
+
+            #example th:first-child,
+            #example td:first-child {
+                text-align: left;
+            }
 </style>
+
 <script>
+    function validateNumberInput(input) {
+        input.value = input.value.replace(/\D/g, '');
+        if (input.value.length > 15) {
+            input.value = input.value.slice(0, 15);
+        }
+    }
+
+    function autoCapsLock(input) {
+        input.value = input.value.toUpperCase();
+        moveToNextInput(input);
+    }
+
     $(document).ready(function () {
-        $('#example').DataTable({
+        var table = $('#example').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                'pdf'
+                {
+                    extend: 'pdfHtml5',
+                    className: 'buttons-pdf',
+                    text: 'Download PDF',
+                    customize: function (doc) {
+                        // Custom styling for PDF
+                        var tableRows = doc.content[1].table.body;
+                        for (var i = 0; i < tableRows.length; i++) {
+                            for (var j = 0; j < tableRows[i].length; j++) {
+                                tableRows[i][j].alignment = 'center';
+                            }
+                        }
+                    }
+                }
             ],
             searching: false,
             info: false,
-            paging: false,         // Menyembunyikan pengaturan halaman
-            lengthChange: false    // Menyembunyikan opsi perubahan panjang halaman
+            paging: false,
+            lengthChange: false
         });
+
+        // Move PDF button to the bottom
+        var pdfButton = $('.buttons-pdf');
+        pdfButton.appendTo('.buttons-container-bottom');
     });
 </script>

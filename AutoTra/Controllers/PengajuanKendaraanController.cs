@@ -178,6 +178,7 @@ namespace AutoTra.Controllers
         [HttpGet]
         public IActionResult LaporanDetail(int id)
         {
+
             ViewData["DataItem"] = pengajuanrepositori.getDataItem();
             ViewData["DataDetail"] = pengajuanrepositori.getDetailPemeriksaan(id);
             return View();
