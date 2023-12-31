@@ -72,7 +72,7 @@ namespace AutoTra.Controllers
                 string serializedModelFromDb = JsonConvert.SerializeObject(dosenModel);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
                 HttpContext.Session.SetString("Identity", serializedModelFromDb);
-                HttpContext.Session.SetString("Role", "Dosen");
+                HttpContext.Session.SetString("Role", "Lecturer");
                 HttpContext.Session.SetString("nama", dosenModel.nama);
                 HttpContext.Session.SetString("npk", dosenModel.npk);
 
