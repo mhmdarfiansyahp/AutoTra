@@ -21,7 +21,7 @@ namespace AutoTra.Controllers
         {
             var pengajuan = pengajuanrepositori.getAllData();
             var mobil = mobilrepository.getAllData();
-            var dsn = dsnrepository.getAllData();
+            var dsn = dsnrepository.getActiveDosen();
 
             var dsndictinory = dsn.ToDictionary(d => d.npk, d => d.nama);
             var mobildictionary = mobil.ToDictionary(m => m.id_mobil, m => m.nama);
@@ -36,7 +36,7 @@ namespace AutoTra.Controllers
         public IActionResult Create()
         {
             var mobilData = mobilrepository.getActiveCar();
-            var DsnData = dsnrepository.getAllData();
+            var DsnData = dsnrepository.getActiveDosen();
 
             ViewBag.Dosen = new SelectList(DsnData, "npk", "nama");
             ViewBag.Mobil = new SelectList(mobilData, "id_mobil", "nama");

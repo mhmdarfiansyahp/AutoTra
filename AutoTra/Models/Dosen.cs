@@ -132,6 +132,41 @@ namespace AutoTra.Models
             return dsnlist;
         }
 
+        public List<DosenModel> getActiveDosen()
+        {
+            List<DosenModel> dsnlist = new List<DosenModel>();
+            try
+            {
+                string query = "SELECT * FROM Dosen WHERE status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DosenModel adm = new DosenModel
+                    {
+                        npk = reader["npk"].ToString(),
+                        nama = reader["nama"].ToString(),
+                        username = reader["username"].ToString(),
+                        password = reader["password"].ToString(),
+                        peran = reader["peran"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    dsnlist.Add(adm);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return dsnlist;
+        }
+
         public List<DosenModel> getSearch(string cari)
         {
             int check = 0;
