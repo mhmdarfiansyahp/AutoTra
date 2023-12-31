@@ -86,25 +86,25 @@
                                         switch (pengajuan.status)
                                         {
                                             case 0:
-                                                statusText = "Diajukan";
+                                                statusText = "Waiting for Confirmation";
                                                 break;
                                             case 1:
-                                                statusText = "Tidak Disetujui";
+                                                statusText = "Not Approved";
                                                 break;
                                             case 2:
-                                                statusText = "Disetujui";
+                                                statusText = "Approved";
                                                 break;
                                             case 3:
-                                                statusText = "Belum Dikonfirmasi";
+                                                statusText = "Waiting for Confirmation";
                                                 break;
                                             case 4:
-                                                statusText = "Dalam Pengerjaan";
+                                                statusText = "In Progress";
                                                 break;
                                             case 5:
-                                                statusText = "Diselesaikan";
+                                                statusText = "Finished";
                                                 break;
                                             default:
-                                                statusText = "Status Tidak Dikenali";
+                                                statusText = "Unrecognized Status";
                                                 break;
                                         }
                                     }
