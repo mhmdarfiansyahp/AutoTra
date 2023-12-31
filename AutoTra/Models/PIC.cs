@@ -136,7 +136,7 @@ namespace AutoTra.Models
             List<PICModel> filmList = new List<PICModel>();
             try
             {
-                string query = "SELECT * FROM PIC where nim = @p1";
+                string query = "SELECT * FROM PIC where nama = @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@p1", search);
                 _connection.Open();
@@ -152,21 +152,23 @@ namespace AutoTra.Models
                         peran = reader["peran"].ToString(),
                         status = Convert.ToInt32(reader["status"].ToString()),
                     };
+                    check = 1;
                     filmList.Add(adm);
                 }
                 reader.Close();
+                _connection.Close();
             }
             catch (Exception ex)
             {
                 check = 0;
             }
-            if (check == 1)
+            if (check == 0)
             {
                 try
                 {
-                    string query = "SELECT * FROM PIC where nama = @p1";
+                    string query = "SELECT * FROM PIC where nim = @p2";
                     SqlCommand command = new SqlCommand(query, _connection);
-                    command.Parameters.AddWithValue("@p1", search);
+                    command.Parameters.AddWithValue("@p2", search);
                     _connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
@@ -180,6 +182,7 @@ namespace AutoTra.Models
                             peran = reader["peran"].ToString(),
                             status = Convert.ToInt32(reader["status"].ToString()),
                         };
+                        check = 1;
                         filmList.Add(adm);
                     }
                     reader.Close();
