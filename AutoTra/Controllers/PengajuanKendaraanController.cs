@@ -151,6 +151,30 @@ namespace AutoTra.Controllers
             return View(pengajuanmodel);
         }
 
+        [HttpPost]
+        public IActionResult Laporan(string search)
+        {
+            try
+            {
+                var mobil = mobilrepository.getAllData();
+                var mobildictionary = mobil.ToDictionary(m => m.id_mobil, m => m.nama);
+                ViewBag.Mobildictinary = mobildictionary;
+                List<PengajuanKendaraanModel> data = pengajuanrepositori.getSearchLaporan(search);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                ViewData["DataPIC"] = pengajuanrepositori.getAllPIC();
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                // Tangani pengecualian jika terjadi kesalahan
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Laporan()
         {

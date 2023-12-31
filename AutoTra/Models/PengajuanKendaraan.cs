@@ -627,5 +627,65 @@ namespace AutoTra.Models
             return dtlacc;
         }
 
+        public List<PengajuanKendaraanModel> getSearchLaporan(string search)
+        {
+            List<PengajuanKendaraanModel> dtlacc = new List<PengajuanKendaraanModel>();
+            PengajuanKendaraanModel dtlacc1 = new PengajuanKendaraanModel();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Data_Mobil WHERE nama = @p1";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@p1", search);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                dtlacc1.id_mobil = Convert.ToInt32(reader["id_mobil"]);
+                            }
+                        }
+                    }
+
+                    string queryUnits = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE id_mobil = @p2 AND status = 5";
+
+                    using (SqlCommand commandUnits = new SqlCommand(queryUnits, connection))
+                    {
+                        commandUnits.Parameters.AddWithValue("@p2", dtlacc1.id_mobil);
+                        using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
+                        {
+                            while (readerUnits.Read())
+                            {
+                                PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
+                                {
+                                    id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
+                                    tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
+                                    id_mobil = Convert.ToInt32(readerUnits["id_mobil"]),
+                                    npk = readerUnits["npk"].ToString(),
+                                    nim = readerUnits["nim"].ToString(),
+                                    skala = readerUnits["skala"].ToString(),
+                                    deskripsi = readerUnits["deskripsi"].ToString()
+                                };
+
+                                dtlacc.Add(pmodel); // Add to dtlacc1, not dtlacc
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // Consider logging the exception for further analysis
+            }
+
+            return dtlacc;
+        }
+
     }
 }
