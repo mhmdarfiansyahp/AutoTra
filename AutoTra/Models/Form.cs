@@ -46,6 +46,61 @@ namespace AutoTra.Models
             }
             return formlist;
         }
+
+        public List<FormModel> getSearchForm(string search)
+        {
+            List<FormModel> formlist = new List<FormModel>();
+            FormModel formmodel = new FormModel();
+            try
+            {
+                string query = "SELECT * FROM dbo.Data_Mobil where nama = @p1 AND status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p1", search);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    formmodel.id_mobil = Convert.ToInt32(reader["id_mobil"].ToString());
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            _connection.Close();
+
+            try
+            {
+                string query = "SELECT * FROM dbo.CRUD_Frm_Pemeriksaan where id_mobil = @p2 AND status != 0";
+                SqlCommand command = new SqlCommand(query, _connection);
+                command.Parameters.AddWithValue("@p2", formmodel.id_mobil);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    FormModel form = new FormModel
+                    {
+                        id_form = Convert.ToInt32(reader["id_form"].ToString()),
+                        id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
+                        skala = reader["skala"].ToString(),
+                        jenis_form = reader["jenis_form"].ToString(),
+                        status = Convert.ToInt32(reader["status"].ToString()),
+                    };
+                    formlist.Add(form);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return formlist;
+        }
         public List<MobilModel> getAllCarIndex()
         {
             List<MobilModel> mbllist = new List<MobilModel>();

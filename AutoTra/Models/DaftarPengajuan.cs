@@ -21,6 +21,7 @@ namespace AutoTra.Models
 
             try
             {
+
                 // Hitung tanggal satu minggu yang lalu
                 DateTime satuMingguYangLalu = DateTime.Today.AddDays(-7);
 
@@ -53,6 +54,81 @@ namespace AutoTra.Models
                                     status = Convert.ToInt32(reader["status"].ToString()),
                                 };
                                 mbllist.Add(pengajuan);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return mbllist;
+        }
+
+        public List<DaftarPengajuanModel> getSearch(string npk, string search)
+        {
+            List<DaftarPengajuanModel> mbllist = new List<DaftarPengajuanModel>();
+            DaftarPengajuanModel pgn = new DaftarPengajuanModel();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query1 = "SELECT * FROM Data_Mobil WHERE nama = @p1";
+
+                    using (SqlCommand command1 = new SqlCommand(query1, connection))
+                    {
+                        command1.Parameters.AddWithValue("@p1", search);
+                        using (SqlDataReader reader = command1.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                pgn.id_mobil = Convert.ToInt32(reader["id_mobil"]);
+                            }
+                        }
+                    }
+
+                    // Hitung tanggal satu minggu yang lalu
+                    DateTime satuMingguYangLalu = DateTime.Today.AddDays(-7);
+
+                    // Gunakan npk dalam query untuk filter data
+                    string query = $"SELECT * FROM Pgn_Unit_Praktek WHERE npk = @Npk AND tanggal_pengajuan >= @Tanggal AND id_mobil = @p2";
+
+                    using (SqlCommand command = new SqlCommand(query, _connection))
+                    {
+                        command.Parameters.AddWithValue("@Npk", npk);
+                        command.Parameters.AddWithValue("@Tanggal", satuMingguYangLalu.ToString("yyyy-MM-dd"));
+                        command.Parameters.AddWithValue("@p2", pgn.id_mobil);
+
+                        _connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DateTime tanggalPengajuan = reader.GetDateTime(reader.GetOrdinal("tanggal_pengajuan"));
+                                // Periksa apakah tanggal pengajuan lebih dari satu minggu yang lalu
+                                if (tanggalPengajuan >= satuMingguYangLalu)
+                                {
+                                    DaftarPengajuanModel pengajuan = new DaftarPengajuanModel
+                                    {
+                                        id_pengajuan = Convert.ToInt32(reader["id_pgn_unit"].ToString()),
+                                        tanggl_pengajuan = tanggalPengajuan,
+                                        nim = reader["nim"].ToString(),
+                                        npk = reader["npk"].ToString(),
+                                        id_mobil = Convert.ToInt32(reader["id_mobil"].ToString()),
+                                        skala = reader["skala"].ToString(),
+                                        deskripsi = reader["deskripsi"].ToString(),
+                                        status = Convert.ToInt32(reader["status"].ToString()),
+                                    };
+                                    mbllist.Add(pengajuan);
+                                }
                             }
                         }
                     }

@@ -10,6 +10,13 @@ namespace AutoTra.Controllers
         {
             formrepositori = new Form(configuration);
         }
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            ViewData["CarData"] = formrepositori.getAllCarIndex();
+            return View(formrepositori.getSearchForm(search));
+        }
+        [HttpGet]
         public IActionResult Index()
         {
             ViewData["CarData"] = formrepositori.getAllCarIndex();

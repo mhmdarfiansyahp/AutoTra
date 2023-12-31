@@ -10,6 +10,11 @@ namespace AutoTra.Controllers
         {
             itmrepositori = new Item(configuration);
         }
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            return View(itmrepositori.getSearchItem(search));
+        }
         public IActionResult Index()
         {
             return View(itmrepositori.getAllData());
