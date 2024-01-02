@@ -95,9 +95,10 @@ namespace AutoTra.Models
             List<MobilModel> mbllist = new List<MobilModel>();
             try
             {
-                string query = "SELECT * FROM Data_Mobil where nama = @p1 AND status != 0";
+                string query = "SELECT * FROM Data_Mobil WHERE nama LIKE @p1 AND status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", search);
+                command.Parameters.AddWithValue("@p1", "%" + search + "%");
+
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())

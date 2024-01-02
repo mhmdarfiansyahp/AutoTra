@@ -173,9 +173,9 @@ namespace AutoTra.Models
             List<DosenModel> dsnlist = new List<DosenModel>();
             try
             {
-                string query = "SELECT * FROM Dosen where nama = @p1";
+                string query = "SELECT * FROM Dosen where nama LIKE @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", cari);
+                command.Parameters.AddWithValue("@p1", "%" + cari + "%");
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -203,9 +203,9 @@ namespace AutoTra.Models
             {
                 try
                 {
-                    string query = "SELECT * FROM Dosen where npk = @p1";
+                    string query = "SELECT * FROM Dosen WHERE npk LIKE @p1";
                     SqlCommand command = new SqlCommand(query, _connection);
-                    command.Parameters.AddWithValue("@p1", cari);
+                    command.Parameters.AddWithValue("@p1", "%" + cari + "%");
                     _connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())

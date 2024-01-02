@@ -81,17 +81,18 @@ namespace AutoTra.Models
                 {
                     connection.Open();
 
-                    string query1 = "SELECT * FROM Data_Mobil WHERE nama = @p1";
+                    string query1 = "SELECT DISTINCT * FROM Data_Mobil WHERE nama LIKE @p1";
 
                     using (SqlCommand command1 = new SqlCommand(query1, connection))
                     {
-                        command1.Parameters.AddWithValue("@p1", search);
+                        command1.Parameters.AddWithValue("@p1", "%" + search + "%");
                         using (SqlDataReader reader = command1.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 pgn.id_mobil = Convert.ToInt32(reader["id_mobil"]);
                             }
+                            Console.WriteLine("id_mobil: " + pgn.id_mobil);
                         }
                     }
 

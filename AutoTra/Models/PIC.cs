@@ -136,9 +136,10 @@ namespace AutoTra.Models
             List<PICModel> filmList = new List<PICModel>();
             try
             {
-                string query = "SELECT * FROM PIC where nama = @p1";
+                string query = "SELECT * FROM PIC where nama LIKE @p1";
                 SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", search);
+                command.Parameters.AddWithValue("@p1", "%" + search + "%");
+
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -166,9 +167,10 @@ namespace AutoTra.Models
             {
                 try
                 {
-                    string query = "SELECT * FROM PIC where nim = @p2";
+                    string query = "SELECT * FROM PIC where nim LIKE @p2";
                     SqlCommand command = new SqlCommand(query, _connection);
-                    command.Parameters.AddWithValue("@p2", search);
+                    command.Parameters.AddWithValue("@p1", "%" + search + "%");
+
                     _connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())

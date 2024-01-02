@@ -637,11 +637,11 @@ namespace AutoTra.Models
                 {
                     connection.Open();
 
-                    string query = "SELECT * FROM Data_Mobil WHERE nama = @p1";
+                    string query = "SELECT DISTINCT * FROM Data_Mobil WHERE nama LIKE @p1";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@p1", search);
+                        command.Parameters.AddWithValue("@p1", "%" + search + "%");
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -651,11 +651,11 @@ namespace AutoTra.Models
                         }
                     }
 
-                    string queryUnits = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE id_mobil = @p2 AND status = 5";
+                    string queryUnits = "SELECT DISTINCT * FROM dbo.Pgn_Unit_Praktek WHERE id_mobil LIKE @p2 AND status = 5";
 
                     using (SqlCommand commandUnits = new SqlCommand(queryUnits, connection))
                     {
-                        commandUnits.Parameters.AddWithValue("@p2", dtlacc1.id_mobil);
+                        commandUnits.Parameters.AddWithValue("@p2", "%" + dtlacc1.id_mobil + "%");
                         using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
                         {
                             while (readerUnits.Read())

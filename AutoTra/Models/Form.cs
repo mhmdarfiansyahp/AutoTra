@@ -53,9 +53,9 @@ namespace AutoTra.Models
             FormModel formmodel = new FormModel();
             try
             {
-                string query = "SELECT * FROM dbo.Data_Mobil where nama = @p1 AND status != 0";
+                string query = "SELECT * FROM dbo.Data_Mobil where nama LIKE @p1 AND status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", search);
+                command.Parameters.AddWithValue("@p1", "%" + search + "%");
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())

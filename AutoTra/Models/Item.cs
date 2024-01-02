@@ -53,9 +53,10 @@ namespace AutoTra.Models
             List<ItemModel> itmlist = new List<ItemModel>();
             try
             {
-                string query = "select * from dbo.Itm_Pemeriksaan where item_pemeriksaan = @p1 AND status != 0";
+                string query = "select * from dbo.Itm_Pemeriksaan where item_pemeriksaan LIKE @p1 AND status != 0";
                 SqlCommand command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@p1", search);
+                command.Parameters.AddWithValue("@p1", "%" + search + "%");
+
                 _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
