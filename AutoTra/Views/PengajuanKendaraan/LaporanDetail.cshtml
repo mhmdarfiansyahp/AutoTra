@@ -255,20 +255,30 @@
                         // Custom styling for PDF
                         var tableRows = doc.content[1].table.body;
 
-                        // Tambahkan informasi tambahan di atas tabel
                         var additionalData = [
                             { text: '\n\n' }, // Add space between title and additional data
-                            { text: 'NIM            : ' + nim, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Student Name   : ' + namaMahasiswa, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Lecturer Name  : ' + namadosen, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Scope          : ' + scop, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Job Description: ' + job, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Car Model      : ' + mobil, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
-                            { text: 'Fuel           : ' + fuel, alignment: 'left', margin: [0, 0, 0, 10], width: maxLeftLength },
+                            { text: 'NIM                      : ' + nim, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Student Name    : ' + namaMahasiswa, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Lecturer Name   : ' + namadosen, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Scope                   : ' + scop, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Job Description  : ' + job, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Car Model            : ' + mobil, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
+                            { text: 'Fuel                       : ' + fuel, alignment: 'left', margin: [0, 0, 0, 10], width: 'auto' },
                             { text: '\n\n' },
                         ];
 
+                        // Calculate the maximum label length
+                        var maxLabelLength = additionalData.reduce(function (max, item) {
+                            return item.text.length > max ? item.text.length : max;
+                        }, 0);
+
+                        // Set the width for labels and values
+                        additionalData.forEach(function (item) {
+                            item.width = maxLabelLength + 10; // You can adjust the padding as needed
+                        });
+
                         doc.content.splice(1, 0, additionalData);
+
 
                         // Center align all cells in the table
                         for (var i = 0; i < tableRows.length; i++) {
