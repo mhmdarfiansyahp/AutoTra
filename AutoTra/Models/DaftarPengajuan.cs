@@ -238,7 +238,7 @@ namespace AutoTra.Models
             }
         }
 
-        public void approval2(int approvalStatus, int id_pengajuan, int id_mobil, DateTime tanggal_pemeriksaan, string Skala, string NIM, int status_pemeriksaan)
+        public void approval2(int approvalStatus, int id_pengajuan, int id_mobil, DateTime tanggalpemeriksaan, string Skala, string NIM, int status_pemeriksaan)
         {
             DaftarPengajuanModel dtlacc = new DaftarPengajuanModel();
             try
@@ -255,7 +255,7 @@ namespace AutoTra.Models
                 _connection.Close();
 
 
-                string formattedDate = tanggal_pemeriksaan.ToString("yyyy-MM-dd");
+                string formattedDate = tanggalpemeriksaan.ToString("yyyy-MM-dd");
                 string storedProcedureName = "sp_ApprovalPengajuan2";
                 SqlCommand command = new SqlCommand(storedProcedureName, _connection);
                 command.CommandType = CommandType.StoredProcedure;
