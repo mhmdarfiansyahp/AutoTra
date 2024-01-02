@@ -26,6 +26,19 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: "Success!",
+                text: "Data added successfully",
+                icon: "success"
+            }).then(() => {
+                location.reload();
+            });
+        </script>
+    }
 }
 
 

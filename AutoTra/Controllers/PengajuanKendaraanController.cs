@@ -80,7 +80,7 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     pengajuanrepositori.insertdata(mbl);
-                    TempData["SuccessMessage"] = "Data added successfully";
+                    TempData["Success"] = true;
                     return RedirectToAction("Index");
                 }
             }
