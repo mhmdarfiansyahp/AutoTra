@@ -629,15 +629,16 @@ namespace AutoTra.Models
 
         public List<PengajuanKendaraanModel> getSearchLaporan(string search)
         {
-            List<PengajuanKendaraanModel> dtlacc = new List<PengajuanKendaraanModel>();
-            PengajuanKendaraanModel dtlacc1 = new PengajuanKendaraanModel();
+            List<PengajuanKendaraanModel> dtlacc = new List<PengajuanKendaraanModel>(); // List untuk menyimpan hasil query pertama
+            List<int> idMobils = new List<int>(); // List untuk menyimpan nilai id_mobil
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
 
-                    string query = "SELECT DISTINCT * FROM Data_Mobil WHERE nama LIKE @p1";
+                    string query = "SELECT DISTINCT id_mobil FROM Data_Mobil WHERE nama LIKE @p1";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -646,46 +647,54 @@ namespace AutoTra.Models
                         {
                             while (reader.Read())
                             {
-                                dtlacc1.id_mobil = Convert.ToInt32(reader["id_mobil"]);
+                                int idMobil = Convert.ToInt32(reader["id_mobil"]);
+                                idMobils.Add(idMobil); // Menambahkan id_mobil ke dalam list
                             }
                         }
                     }
 
-                    string queryUnits = "SELECT DISTINCT * FROM dbo.Pgn_Unit_Praktek WHERE id_mobil LIKE @p2 AND status = 5";
+                    // Gunakan nilai idMobils langsung dalam klausa IN untuk query kedua
+                    string queryUnits = "SELECT * FROM dbo.Pgn_Unit_Praktek WHERE id_mobil = @p2 AND status = 5";
 
                     using (SqlCommand commandUnits = new SqlCommand(queryUnits, connection))
                     {
-                        commandUnits.Parameters.AddWithValue("@p2", "%" + dtlacc1.id_mobil + "%");
-                        using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
+                        foreach (int idMobil in idMobils)
                         {
-                            while (readerUnits.Read())
-                            {
-                                PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
-                                {
-                                    id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
-                                    tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
-                                    id_mobil = Convert.ToInt32(readerUnits["id_mobil"]),
-                                    npk = readerUnits["npk"].ToString(),
-                                    nim = readerUnits["nim"].ToString(),
-                                    skala = readerUnits["skala"].ToString(),
-                                    deskripsi = readerUnits["deskripsi"].ToString()
-                                };
+                            commandUnits.Parameters.Clear();
+                            commandUnits.Parameters.AddWithValue("@p2", idMobil);
 
-                                dtlacc.Add(pmodel); // Add to dtlacc1, not dtlacc
+                            using (SqlDataReader readerUnits = commandUnits.ExecuteReader())
+                            {
+                                while (readerUnits.Read())
+                                {
+                                    PengajuanKendaraanModel pmodel = new PengajuanKendaraanModel
+                                    {
+                                        id_pengajuan = Convert.ToInt32(readerUnits["id_pgn_unit"]),
+                                        tanggl_pengajuan = Convert.ToDateTime(readerUnits["tanggal_pengajuan"]),
+                                        id_mobil = Convert.ToInt32(readerUnits["id_mobil"]),
+                                        npk = readerUnits["npk"].ToString(),
+                                        nim = readerUnits["nim"].ToString(),
+                                        skala = readerUnits["skala"].ToString(),
+                                        deskripsi = readerUnits["deskripsi"].ToString()
+                                    };
+
+                                    dtlacc.Add(pmodel); // Tambahkan hasil ke dalam list
+                                }
                             }
                         }
                     }
-
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                // Consider logging the exception for further analysis
+                // Pertimbangkan untuk mencatat pesan kesalahan untuk analisis lebih lanjut
             }
 
             return dtlacc;
         }
+
+
 
     }
 }
