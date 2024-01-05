@@ -236,23 +236,24 @@ namespace AutoTra.Models
 
         public void insertdata(DosenModel dosenModel)
         {
-            try
-            {
-                string storedProcedureName = "sp_InsertDosen";
-                SqlCommand command = new SqlCommand(storedProcedureName, _connection);
-                command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@npk", dosenModel.npk);
-                command.Parameters.AddWithValue("@nama", dosenModel.nama);
-                command.Parameters.AddWithValue("@username", dosenModel.username);
-                command.Parameters.AddWithValue("@password", dosenModel.password);
-                command.Parameters.AddWithValue("@peran", dosenModel.peran);
-                command.Parameters.AddWithValue("@status", dosenModel.status);
+            try 
+            { 
+                    string storedProcedureName = "sp_InsertDosen";
+                    SqlCommand command = new SqlCommand(storedProcedureName, _connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                _connection.Open();
-                command.ExecuteNonQuery();
-                _connection.Close();
-            }
+                    command.Parameters.AddWithValue("@npk", dosenModel.npk);
+                    command.Parameters.AddWithValue("@nama", dosenModel.nama);
+                    command.Parameters.AddWithValue("@username", dosenModel.username);
+                    command.Parameters.AddWithValue("@password", dosenModel.password);
+                    command.Parameters.AddWithValue("@peran", dosenModel.peran);
+                    command.Parameters.AddWithValue("@status", dosenModel.status);
+
+                    _connection.Open();
+                    command.ExecuteNonQuery();
+                    _connection.Close();
+                }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);

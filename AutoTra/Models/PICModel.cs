@@ -5,8 +5,8 @@ namespace AutoTra.Models
     public class PICModel
     {
         [Required(ErrorMessage = "NIM must be filled in.")]
-        [StringLength(15, MinimumLength = 5, ErrorMessage = "NIM must be between 5 and 15 characters long.")]
-        [RegularExpression("^[0-9]{5,15}$", ErrorMessage = "NIM can only contain numbers and must be 5 to 15 numbers.")]
+        [StringLength(15, ErrorMessage = "NIM must be between 5 and 15 characters long.")]
+        [RegularExpression("^[0-9]{10}$", ErrorMessage = "NIM must contain numbers and must be 10 digits.")]
         public string? nim { get; set; }
 
         [Required(ErrorMessage = "Nama must be filled in.")]
