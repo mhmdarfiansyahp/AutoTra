@@ -107,6 +107,20 @@
 
             console.log(dataArray);
 
+            // Validasi untuk memastikan setidaknya satu item dipilih
+            var atLeastOneChecked = dataArray.some(function (item) {
+                return item.hasil_inspeksi === 'Yes';
+            });
+
+            if (!atLeastOneChecked) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Select at least one item before submitting the form.',
+                });
+                return;
+            }
+
             // Mengirim dataArray ke Controller menggunakan AJAX
             $.ajax({
                 type: "POST",
