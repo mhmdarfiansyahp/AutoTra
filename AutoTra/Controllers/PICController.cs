@@ -47,13 +47,16 @@ namespace AutoTra.Controllers
                     {
                         if (picrepositori.IsNpkExists(pic.nim))
                         {
-                            ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
+                            TempData["ErrorMessage"] = "NIM already exists. Please choose a different one.";
                         }
 
                         if (picrepositori.IsUsernameExists(pic.username, pic.nim))
                         {
-                            ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                            TempData["ErrorMessage"] = "Username already exists. Please choose a different one.";
                         }
+
+                        TempData["ShowErrorMessage"] = true;  // Set to true only if validation fails
+                        return RedirectToAction("Create");
                     }
                     picrepositori.insertData(pic);
                     TempData["Success"] = true;
