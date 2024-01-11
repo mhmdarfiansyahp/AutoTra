@@ -26,6 +26,21 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+
+    @if (TempData["ShowErrorMessage"] != null && (bool)TempData["ShowErrorMessage"])
+    {
+        <script>
+            Swal.fire({
+                title: "Error!",
+                text: "@TempData["ErrorMessage"]",
+                icon: "error"
+            }).then(() => {
+                // Setelah menampilkan pesan error, reset flag ShowErrorMessage
+                location.reload();
+            });
+        </script>
+    }
+
 }
 
 <div class="content">

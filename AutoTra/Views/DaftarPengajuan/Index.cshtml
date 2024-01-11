@@ -392,9 +392,21 @@
                 type: "POST",
                 url: "/DaftarPengajuan/Approve2",
                 data: approvalData,
-                success: function () {
+                success: function (response) {
                     console.log(approvalData);
-                    location.reload(); // Memuat ulang halaman setelah berhasil
+
+                    // Menampilkan SweetAlert ketika berhasil
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(() => {
+                            location.reload(); // Memuat ulang halaman setelah berhasil
+                        });
+                    } else {
+                        Swal.fire('Error!', response.message, 'error');
+                    }
                 },
                 error: function () {
                     console.log("Error during AJAX request for approval");
@@ -402,5 +414,6 @@
                 }
             });
         });
+
     });
 </script>

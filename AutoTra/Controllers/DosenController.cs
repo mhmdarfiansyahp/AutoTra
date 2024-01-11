@@ -47,15 +47,19 @@ namespace AutoTra.Controllers
                     {
                         if (dosenrepositori.IsNpkExists(adm.npk))
                         {
-                            ModelState.AddModelError("npk", "NPK already exists. Please choose a different one.");
+                            TempData["ErrorMessage"] = "NPK already exists. Please choose a different one.";
                         }
 
                         // Check if the username already exists
                         if (dosenrepositori.IsUsernameExists(adm.username, adm.npk))
                         {
-                            ModelState.AddModelError("username", "Username already exists. Please choose a different one.");
+                            TempData["ErrorMessage"] = "Username already exists. Please choose a different one.";
                         }
+
+                        TempData["ShowErrorMessage"] = true;  // Set to true only if validation fails
+                        return RedirectToAction("Create");  // Redirect to the same action to render the view
                     }
+
                     dosenrepositori.insertdata(adm);
                     TempData["Success"] = true;
                     return RedirectToAction("Index");
@@ -65,6 +69,8 @@ namespace AutoTra.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            TempData["ShowErrorMessage"] = false;  // Set to false if validation succeeds
             return View(adm);
         }
 

@@ -122,11 +122,29 @@
                 data: JSON.stringify(dataArray), // Mengirim seluruh data sebagai array
                 success: function (response) {
                     console.log(response);
-                    window.location.href = '/PengajuanKendaraan/Index';
+
+                    // Menampilkan SweetAlert ketika berhasil
+                    if (response === "Data berhasil diproses") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response,
+                        }).then(() => {
+                            window.location.href = '/PengajuanKendaraan/Index';
+                        });
+                    } else {
+                        // Menampilkan pesan kesalahan jika response tidak sesuai
+                        console.error('Invalid response from server:', response);
+                    }
                 },
                 error: function (err) {
                     console.error('Error:', err);
-                    // Lakukan penanganan kesalahan, jika diperlukan
+                    // Menampilkan SweetAlert untuk kesalahan
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while processing the data.',
+                    });
                 }
             });
         });

@@ -90,7 +90,7 @@ namespace AutoTra.Controllers
                         Dpengajuanrepositori.approval1(approvalStatus, id_pengajuan, id_mobil, tanggal_pemeriksaan, skala, NIM, status_pemeriksaan);
 
                         var notifikasiList = notifikasirepositori.GetNotifikasiListFromPgnUnitPraktek();
-                        return Json(new { success = true, message = "Data berhasil diproses.", notifications = notifikasiList, showAlert = true });
+                        return Json(new { success = true, message = "Data is processed successfully.", notifications = notifikasiList, showAlert = true });
                     }
                     else
                     {
@@ -132,8 +132,7 @@ namespace AutoTra.Controllers
                         return Json(new { success = false, message = "Nilai approvalStatus tidak valid." });
                     }
 
-                    TempData["SuccessMessage"] = "Status of Submissions was changed!";
-                    return Json(new { success = true, message = "Data berhasil diproses." });
+                    return Json(new { success = true, message = "Status of Submissions was changed!" });
                 }
                 else
                 {

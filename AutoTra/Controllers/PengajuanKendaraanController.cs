@@ -110,7 +110,6 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     pengajuanrepositori.insertdetailpemeriksaan(pengajuanmodel);
-                    TempData["SuccessMessage"] = "Status of Submissions was changed!";
                     return Ok("Data berhasil diproses");
                 }
             }
@@ -120,6 +119,7 @@ namespace AutoTra.Controllers
             }
             return View(pengajuanmodel);
         }
+
         [HttpGet]
         public IActionResult FinalCheck(int? id)
         {
@@ -140,7 +140,6 @@ namespace AutoTra.Controllers
                 if (ModelState.IsValid)
                 {
                     pengajuanrepositori.insertdetailpemeriksaanfinal(pengajuanmodel);
-                    TempData["SuccessMessage"] = "Status of Submissions was changed!";
                     return Ok("Data berhasil diproses");
                 }
             }
