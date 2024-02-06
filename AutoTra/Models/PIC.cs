@@ -167,7 +167,7 @@ namespace AutoTra.Models
             {
                 try
                 {
-                    string query = "SELECT * FROM PIC where nim LIKE @p2";
+                    string query = "SELECT * FROM PIC where nim LIKE @p1";
                     SqlCommand command = new SqlCommand(query, _connection);
                     command.Parameters.AddWithValue("@p1", "%" + search + "%");
 

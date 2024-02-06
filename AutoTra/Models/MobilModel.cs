@@ -18,7 +18,7 @@ namespace AutoTra.Models
         public string? vin { get; set; }
 
         [Required(ErrorMessage = "Engine number must be filled in")]
-        [MaxLength(20, ErrorMessage = "Engine number is only 20 characters")]
+        [RegularExpression(@"^\w{20}$", ErrorMessage = "Engine number is only 20 characters")]
         public string? no_engine { get; set; }
 
         [Required(ErrorMessage = "Car color must be filled in")]
